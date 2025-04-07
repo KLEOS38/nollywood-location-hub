@@ -1,16 +1,29 @@
 
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Search, Menu, X, User } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import SearchBar from "@/components/SearchBar";
 
 const Header = () => {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState('');
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  useEffect(() => {
+    // Check if user is logged in
+    const userString = localStorage.getItem('user');
+    if (userString) {
+      const user = JSON.parse(userString);
+      setIsLoggedIn(user.isLoggedIn || false);
+      setUserName(user.name || user.email || '');
+    }
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-border shadow-sm">
@@ -22,14 +35,7 @@ const Header = () => {
 
         {!isMobile && (
           <div className="flex-1 max-w-md mx-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-              <Input 
-                type="text" 
-                placeholder="Search for locations in Lagos..." 
-                className="pl-10 pr-4 py-2 w-full rounded-full border-muted"
-              />
-            </div>
+            <SearchBar />
           </div>
         )}
 
@@ -42,14 +48,25 @@ const Header = () => {
             <Link to="/locations">
               <Button variant="ghost">Browse Locations</Button>
             </Link>
-            <Link to="/become-a-host">
+            <Link to="/list-property">
               <Button variant="ghost">List Your Property</Button>
             </Link>
-            <Link to="/login">
-              <Button variant="outline" size="icon" className="rounded-full">
+            {isLoggedIn ? (
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="rounded-full"
+                onClick={() => navigate('/profile')}
+              >
                 <User size={18} />
               </Button>
-            </Link>
+            ) : (
+              <Link to="/auth">
+                <Button variant="outline" size="icon" className="rounded-full">
+                  <User size={18} />
+                </Button>
+              </Link>
+            )}
           </nav>
         )}
       </div>
@@ -59,25 +76,42 @@ const Header = () => {
         <div className="absolute top-16 left-0 right-0 bg-white border-b border-border shadow-md z-50">
           <div className="p-4 flex flex-col space-y-2">
             <div className="relative mb-4">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-              <Input 
-                type="text" 
-                placeholder="Search for locations in Lagos..." 
-                className="pl-10 pr-4 py-2 w-full rounded-full border-muted"
-              />
+              <SearchBar />
             </div>
             <Link to="/locations" onClick={toggleMenu}>
               <Button variant="ghost" className="w-full justify-start">Browse Locations</Button>
             </Link>
-            <Link to="/become-a-host" onClick={toggleMenu}>
+            <Link to="/list-property" onClick={toggleMenu}>
               <Button variant="ghost" className="w-full justify-start">List Your Property</Button>
             </Link>
-            <Link to="/login" onClick={toggleMenu}>
-              <Button variant="ghost" className="w-full justify-start">Log in</Button>
-            </Link>
-            <Link to="/signup" onClick={toggleMenu}>
-              <Button className="w-full">Sign up</Button>
-            </Link>
+            {isLoggedIn ? (
+              <>
+                <Link to="/profile" onClick={toggleMenu}>
+                  <Button variant="ghost" className="w-full justify-start">My Profile</Button>
+                </Link>
+                <Button 
+                  variant="ghost" 
+                  className="w-full justify-start"
+                  onClick={() => {
+                    localStorage.removeItem('user');
+                    setIsLoggedIn(false);
+                    toggleMenu();
+                    window.location.reload();
+                  }}
+                >
+                  Log out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link to="/auth" onClick={toggleMenu}>
+                  <Button variant="ghost" className="w-full justify-start">Log in</Button>
+                </Link>
+                <Link to="/auth?tab=signup" onClick={toggleMenu}>
+                  <Button className="w-full">Sign up</Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}
