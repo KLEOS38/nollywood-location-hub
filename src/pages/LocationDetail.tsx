@@ -13,14 +13,34 @@ import { getLocationById, getRelatedLocations } from "@/data/mockLocations";
 import LocationCard from "@/components/LocationCard";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious
+} from "@/components/ui/carousel";
+import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
 
 const LocationDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { toast } = useToast();
   const [isFavorite, setIsFavorite] = useState(false);
+  const [days, setDays] = useState(1);
+  const [bookingDate, setBookingDate] = useState("");
+  const [teamSize, setTeamSize] = useState("");
   
   const location = getLocationById(id || "");
   const relatedLocations = getRelatedLocations(id || "");
+  
+  // Mock additional images
+  const additionalImages = [
+    location?.imageUrl || "",
+    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+    "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2053&q=80"
+  ];
   
   if (!location) {
     return (
@@ -63,6 +83,8 @@ const LocationDetail = () => {
       description: "The property owner will contact you shortly to confirm availability.",
     });
   };
+  
+  const totalPrice = location.price * days;
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -78,14 +100,32 @@ const LocationDetail = () => {
           </Link>
         </div>
         
-        {/* Image Gallery */}
-        <div className="relative h-96 md:h-[500px] bg-muted">
-          <img 
-            src={location.imageUrl} 
-            alt={location.title} 
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute top-4 right-4 flex space-x-2">
+        {/* Image Carousel */}
+        <div className="relative bg-muted px-8 py-6">
+          <Carousel className="w-full max-w-4xl mx-auto">
+            <CarouselContent>
+              {additionalImages.map((image, index) => (
+                <CarouselItem key={index}>
+                  <div className="h-[400px] w-full relative">
+                    <img 
+                      src={image} 
+                      alt={`${location.title} - Image ${index + 1}`} 
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                    {index === 0 && location.isVerified && (
+                      <Badge className="absolute top-4 left-4 bg-nollywood-secondary text-white">
+                        Verified
+                      </Badge>
+                    )}
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-4 bg-white" />
+            <CarouselNext className="right-4 bg-white" />
+          </Carousel>
+          
+          <div className="absolute top-8 right-12 flex space-x-2">
             <Button 
               onClick={toggleFavorite}
               variant="secondary" 
@@ -103,18 +143,13 @@ const LocationDetail = () => {
               <Share2 size={20} />
             </Button>
           </div>
-          {location.isVerified && (
-            <Badge className="absolute top-4 left-4 bg-nollywood-secondary text-white">
-              Verified
-            </Badge>
-          )}
         </div>
         
-        <div className="container mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
-              {/* Location Header */}
-              <div className="mb-6">
+        {/* Pricing & Booking Section */}
+        <div className="bg-white py-6 border-b shadow-sm">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+              <div>
                 <div className="hidden md:block mb-2">
                   <Link to="/locations">
                     <Button variant="ghost" size="sm" className="flex items-center gap-1 -ml-2">
@@ -137,8 +172,41 @@ const LocationDetail = () => {
                 </div>
               </div>
               
-              <Separator className="my-6" />
-              
+              <div className="bg-white rounded-lg shadow-sm p-4 border flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+                <div className="flex flex-col items-center sm:items-start w-full sm:w-auto">
+                  <span className="text-muted-foreground text-sm">Price per day</span>
+                  <span className="text-2xl font-bold">₦{location.price.toLocaleString()}</span>
+                </div>
+                
+                <div className="w-full sm:w-auto">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-sm">Days:</span>
+                    <Slider 
+                      value={[days]} 
+                      onValueChange={(value) => setDays(value[0])}
+                      max={14}
+                      min={1}
+                      step={1}
+                      className="w-[120px]"
+                    />
+                    <span className="font-medium">{days}</span>
+                  </div>
+                  <div className="text-sm font-medium">
+                    Total: ₦{totalPrice.toLocaleString()}
+                  </div>
+                </div>
+                
+                <Button onClick={handleBookNow} className="w-full sm:w-auto">
+                  Book Now
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="container mx-auto px-4 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2">
               {/* About */}
               <div className="mb-8">
                 <h2 className="text-xl font-semibold mb-4">About this location</h2>
@@ -261,19 +329,53 @@ const LocationDetail = () => {
                 <div className="mb-6">
                   <div className="flex items-center gap-2 p-3 border rounded-lg mb-3">
                     <Calendar size={20} className="text-muted-foreground" />
-                    <div>
+                    <div className="flex-1">
                       <div className="text-sm font-medium">Pick a date</div>
-                      <div className="text-xs text-muted-foreground">Check our calendar for availability</div>
+                      <Input 
+                        type="date" 
+                        value={bookingDate} 
+                        onChange={(e) => setBookingDate(e.target.value)}
+                        className="mt-1"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-2 p-3 border rounded-lg mb-3">
+                    <Users size={20} className="text-muted-foreground" />
+                    <div className="flex-1">
+                      <div className="text-sm font-medium">Team size</div>
+                      <Input 
+                        type="number" 
+                        placeholder="Number of crew members" 
+                        value={teamSize} 
+                        onChange={(e) => setTeamSize(e.target.value)}
+                        className="mt-1"
+                      />
                     </div>
                   </div>
                   
                   <div className="flex items-center gap-2 p-3 border rounded-lg">
-                    <Users size={20} className="text-muted-foreground" />
-                    <div>
-                      <div className="text-sm font-medium">Team size</div>
-                      <div className="text-xs text-muted-foreground">How many crew members?</div>
+                    <Calendar size={20} className="text-muted-foreground" />
+                    <div className="flex-1">
+                      <div className="text-sm font-medium">Number of days</div>
+                      <div className="flex items-center gap-2 mt-1">
+                        <Slider 
+                          value={[days]} 
+                          onValueChange={(value) => setDays(value[0])}
+                          max={14}
+                          min={1}
+                          step={1}
+                          className="flex-1"
+                        />
+                        <span className="font-medium w-6 text-center">{days}</span>
+                      </div>
                     </div>
                   </div>
+                </div>
+                
+                <div className="flex justify-between items-center border-t border-b py-3 mb-4">
+                  <span className="font-medium">Total</span>
+                  <span className="text-xl font-bold">₦{totalPrice.toLocaleString()}</span>
                 </div>
                 
                 <Button className="w-full mb-3" onClick={handleBookNow}>
