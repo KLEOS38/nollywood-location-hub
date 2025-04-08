@@ -5,10 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Search, Menu, X, User } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import SearchBar from "@/components/SearchBar";
+import { useToast } from "@/components/ui/use-toast";
 
 const Header = () => {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
@@ -19,11 +21,29 @@ const Header = () => {
     // Check if user is logged in
     const userString = localStorage.getItem('user');
     if (userString) {
-      const user = JSON.parse(userString);
-      setIsLoggedIn(user.isLoggedIn || false);
-      setUserName(user.name || user.email || '');
+      try {
+        const user = JSON.parse(userString);
+        setIsLoggedIn(user.isLoggedIn || false);
+        setUserName(user.name || user.email || '');
+      } catch (error) {
+        console.error('Error parsing user data', error);
+      }
     }
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    setIsLoggedIn(false);
+    setUserName('');
+    toggleMenu();
+    
+    toast({
+      title: "Logged out successfully",
+      description: "You have been logged out of your account.",
+    });
+    
+    navigate('/');
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-border shadow-sm">
@@ -40,7 +60,7 @@ const Header = () => {
         )}
 
         {isMobile ? (
-          <Button variant="ghost" size="icon" onClick={toggleMenu}>
+          <Button variant="ghost" size="icon" onClick={toggleMenu} aria-label="Menu">
             {isMenuOpen ? <X /> : <Menu />}
           </Button>
         ) : (
@@ -51,18 +71,22 @@ const Header = () => {
             <Link to="/list-property">
               <Button variant="ghost">List Your Property</Button>
             </Link>
+            <Link to="/about">
+              <Button variant="ghost">About Us</Button>
+            </Link>
             {isLoggedIn ? (
               <Button 
                 variant="outline" 
                 size="icon" 
                 className="rounded-full"
                 onClick={() => navigate('/profile')}
+                aria-label="Profile"
               >
                 <User size={18} />
               </Button>
             ) : (
               <Link to="/auth">
-                <Button variant="outline" size="icon" className="rounded-full">
+                <Button variant="outline" size="icon" className="rounded-full" aria-label="Log in">
                   <User size={18} />
                 </Button>
               </Link>
@@ -84,6 +108,9 @@ const Header = () => {
             <Link to="/list-property" onClick={toggleMenu}>
               <Button variant="ghost" className="w-full justify-start">List Your Property</Button>
             </Link>
+            <Link to="/about" onClick={toggleMenu}>
+              <Button variant="ghost" className="w-full justify-start">About Us</Button>
+            </Link>
             {isLoggedIn ? (
               <>
                 <Link to="/profile" onClick={toggleMenu}>
@@ -91,13 +118,8 @@ const Header = () => {
                 </Link>
                 <Button 
                   variant="ghost" 
-                  className="w-full justify-start"
-                  onClick={() => {
-                    localStorage.removeItem('user');
-                    setIsLoggedIn(false);
-                    toggleMenu();
-                    window.location.reload();
-                  }}
+                  className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-50"
+                  onClick={handleLogout}
                 >
                   Log out
                 </Button>

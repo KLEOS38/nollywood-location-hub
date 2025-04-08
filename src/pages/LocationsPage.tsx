@@ -16,10 +16,12 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
+import { useToast } from "@/components/ui/use-toast";
 
 const LocationsPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [filteredLocations, setFilteredLocations] = useState(MOCK_LOCATIONS);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState<string>('');
@@ -28,8 +30,13 @@ const LocationsPage = () => {
   
   // Get custom properties from localStorage if available
   const getLocations = () => {
-    const customProperties = JSON.parse(localStorage.getItem('properties') || '[]');
-    return [...MOCK_LOCATIONS, ...customProperties];
+    try {
+      const customProperties = JSON.parse(localStorage.getItem('properties') || '[]');
+      return [...MOCK_LOCATIONS, ...customProperties];
+    } catch (error) {
+      console.error('Error loading custom properties:', error);
+      return MOCK_LOCATIONS;
+    }
   };
   
   // Get search query from URL on initial load
@@ -60,14 +67,14 @@ const LocationsPage = () => {
     }
     
     // Apply type filter
-    if (selectedType) {
+    if (selectedType && selectedType !== 'all_types') {
       results = results.filter(location => 
         location.type.toLowerCase() === selectedType.toLowerCase()
       );
     }
     
     // Apply neighborhood filter
-    if (selectedNeighborhood) {
+    if (selectedNeighborhood && selectedNeighborhood !== 'all_areas') {
       results = results.filter(location => 
         location.neighborhood.toLowerCase().includes(selectedNeighborhood.toLowerCase())
       );
@@ -98,6 +105,11 @@ const LocationsPage = () => {
     setSelectedNeighborhood('');
     setSortBy('default');
     navigate('/locations', { replace: true });
+    
+    toast({
+      title: "Filters reset",
+      description: "All search filters have been cleared.",
+    });
   };
   
   // Get unique property types for filter
@@ -196,7 +208,7 @@ const LocationsPage = () => {
                         Search: {searchQuery} ×
                       </Button>
                     )}
-                    {selectedType && (
+                    {selectedType && selectedType !== 'all_types' && (
                       <Button 
                         variant="outline" 
                         size="sm" 
@@ -206,7 +218,7 @@ const LocationsPage = () => {
                         Type: {selectedType} ×
                       </Button>
                     )}
-                    {selectedNeighborhood && (
+                    {selectedNeighborhood && selectedNeighborhood !== 'all_areas' && (
                       <Button 
                         variant="outline" 
                         size="sm" 

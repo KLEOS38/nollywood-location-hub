@@ -21,7 +21,7 @@ const Index = () => {
         <div 
           className="h-[600px] bg-cover bg-center"
           style={{ 
-            backgroundImage: "url('https://images.unsplash.com/photo-1613677135043-a2512fbf49fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3087&q=80')" 
+            backgroundImage: "url('https://images.unsplash.com/photo-1578868399786-7cf1095c147d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80')" 
           }}
         ></div>
         <div className="absolute inset-0 z-20 flex items-center">
@@ -35,7 +35,7 @@ const Index = () => {
                     Browse Locations
                   </Button>
                 </Link>
-                <Link to="/become-a-host">
+                <Link to="/list-property">
                   <Button size="lg" variant="outline" className="bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white/20">
                     List Your Property
                   </Button>
@@ -138,8 +138,8 @@ const Index = () => {
             
             <div className="md:w-1/2">
               <img 
-                src="https://images.unsplash.com/photo-1496902526517-c0f2cb8fdb6a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2680&q=80" 
-                alt="Film production" 
+                src="https://images.unsplash.com/photo-1531219572328-a0171b4448a3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
+                alt="Nigerian film production" 
                 className="rounded-lg shadow-xl"
               />
             </div>
@@ -153,12 +153,12 @@ const Index = () => {
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Find Your Next Filming Location?</h2>
           <p className="text-xl max-w-2xl mx-auto mb-8">Join hundreds of Nollywood filmmakers who are discovering perfect filming locations across Lagos.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link to="/signup">
+            <Link to="/auth?tab=signup">
               <Button size="lg" className="bg-nollywood-primary hover:bg-nollywood-primary/90 text-white">
                 Sign Up as Filmmaker
               </Button>
             </Link>
-            <Link to="/become-a-host">
+            <Link to="/list-property">
               <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
                 List Your Property
               </Button>
