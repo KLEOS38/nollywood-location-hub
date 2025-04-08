@@ -93,6 +93,7 @@ const FilterBar = () => {
                       selected={date}
                       onSelect={setDate}
                       initialFocus
+                      className="pointer-events-auto"
                     />
                   </div>
                   
@@ -185,6 +186,7 @@ const FilterBar = () => {
                   selected={date}
                   onSelect={setDate}
                   initialFocus
+                  className="pointer-events-auto"
                 />
               </PopoverContent>
             </Popover>
@@ -251,6 +253,7 @@ const FilterBar = () => {
                   selected={date}
                   onSelect={setDate}
                   initialFocus
+                  className="pointer-events-auto"
                 />
               </PopoverContent>
             </Popover>

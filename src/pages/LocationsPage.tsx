@@ -145,7 +145,7 @@ const LocationsPage = () => {
                         <SelectValue placeholder="Property Type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">All Types</SelectItem>
+                        <SelectItem value="all_types">All Types</SelectItem>
                         {propertyTypes.map(type => (
                           <SelectItem key={type} value={type.toLowerCase()}>
                             {type}
@@ -159,7 +159,7 @@ const LocationsPage = () => {
                         <SelectValue placeholder="Neighborhood" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">All Areas</SelectItem>
+                        <SelectItem value="all_areas">All Areas</SelectItem>
                         {neighborhoods.map(neighborhood => (
                           <SelectItem key={neighborhood} value={neighborhood.toLowerCase()}>
                             {neighborhood}
