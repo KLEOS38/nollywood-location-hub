@@ -31,7 +31,7 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold text-lg mb-4">About</h3>
             <ul className="space-y-2">
-              <li><Link to="/about" className="text-muted-foreground hover:text-nollywood-primary">How it Works</Link></li>
+              <li><Link to="/how-it-works" className="text-muted-foreground hover:text-nollywood-primary">How it Works</Link></li>
               <li><Link to="/news" className="text-muted-foreground hover:text-nollywood-primary">Newsroom</Link></li>
               <li><Link to="/investors" className="text-muted-foreground hover:text-nollywood-primary">Investors</Link></li>
               <li><Link to="/careers" className="text-muted-foreground hover:text-nollywood-primary">Careers</Link></li>

@@ -21,7 +21,7 @@ const Index = () => {
         <div 
           className="h-[600px] bg-cover bg-center"
           style={{ 
-            backgroundImage: "url('https://images.unsplash.com/photo-1578868399786-7cf1095c147d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80')" 
+            backgroundImage: "url('https://images.unsplash.com/photo-1613545325268-9265e1609167?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80')" 
           }}
         ></div>
         <div className="absolute inset-0 z-20 flex items-center">
@@ -130,7 +130,7 @@ const Index = () => {
               </ul>
               
               <div className="mt-8">
-                <Link to="/about">
+                <Link to="/safety">
                   <Button>Learn More About Our Process</Button>
                 </Link>
               </div>
@@ -138,7 +138,7 @@ const Index = () => {
             
             <div className="md:w-1/2">
               <img 
-                src="https://images.unsplash.com/photo-1531219572328-a0171b4448a3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
+                src="https://images.unsplash.com/photo-1573164574572-cb89e39749b4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
                 alt="Nigerian film production" 
                 className="rounded-lg shadow-xl"
               />
@@ -148,10 +148,17 @@ const Index = () => {
       </section>
       
       {/* CTA */}
-      <section className="py-20 bg-nollywood-dark text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Find Your Next Filming Location?</h2>
-          <p className="text-xl max-w-2xl mx-auto mb-8">Join hundreds of Nollywood filmmakers who are discovering perfect filming locations across Lagos.</p>
+      <section className="py-20 bg-no-repeat bg-cover bg-center relative">
+        <div className="absolute inset-0 bg-nollywood-dark/90 z-0"></div>
+        <div 
+          className="absolute inset-0 z-0 bg-cover bg-center opacity-40"
+          style={{ 
+            backgroundImage: "url('https://images.unsplash.com/photo-1598815000353-d2f6fad54d38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80')" 
+          }}
+        ></div>
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Ready to Find Your Next Filming Location?</h2>
+          <p className="text-xl max-w-2xl mx-auto mb-8 text-white">Join hundreds of Nollywood filmmakers who are discovering perfect filming locations across Lagos.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link to="/auth?tab=signup">
               <Button size="lg" className="bg-nollywood-primary hover:bg-nollywood-primary/90 text-white">
