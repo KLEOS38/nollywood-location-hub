@@ -3,7 +3,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { AlertCircle, ShieldCheck, Thermometer, Spray, Users, Clock } from 'lucide-react';
+import { AlertCircle, ShieldCheck, Thermometer, Droplets, Users, Clock } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -85,7 +85,7 @@ const CovidGuidelines = () => {
                         <CardContent className="pt-6">
                           <div className="text-center mb-4">
                             <div className="bg-nollywood-primary/10 p-3 rounded-full inline-flex mb-2">
-                              <Spray className="h-6 w-6 text-nollywood-primary" />
+                              <Droplets className="h-6 w-6 text-nollywood-primary" />
                             </div>
                             <h3 className="font-semibold">Sanitation</h3>
                           </div>
