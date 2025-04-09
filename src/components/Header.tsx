@@ -14,6 +14,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
+  const [userType, setUserType] = useState('');
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -25,6 +26,7 @@ const Header = () => {
         const user = JSON.parse(userString);
         setIsLoggedIn(user.isLoggedIn || false);
         setUserName(user.name || user.email || '');
+        setUserType(user.userType || '');
       } catch (error) {
         console.error('Error parsing user data', error);
       }
@@ -35,6 +37,7 @@ const Header = () => {
     localStorage.removeItem('user');
     setIsLoggedIn(false);
     setUserName('');
+    setUserType('');
     toggleMenu();
     
     toast({
@@ -81,6 +84,7 @@ const Header = () => {
                 className="rounded-full"
                 onClick={() => navigate('/profile')}
                 aria-label="Profile"
+                title={`${userName}'s Profile`}
               >
                 <User size={18} />
               </Button>
@@ -114,7 +118,9 @@ const Header = () => {
             {isLoggedIn ? (
               <>
                 <Link to="/profile" onClick={toggleMenu}>
-                  <Button variant="ghost" className="w-full justify-start">My Profile</Button>
+                  <Button variant="ghost" className="w-full justify-start">
+                    My Profile {userType === 'homeowner' ? '(Property Owner)' : '(Filmmaker)'}
+                  </Button>
                 </Link>
                 <Button 
                   variant="ghost" 

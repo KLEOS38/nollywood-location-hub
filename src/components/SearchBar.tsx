@@ -85,6 +85,11 @@ const SearchBar = ({
     }
   }, [searchQuery]);
 
+  // Function to get a fallback image if the main one fails
+  const getFallbackImage = () => {
+    return "https://images.unsplash.com/photo-1600585154526-990dced4db0d";
+  };
+
   return (
     <>
       <form onSubmit={handleSearch} className={`relative ${className}`}>
@@ -133,6 +138,10 @@ const SearchBar = ({
                         src={location.imageUrl} 
                         alt={location.title} 
                         className="w-full h-full object-cover"
+                        onError={(e) => {
+                          // If image fails to load, use fallback
+                          e.currentTarget.src = getFallbackImage();
+                        }}
                       />
                     </div>
                     <div>
