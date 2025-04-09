@@ -387,9 +387,9 @@ const Investors = () => {
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <h3 className="text-xl font-semibold mb-1">Tunde Falola</h3>
-                    <p className="text-nollywood-primary font-medium mb-2">CEO & Co-Founder</p>
-                    <p className="text-sm text-muted-foreground">Former film producer with 15+ years in Nollywood and technology background from MIT.</p>
+                    <h3 className="text-xl font-semibold mb-1">Elijah Ogann</h3>
+                    <p className="text-nollywood-primary font-medium mb-2">Co-Founder</p>
+                    <p className="text-sm text-muted-foreground">Film writer, producer and actor with 15+ years in Nollywood and the UK Film Industry.</p>
                   </div>
                   
                   <div className="text-center">
@@ -401,8 +401,8 @@ const Investors = () => {
                       />
                     </div>
                     <h3 className="text-xl font-semibold mb-1">Adebola Johnson</h3>
-                    <p className="text-nollywood-primary font-medium mb-2">CTO & Co-Founder</p>
-                    <p className="text-sm text-muted-foreground">Tech leader with previous exits in Nigerian startups and experience at Amazon and Andela.</p>
+                    <p className="text-nollywood-primary font-medium mb-2">Co-Founder</p>
+                    <p className="text-sm text-muted-foreground">Design and Tech leader with experience spanning multiple industries across the globe.</p>
                   </div>
                   
                   <div className="text-center">
