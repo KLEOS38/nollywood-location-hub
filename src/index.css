@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -84,7 +83,6 @@
   }
 }
 
-/* Component-specific styles */
 .location-card-hover {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -98,16 +96,26 @@
   background: linear-gradient(to right, rgba(240, 90, 40, 0.9), rgba(0, 128, 128, 0.8));
 }
 
-/* Utility classes for icon/button visibility */
 .icon-btn {
-  @apply flex items-center justify-center bg-white text-foreground shadow-sm hover:bg-gray-50;
+  @apply flex items-center justify-center bg-white text-gray-800 shadow-sm hover:bg-gray-50;
 }
 
 .icon-btn-dark {
   @apply flex items-center justify-center bg-gray-800 text-white shadow-sm hover:bg-gray-700;
 }
 
-/* Custom scrollbar for better UI experience */
+.dark .icon-btn {
+  @apply bg-gray-800 text-white hover:bg-gray-700;
+}
+
+.dark .icon-btn-dark {
+  @apply bg-gray-900 text-white hover:bg-gray-800;
+}
+
+.nav-icon {
+  @apply text-gray-700 dark:text-gray-200;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }
