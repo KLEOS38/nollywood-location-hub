@@ -387,7 +387,7 @@ const Investors = () => {
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <h3 className="text-xl font-semibold mb-1">Elijah Ogann</h3>
+                    <h3 className="text-xl font-semibold mb-1">Elijah Ogann Anighoro</h3>
                     <p className="text-nollywood-primary font-medium mb-2">Co-Founder</p>
                     <p className="text-sm text-muted-foreground">Film writer, producer and actor with 15+ years in Nollywood and the UK Film Industry.</p>
                   </div>
@@ -400,7 +400,7 @@ const Investors = () => {
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <h3 className="text-xl font-semibold mb-1">Adebola Johnson</h3>
+                    <h3 className="text-xl font-semibold mb-1">Fortune Otega Ileleji</h3>
                     <p className="text-nollywood-primary font-medium mb-2">Co-Founder</p>
                     <p className="text-sm text-muted-foreground">Design and Tech leader with experience spanning multiple industries across the globe.</p>
                   </div>
