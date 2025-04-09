@@ -15,19 +15,24 @@ const ActionButtons = ({ isFavorite, toggleFavorite, handleShare }: ActionButton
     <div className="flex space-x-2">
       <Button 
         onClick={toggleFavorite}
-        variant="secondary" 
+        variant="light" 
         size="icon" 
-        className="bg-white/80 hover:bg-white"
+        className="shadow-sm"
+        aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
       >
-        <Heart size={20} className={isFavorite ? "fill-red-500 text-red-500" : ""} />
+        <Heart 
+          size={20} 
+          className={isFavorite ? "fill-red-500 text-red-500" : "text-gray-700"} 
+        />
       </Button>
       <Button 
         onClick={handleShare}
-        variant="secondary" 
+        variant="light" 
         size="icon" 
-        className="bg-white/80 hover:bg-white"
+        className="shadow-sm"
+        aria-label="Share location"
       >
-        <Share2 size={20} />
+        <Share2 size={20} className="text-gray-700" />
       </Button>
     </div>
   );

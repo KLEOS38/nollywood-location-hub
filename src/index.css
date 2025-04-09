@@ -84,6 +84,7 @@
   }
 }
 
+/* Component-specific styles */
 .location-card-hover {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -95,4 +96,31 @@
 
 .hero-gradient {
   background: linear-gradient(to right, rgba(240, 90, 40, 0.9), rgba(0, 128, 128, 0.8));
+}
+
+/* Utility classes for icon/button visibility */
+.icon-btn {
+  @apply flex items-center justify-center bg-white text-foreground shadow-sm hover:bg-gray-50;
+}
+
+.icon-btn-dark {
+  @apply flex items-center justify-center bg-gray-800 text-white shadow-sm hover:bg-gray-700;
+}
+
+/* Custom scrollbar for better UI experience */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

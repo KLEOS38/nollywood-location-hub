@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Search, Menu, X, User } from 'lucide-react';
+import { Search, Menu, X, User, LogOut } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import SearchBar from "@/components/SearchBar";
 import { useToast } from "@/components/ui/use-toast";
@@ -64,34 +64,34 @@ const Header = () => {
 
         {isMobile ? (
           <Button variant="ghost" size="icon" onClick={toggleMenu} aria-label="Menu">
-            {isMenuOpen ? <X /> : <Menu />}
+            {isMenuOpen ? <X className="text-gray-700" /> : <Menu className="text-gray-700" />}
           </Button>
         ) : (
           <nav className="flex items-center space-x-1">
             <Link to="/locations">
-              <Button variant="ghost">Browse Locations</Button>
+              <Button variant="ghost" className="text-gray-700 hover:text-nollywood-primary">Browse Locations</Button>
             </Link>
             <Link to="/list-property">
-              <Button variant="ghost">List Your Property</Button>
+              <Button variant="ghost" className="text-gray-700 hover:text-nollywood-primary">List Your Property</Button>
             </Link>
             <Link to="/about">
-              <Button variant="ghost">About Us</Button>
+              <Button variant="ghost" className="text-gray-700 hover:text-nollywood-primary">About Us</Button>
             </Link>
             {isLoggedIn ? (
               <Button 
                 variant="outline" 
                 size="icon" 
-                className="rounded-full"
+                className="rounded-full border-nollywood-primary/30 hover:border-nollywood-primary"
                 onClick={() => navigate('/profile')}
                 aria-label="Profile"
                 title={`${userName}'s Profile`}
               >
-                <User size={18} />
+                <User size={18} className="text-nollywood-primary" />
               </Button>
             ) : (
               <Link to="/auth">
                 <Button variant="outline" size="icon" className="rounded-full" aria-label="Log in">
-                  <User size={18} />
+                  <User size={18} className="text-gray-700" />
                 </Button>
               </Link>
             )}
@@ -107,18 +107,18 @@ const Header = () => {
               <SearchBar />
             </div>
             <Link to="/locations" onClick={toggleMenu}>
-              <Button variant="ghost" className="w-full justify-start">Browse Locations</Button>
+              <Button variant="ghost" className="w-full justify-start text-gray-700">Browse Locations</Button>
             </Link>
             <Link to="/list-property" onClick={toggleMenu}>
-              <Button variant="ghost" className="w-full justify-start">List Your Property</Button>
+              <Button variant="ghost" className="w-full justify-start text-gray-700">List Your Property</Button>
             </Link>
             <Link to="/about" onClick={toggleMenu}>
-              <Button variant="ghost" className="w-full justify-start">About Us</Button>
+              <Button variant="ghost" className="w-full justify-start text-gray-700">About Us</Button>
             </Link>
             {isLoggedIn ? (
               <>
                 <Link to="/profile" onClick={toggleMenu}>
-                  <Button variant="ghost" className="w-full justify-start">
+                  <Button variant="ghost" className="w-full justify-start text-gray-700">
                     My Profile {userType === 'homeowner' ? '(Property Owner)' : '(Filmmaker)'}
                   </Button>
                 </Link>
@@ -127,16 +127,17 @@ const Header = () => {
                   className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-50"
                   onClick={handleLogout}
                 >
+                  <LogOut className="mr-2 h-4 w-4" />
                   Log out
                 </Button>
               </>
             ) : (
               <>
                 <Link to="/auth" onClick={toggleMenu}>
-                  <Button variant="ghost" className="w-full justify-start">Log in</Button>
+                  <Button variant="ghost" className="w-full justify-start text-gray-700">Log in</Button>
                 </Link>
                 <Link to="/auth?tab=signup" onClick={toggleMenu}>
-                  <Button className="w-full">Sign up</Button>
+                  <Button className="w-full bg-nollywood-primary hover:bg-nollywood-primary/90 text-white">Sign up</Button>
                 </Link>
               </>
             )}
