@@ -130,7 +130,7 @@ const SearchBar = ({
                   <div className="flex items-center">
                     <div className="w-8 h-8 rounded overflow-hidden mr-2 flex-shrink-0">
                       <img 
-                        src={location.images[0]} 
+                        src={location.imageUrl} 
                         alt={location.title} 
                         className="w-full h-full object-cover"
                       />
