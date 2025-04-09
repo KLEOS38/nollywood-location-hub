@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     <title>Film Loca | Find Perfect Filming Venues in Lagos</title>
     <meta name="description" content="Discover verified filming locations across Lagos for your Nollywood production. Browse houses, apartments, studios and unique spaces with real filmmaker reviews." />
     <meta name="keywords" content="film locations, movie locations, filming venues, lagos filming venues, nollywood production spaces" />
@@ -27,6 +27,15 @@
     <meta name="twitter:description" content="Discover verified filming locations across Lagos for your production. Browse houses, apartments, studios and unique spaces with real filmmaker reviews." />
     <meta property="twitter:image" content="https://www.filmloca.com/twitter-image.jpg" />
     
+    <!-- Mobile specific metas -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#F05A28" />
+    
+    <!-- PWA manifest and icons -->
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+    
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/favicon.ico" />
     
@@ -41,5 +50,19 @@
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Register service worker for PWA functionality
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+              console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            })
+            .catch(error => {
+              console.log('ServiceWorker registration failed: ', error);
+            });
+        });
+      }
+    </script>
   </body>
 </html>
