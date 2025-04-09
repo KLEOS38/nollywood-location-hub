@@ -1,262 +1,188 @@
 
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { Shield, AlertTriangle, Check, Info } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { Shield, Check, AlertTriangle, HelpCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { 
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const SafetyInfo = () => {
   return (
     <>
       <Helmet>
-        <title>Safety Information | Nollywood Locations</title>
-        <meta name="description" content="Learn about the safety measures and protocols in place for Nollywood Locations users and properties." />
+        <title>Safety Information | Film Loca</title>
+        <meta name="description" content="Learn about our safety measures and guidelines to ensure a secure filming experience." />
       </Helmet>
       
       <div className="flex flex-col min-h-screen">
         <Header />
         
-        <main className="flex-1">
-          <section className="bg-nollywood-primary/10 py-16">
-            <div className="container mx-auto px-4">
-              <div className="max-w-3xl mx-auto text-center">
-                <h1 className="text-3xl md:text-4xl font-bold mb-4">Safety First</h1>
-                <p className="text-lg text-muted-foreground mb-6">Your safety is our top priority at Nollywood Locations</p>
-                <div className="flex justify-center">
-                  <Shield className="h-16 w-16 text-nollywood-primary" />
-                </div>
-              </div>
+        <main className="flex-grow">
+          {/* Hero Section */}
+          <section className="bg-nollywood-primary/10 py-12">
+            <div className="container mx-auto px-4 text-center">
+              <Shield className="h-16 w-16 text-nollywood-primary mx-auto mb-4" />
+              <h1 className="text-3xl md:text-4xl font-bold mb-4">Your Safety Is Our Priority</h1>
+              <p className="text-lg max-w-2xl mx-auto">
+                At Film Loca, we've implemented comprehensive measures to ensure the safety and security of all our users.
+              </p>
             </div>
           </section>
           
+          {/* Safety Features */}
           <section className="py-12">
             <div className="container mx-auto px-4">
-              <div className="max-w-4xl mx-auto">
-                <Tabs defaultValue="filmmakers" className="w-full">
-                  <TabsList className="grid w-full grid-cols-2 mb-8">
-                    <TabsTrigger value="filmmakers">For Filmmakers</TabsTrigger>
-                    <TabsTrigger value="hosts">For Property Owners</TabsTrigger>
-                  </TabsList>
-                  
-                  <TabsContent value="filmmakers" className="mt-6">
-                    <h2 className="text-2xl font-bold mb-6">Filmmaker Safety</h2>
-                    
-                    <div className="space-y-8">
-                      <div className="flex items-start space-x-4">
-                        <div className="bg-nollywood-primary/10 p-3 rounded-full">
-                          <Check className="h-6 w-6 text-nollywood-primary" />
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-semibold mb-2">Verified Properties</h3>
-                          <p className="text-muted-foreground">All premium listings on our platform are physically verified by our team. We check that properties match their descriptions and photos, have basic safety equipment, and meet our quality standards.</p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start space-x-4">
-                        <div className="bg-nollywood-primary/10 p-3 rounded-full">
-                          <Check className="h-6 w-6 text-nollywood-primary" />
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-semibold mb-2">Secure Payments</h3>
-                          <p className="text-muted-foreground">All payments are processed through our secure platform. Your payment is held until 24 hours after check-in, ensuring the location meets your expectations before the host receives payment.</p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start space-x-4">
-                        <div className="bg-nollywood-primary/10 p-3 rounded-full">
-                          <Check className="h-6 w-6 text-nollywood-primary" />
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-semibold mb-2">Reviews You Can Trust</h3>
-                          <p className="text-muted-foreground">Our review system only allows feedback from filmmakers who have actually booked and used the location, ensuring authentic insights about each property.</p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start space-x-4">
-                        <div className="bg-nollywood-primary/10 p-3 rounded-full">
-                          <Check className="h-6 w-6 text-nollywood-primary" />
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-semibold mb-2">24/7 Support</h3>
-                          <p className="text-muted-foreground">Our dedicated support team is available around the clock for any emergencies during your shoot. We can assist with last-minute issues, communication with hosts, or unexpected problems.</p>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="mt-12">
-                      <h3 className="text-xl font-semibold mb-4">Before Your Shoot: Safety Checklist</h3>
-                      
-                      <div className="bg-muted/30 p-6 rounded-lg">
-                        <ul className="space-y-3">
-                          <li className="flex items-start space-x-2">
-                            <AlertTriangle className="h-5 w-5 text-nollywood-accent flex-shrink-0 mt-0.5" />
-                            <span>Scout the location in advance when possible to identify any potential hazards</span>
-                          </li>
-                          <li className="flex items-start space-x-2">
-                            <AlertTriangle className="h-5 w-5 text-nollywood-accent flex-shrink-0 mt-0.5" />
-                            <span>Check for emergency exits and ensure they are accessible during your shoot</span>
-                          </li>
-                          <li className="flex items-start space-x-2">
-                            <AlertTriangle className="h-5 w-5 text-nollywood-accent flex-shrink-0 mt-0.5" />
-                            <span>Locate fire extinguishers and first aid kits before starting your production</span>
-                          </li>
-                          <li className="flex items-start space-x-2">
-                            <AlertTriangle className="h-5 w-5 text-nollywood-accent flex-shrink-0 mt-0.5" />
-                            <span>Verify electrical outlets and capacity if you're bringing production equipment</span>
-                          </li>
-                          <li className="flex items-start space-x-2">
-                            <AlertTriangle className="h-5 w-5 text-nollywood-accent flex-shrink-0 mt-0.5" />
-                            <span>Share location details and contact information with your production team</span>
-                          </li>
-                          <li className="flex items-start space-x-2">
-                            <AlertTriangle className="h-5 w-5 text-nollywood-accent flex-shrink-0 mt-0.5" />
-                            <span>Ensure you have adequate insurance coverage for your production</span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="hosts" className="mt-6">
-                    <h2 className="text-2xl font-bold mb-6">Property Owner Safety</h2>
-                    
-                    <div className="space-y-8">
-                      <div className="flex items-start space-x-4">
-                        <div className="bg-nollywood-primary/10 p-3 rounded-full">
-                          <Check className="h-6 w-6 text-nollywood-primary" />
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-semibold mb-2">Verified Filmmakers</h3>
-                          <p className="text-muted-foreground">All filmmakers on our platform undergo identity verification. We validate their profile information, contact details, and payment methods to ensure they are legitimate professionals.</p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start space-x-4">
-                        <div className="bg-nollywood-primary/10 p-3 rounded-full">
-                          <Check className="h-6 w-6 text-nollywood-primary" />
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-semibold mb-2">Damage Protection</h3>
-                          <p className="text-muted-foreground">Our Host Guarantee program provides protection for your property against accidental damage during shoots. Additionally, you can require security deposits and production insurance for added protection.</p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start space-x-4">
-                        <div className="bg-nollywood-primary/10 p-3 rounded-full">
-                          <Check className="h-6 w-6 text-nollywood-primary" />
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-semibold mb-2">Screening Control</h3>
-                          <p className="text-muted-foreground">You have full control over who can book your property. Review filmmaker profiles, past reviews, and production details before accepting any booking request.</p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start space-x-4">
-                        <div className="bg-nollywood-primary/10 p-3 rounded-full">
-                          <Check className="h-6 w-6 text-nollywood-primary" />
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-semibold mb-2">Clear House Rules</h3>
-                          <p className="text-muted-foreground">Set detailed guidelines for the use of your property. These become part of the booking agreement that filmmakers must accept before their reservation is confirmed.</p>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="mt-12">
-                      <h3 className="text-xl font-semibold mb-4">Host Safety Preparation</h3>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <Card>
-                          <CardContent className="pt-6">
-                            <h4 className="font-semibold mb-3 flex items-center">
-                              <Info className="h-5 w-5 mr-2 text-nollywood-secondary" />
-                              Before the Shoot
-                            </h4>
-                            <ul className="space-y-2">
-                              <li>Remove or secure valuable personal items</li>
-                              <li>Document property condition with photos</li>
-                              <li>Create detailed check-in instructions</li>
-                              <li>Check that safety equipment is functional</li>
-                              <li>Secure necessary permits if required</li>
-                            </ul>
-                          </CardContent>
-                        </Card>
-                        
-                        <Card>
-                          <CardContent className="pt-6">
-                            <h4 className="font-semibold mb-3 flex items-center">
-                              <Info className="h-5 w-5 mr-2 text-nollywood-secondary" />
-                              During and After
-                            </h4>
-                            <ul className="space-y-2">
-                              <li>Conduct thorough check-in and check-out inspections</li>
-                              <li>Keep communication channels open</li>
-                              <li>Document any issues immediately</li>
-                              <li>Report problems to our support team</li>
-                              <li>Leave honest, constructive reviews</li>
-                            </ul>
-                          </CardContent>
-                        </Card>
-                      </div>
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </div>
-            </div>
-          </section>
-          
-          <section className="py-12 bg-nollywood-primary/5">
-            <div className="container mx-auto px-4">
-              <div className="max-w-4xl mx-auto">
-                <h2 className="text-2xl font-bold mb-6 text-center">Emergency Resources</h2>
+              <h2 className="text-2xl font-bold mb-8 text-center">Our Safety Measures</h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="bg-white p-6 rounded-lg shadow-sm">
+                  <div className="bg-nollywood-primary/10 p-4 rounded-full mb-4 inline-block">
+                    <Check className="h-6 w-6 text-nollywood-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">Verified Listings</h3>
+                  <p className="text-muted-foreground">
+                    All premium listings are physically verified by our team to ensure accuracy and legitimacy. We check that the location matches the description and photos.
+                  </p>
+                </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="bg-white p-6 rounded-lg shadow-sm">
-                    <h3 className="font-semibold mb-3">Emergency Contacts</h3>
-                    <ul className="space-y-2">
-                      <li>Emergency Services: 112</li>
-                      <li>Police: 199</li>
-                      <li>Fire Service: 112</li>
-                      <li>Ambulance: 112</li>
-                      <li>Lagos Emergency: 767/112</li>
-                    </ul>
+                <div className="bg-white p-6 rounded-lg shadow-sm">
+                  <div className="bg-nollywood-primary/10 p-4 rounded-full mb-4 inline-block">
+                    <Check className="h-6 w-6 text-nollywood-primary" />
                   </div>
-                  
-                  <div className="bg-white p-6 rounded-lg shadow-sm">
-                    <h3 className="font-semibold mb-3">Medical Services</h3>
-                    <ul className="space-y-2">
-                      <li>Lagos University Teaching Hospital</li>
-                      <li>Lagoon Hospital</li>
-                      <li>Reddington Hospital</li>
-                      <li>St. Nicholas Hospital</li>
-                      <li>First Consultant Medical Centre</li>
-                    </ul>
+                  <h3 className="text-xl font-semibold mb-3">Secure Payments</h3>
+                  <p className="text-muted-foreground">
+                    All transactions are processed through our secure payment system. Funds are only released to property owners after you've confirmed check-in.
+                  </p>
+                </div>
+                
+                <div className="bg-white p-6 rounded-lg shadow-sm">
+                  <div className="bg-nollywood-primary/10 p-4 rounded-full mb-4 inline-block">
+                    <Check className="h-6 w-6 text-nollywood-primary" />
                   </div>
-                  
-                  <div className="bg-white p-6 rounded-lg shadow-sm">
-                    <h3 className="font-semibold mb-3">Nollywood Locations Support</h3>
-                    <ul className="space-y-2">
-                      <li>24/7 Emergency: +234 (0) 800-NOLLYWOOD</li>
-                      <li>Email: urgent@nollywoodlocations.com</li>
-                      <li>In-app SOS Button</li>
-                      <li>Live Chat Support</li>
-                    </ul>
-                  </div>
+                  <h3 className="text-xl font-semibold mb-3">Identity Verification</h3>
+                  <p className="text-muted-foreground">
+                    We verify the identity of both filmmakers and property owners to create a trusted community and prevent fraud.
+                  </p>
                 </div>
               </div>
             </div>
           </section>
           
-          <section className="py-12 bg-nollywood-dark text-white">
+          {/* Safety Guidelines */}
+          <section className="py-12 bg-muted/30">
+            <div className="container mx-auto px-4">
+              <div className="flex flex-col md:flex-row items-center gap-10">
+                <div className="md:w-1/2">
+                  <h2 className="text-2xl md:text-3xl font-bold mb-4">Safety Guidelines for Filmmakers</h2>
+                  <p className="mb-6">
+                    We recommend following these guidelines to ensure a safe and productive filming experience:
+                  </p>
+                  
+                  <ul className="space-y-4">
+                    <li className="flex items-start">
+                      <AlertTriangle className="h-5 w-5 text-amber-500 mr-3 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <h3 className="font-semibold mb-1">Always Do a Site Visit</h3>
+                        <p className="text-muted-foreground">When possible, visit the location before booking to ensure it meets your production needs.</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <AlertTriangle className="h-5 w-5 text-amber-500 mr-3 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <h3 className="font-semibold mb-1">Check Reviews</h3>
+                        <p className="text-muted-foreground">Read reviews from other filmmakers who have used the location before booking.</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <AlertTriangle className="h-5 w-5 text-amber-500 mr-3 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <h3 className="font-semibold mb-1">Get Everything in Writing</h3>
+                        <p className="text-muted-foreground">Ensure all agreements, permissions, and restrictions are clearly documented.</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <AlertTriangle className="h-5 w-5 text-amber-500 mr-3 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <h3 className="font-semibold mb-1">Secure Insurance</h3>
+                        <p className="text-muted-foreground">Always have proper production insurance to cover potential incidents during filming.</p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div className="md:w-1/2">
+                  <img 
+                    src="https://images.unsplash.com/photo-1558403194-611308249627?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
+                    alt="Film crew on location" 
+                    className="rounded-lg shadow-xl"
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+          
+          {/* FAQ Section */}
+          <section className="py-12">
+            <div className="container mx-auto px-4">
+              <h2 className="text-2xl font-bold mb-8 text-center">Safety FAQs</h2>
+              
+              <div className="max-w-3xl mx-auto">
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="item-1">
+                    <AccordionTrigger>How does Film Loca verify locations?</AccordionTrigger>
+                    <AccordionContent>
+                      Our verification process includes checking property ownership documents, physical inspection of premium listings, and verification of the property owner's identity. We ensure that locations match their descriptions and photos.
+                    </AccordionContent>
+                  </AccordionItem>
+                  
+                  <AccordionItem value="item-2">
+                    <AccordionTrigger>What should I do if there's a safety issue at a location?</AccordionTrigger>
+                    <AccordionContent>
+                      If you encounter any safety issues, contact our support team immediately. For emergencies, contact local authorities first, then inform us about the situation so we can take appropriate action.
+                    </AccordionContent>
+                  </AccordionItem>
+                  
+                  <AccordionItem value="item-3">
+                    <AccordionTrigger>Is my payment secure?</AccordionTrigger>
+                    <AccordionContent>
+                      Yes, all payments are processed through our secure payment system with industry-standard encryption. Funds are held securely until you check in at the location, providing protection against fraud.
+                    </AccordionContent>
+                  </AccordionItem>
+                  
+                  <AccordionItem value="item-4">
+                    <AccordionTrigger>What insurance is recommended for filming?</AccordionTrigger>
+                    <AccordionContent>
+                      We recommend having general liability insurance, equipment insurance, and production insurance. Some locations may require specific coverage amounts, which will be listed in their requirements.
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </div>
+            </div>
+          </section>
+          
+          {/* CTA Section */}
+          <section className="py-10 bg-nollywood-primary/5">
             <div className="container mx-auto px-4 text-center">
-              <h2 className="text-2xl md:text-3xl font-bold mb-4">Safety Feedback</h2>
-              <p className="text-lg mb-8 max-w-2xl mx-auto">Help us improve our safety measures. If you have any suggestions or concerns regarding safety on our platform, please let us know.</p>
-              <Button className="bg-white text-nollywood-dark hover:bg-white/90">
-                Submit Safety Feedback
-              </Button>
+              <HelpCircle className="h-12 w-12 text-nollywood-primary mx-auto mb-4" />
+              <h2 className="text-2xl font-bold mb-4">Need Additional Help?</h2>
+              <p className="max-w-2xl mx-auto mb-6">
+                If you have any questions or concerns about safety, our team is here to help you.
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <Link to="/help">
+                  <Button variant="outline">Contact Support</Button>
+                </Link>
+                <Link to="/covid">
+                  <Button>COVID-19 Guidelines</Button>
+                </Link>
+              </div>
             </div>
           </section>
         </main>

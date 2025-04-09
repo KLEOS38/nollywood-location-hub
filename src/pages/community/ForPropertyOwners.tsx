@@ -1,482 +1,352 @@
 
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { Home, ArrowRight, DollarSign, Shield, Calendar, Camera } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { Home, DollarSign, Camera, Shield, CheckCircle, Calendar } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { Card } from "@/components/ui/card";
 
 const ForPropertyOwners = () => {
   return (
     <>
       <Helmet>
-        <title>For Property Owners | Nollywood Locations</title>
-        <meta name="description" content="List your property as a filming location and earn income by renting to Nollywood production crews." />
+        <title>For Property Owners | Film Loca</title>
+        <meta name="description" content="List your property as a filming location and earn extra income with Film Loca." />
       </Helmet>
       
       <div className="flex flex-col min-h-screen">
         <Header />
         
-        <main className="flex-1">
-          <section className="relative py-20">
-            <div className="absolute inset-0 bg-gradient-to-r from-nollywood-dark/90 to-nollywood-secondary/70 z-10"></div>
+        <main className="flex-grow">
+          {/* Hero Section */}
+          <section className="relative">
+            <div className="absolute inset-0 bg-black/50 z-10"></div>
             <div 
-              className="absolute inset-0 bg-cover bg-center"
+              className="h-[400px] bg-cover bg-center"
               style={{ 
                 backgroundImage: "url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80')" 
               }}
             ></div>
-            
-            <div className="container mx-auto px-4 relative z-20">
-              <div className="max-w-3xl">
-                <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">Turn Your Property Into a Film Set</h1>
-                <p className="text-xl text-white/90 mb-8">Earn extra income by renting your home, office, or unique space to Nollywood film productions.</p>
-                <div className="flex flex-col sm:flex-row gap-4">
+            <div className="absolute inset-0 z-20 flex items-center">
+              <div className="container mx-auto px-4">
+                <div className="max-w-3xl">
+                  <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Earn Income from Your Property</h1>
+                  <p className="text-xl text-white mb-8">Turn your home, business, or unique space into a filming location and generate additional revenue.</p>
                   <Link to="/list-property">
-                    <Button size="lg" className="bg-nollywood-primary hover:bg-nollywood-primary/90">
+                    <Button size="lg" className="bg-nollywood-primary hover:bg-nollywood-primary/90 text-white">
                       List Your Property
                     </Button>
                   </Link>
-                  <Button size="lg" variant="outline" className="bg-white/10 text-white border-white/60 hover:bg-white/20">
-                    Learn How It Works
-                  </Button>
                 </div>
               </div>
             </div>
           </section>
           
+          {/* Benefits Section */}
           <section className="py-16">
             <div className="container mx-auto px-4">
-              <h2 className="text-3xl font-bold text-center mb-12">Why List Your Property with Nollywood Locations?</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">Why List Your Property With Us</h2>
               
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
-                <div className="text-center">
-                  <div className="bg-nollywood-primary/10 rounded-full p-4 inline-flex mb-4">
-                    <DollarSign className="h-8 w-8 text-nollywood-primary" />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <Card className="p-6">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="bg-nollywood-primary/10 p-4 rounded-full mb-4">
+                      <DollarSign className="h-8 w-8 text-nollywood-primary" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3">Significant Income</h3>
+                    <p className="text-muted-foreground">
+                      Earn more in a day of filming than you might in a month of traditional rentals.
+                    </p>
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Lucrative Income</h3>
-                  <p className="text-muted-foreground">Earn significant income from daily bookings. Properties can earn ₦50,000 to ₦500,000 per day depending on size and location.</p>
-                </div>
+                </Card>
                 
-                <div className="text-center">
-                  <div className="bg-nollywood-primary/10 rounded-full p-4 inline-flex mb-4">
-                    <Shield className="h-8 w-8 text-nollywood-primary" />
+                <Card className="p-6">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="bg-nollywood-secondary/10 p-4 rounded-full mb-4">
+                      <Shield className="h-8 w-8 text-nollywood-secondary" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3">Property Protection</h3>
+                    <p className="text-muted-foreground">
+                      Film crews are required to have insurance, and we help verify proper coverage is in place.
+                    </p>
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Safety & Security</h3>
-                  <p className="text-muted-foreground">All filmmakers are verified, and our Host Guarantee provides protection against property damage during shoots.</p>
-                </div>
+                </Card>
                 
-                <div className="text-center">
-                  <div className="bg-nollywood-primary/10 rounded-full p-4 inline-flex mb-4">
-                    <Calendar className="h-8 w-8 text-nollywood-primary" />
+                <Card className="p-6">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="bg-nollywood-accent/20 p-4 rounded-full mb-4">
+                      <Camera className="h-8 w-8 text-nollywood-accent" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3">See Your Space on Screen</h3>
+                    <p className="text-muted-foreground">
+                      Experience the excitement of seeing your property featured in films and productions.
+                    </p>
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Full Control</h3>
-                  <p className="text-muted-foreground">You decide your availability, pricing, and house rules. Screen filmmakers and approve bookings that work for you.</p>
-                </div>
-                
-                <div className="text-center">
-                  <div className="bg-nollywood-primary/10 rounded-full p-4 inline-flex mb-4">
-                    <Camera className="h-8 w-8 text-nollywood-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">Industry Connections</h3>
-                  <p className="text-muted-foreground">Connect with Nollywood professionals and potentially see your property featured in Nigerian films and series.</p>
-                </div>
-              </div>
-              
-              <div className="text-center">
-                <Link to="/how-it-works">
-                  <Button variant="outline" className="mt-4">
-                    Learn More <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
+                </Card>
               </div>
             </div>
           </section>
           
+          {/* How It Works */}
           <section className="py-16 bg-muted/30">
             <div className="container mx-auto px-4">
-              <div className="flex flex-col md:flex-row items-center gap-12 max-w-5xl mx-auto">
-                <div className="md:w-1/2">
-                  <img 
-                    src="https://images.unsplash.com/photo-1530973428-5bf2db2e4d71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
-                    alt="Film crew setting up in living room" 
-                    className="rounded-lg shadow-lg"
-                  />
-                </div>
-                
-                <div className="md:w-1/2">
-                  <h2 className="text-3xl font-bold mb-6">How Hosting Works</h2>
-                  
-                  <ol className="space-y-6">
-                    <li className="flex items-start gap-4">
-                      <div className="bg-nollywood-primary text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1">1</div>
-                      <div>
-                        <h3 className="text-xl font-semibold mb-1">List Your Property</h3>
-                        <p className="text-muted-foreground">Create a detailed listing with photos, description, amenities, and house rules. Set your availability and pricing.</p>
-                      </div>
-                    </li>
-                    
-                    <li className="flex items-start gap-4">
-                      <div className="bg-nollywood-primary text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1">2</div>
-                      <div>
-                        <h3 className="text-xl font-semibold mb-1">Receive Booking Requests</h3>
-                        <p className="text-muted-foreground">Filmmakers will submit booking requests with their production details, dates, and crew size for your review.</p>
-                      </div>
-                    </li>
-                    
-                    <li className="flex items-start gap-4">
-                      <div className="bg-nollywood-primary text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1">3</div>
-                      <div>
-                        <h3 className="text-xl font-semibold mb-1">Approve and Host</h3>
-                        <p className="text-muted-foreground">Review requests and communicate with filmmakers. Approve bookings that work for you and prepare for the shoot day.</p>
-                      </div>
-                    </li>
-                    
-                    <li className="flex items-start gap-4">
-                      <div className="bg-nollywood-primary text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1">4</div>
-                      <div>
-                        <h3 className="text-xl font-semibold mb-1">Get Paid</h3>
-                        <p className="text-muted-foreground">Payments are released to you 24 hours after successful check-in. No hassle with invoices or chasing payments.</p>
-                      </div>
-                    </li>
-                  </ol>
-                  
-                  <div className="mt-8">
-                    <Link to="/list-property">
-                      <Button className="bg-nollywood-primary hover:bg-nollywood-primary/90">
-                        Start Listing Your Property
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-          
-          <section className="py-16">
-            <div className="container mx-auto px-4">
-              <h2 className="text-3xl font-bold mb-12 text-center">What Makes a Great Film Location</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">How It Works</h2>
               
-              <Tabs defaultValue="popular" className="w-full max-w-4xl mx-auto">
-                <TabsList className="grid w-full grid-cols-4 mb-8">
-                  <TabsTrigger value="popular">Most Popular</TabsTrigger>
-                  <TabsTrigger value="residential">Residential</TabsTrigger>
-                  <TabsTrigger value="commercial">Commercial</TabsTrigger>
-                  <TabsTrigger value="unique">Unique Spaces</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="popular" className="mt-6">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <Card>
-                      <CardHeader className="pb-2">
-                        <CardTitle>Modern Lagos Apartments</CardTitle>
-                        <CardDescription>High in demand for contemporary dramas</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <img 
-                          src="https://images.unsplash.com/photo-1600210491369-e753d80a41f3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
-                          alt="Modern apartment interior" 
-                          className="h-40 w-full object-cover rounded-md mb-3"
-                        />
-                        <p className="text-sm text-muted-foreground">Contemporary apartments with open floor plans, large windows, and modern furniture earn up to ₦150,000 per day.</p>
-                      </CardContent>
-                    </Card>
-                    
-                    <Card>
-                      <CardHeader className="pb-2">
-                        <CardTitle>Luxury Villas</CardTitle>
-                        <CardDescription>Perfect for high-end productions</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <img 
-                          src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
-                          alt="Luxury villa exterior" 
-                          className="h-40 w-full object-cover rounded-md mb-3"
-                        />
-                        <p className="text-sm text-muted-foreground">Spacious homes with premium amenities like pools, gardens, and luxury interiors can earn ₦250,000-500,000 daily.</p>
-                      </CardContent>
-                    </Card>
-                    
-                    <Card>
-                      <CardHeader className="pb-2">
-                        <CardTitle>Office Spaces</CardTitle>
-                        <CardDescription>Essential for corporate scenes</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <img 
-                          src="https://images.unsplash.com/photo-1497215842964-222b430dc094?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
-                          alt="Modern office space" 
-                          className="h-40 w-full object-cover rounded-md mb-3"
-                        />
-                        <p className="text-sm text-muted-foreground">Professional office settings with meeting rooms and work areas are frequently booked for business-themed content.</p>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="residential" className="mt-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                      <h3 className="text-xl font-semibold mb-4">What Filmmakers Look For:</h3>
-                      <ul className="space-y-3">
-                        <li className="flex items-start gap-2">
-                          <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                          <span><strong>Space and Light:</strong> Open floor plans and good natural lighting are highly valued</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                          <span><strong>Character:</strong> Distinctive features that make your home unique</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                          <span><strong>Versatility:</strong> Spaces that can represent different settings</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                          <span><strong>Accessibility:</strong> Easy parking and loading areas</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                          <span><strong>Electrical Capacity:</strong> Sufficient power for film equipment</span>
-                        </li>
-                      </ul>
-                    </div>
-                    
-                    <div>
-                      <h3 className="text-xl font-semibold mb-4">Popular Residential Types:</h3>
-                      <div className="space-y-4">
-                        <div className="p-4 bg-white rounded-lg shadow-sm">
-                          <h4 className="font-semibold">Large Family Homes</h4>
-                          <p className="text-sm text-muted-foreground">Spacious living areas, multiple bedrooms, and compound spaces</p>
-                        </div>
-                        
-                        <div className="p-4 bg-white rounded-lg shadow-sm">
-                          <h4 className="font-semibold">Modern Apartments</h4>
-                          <p className="text-sm text-muted-foreground">Contemporary designs with city views and stylish interiors</p>
-                        </div>
-                        
-                        <div className="p-4 bg-white rounded-lg shadow-sm">
-                          <h4 className="font-semibold">Traditional Nigerian Homes</h4>
-                          <p className="text-sm text-muted-foreground">Authentic spaces with cultural elements and character</p>
-                        </div>
-                        
-                        <div className="p-4 bg-white rounded-lg shadow-sm">
-                          <h4 className="font-semibold">Luxury Villas & Estates</h4>
-                          <p className="text-sm text-muted-foreground">High-end properties for wealthy character portrayals</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="commercial" className="mt-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                      <h3 className="text-xl font-semibold mb-4">Commercial Space Benefits:</h3>
-                      <ul className="space-y-3">
-                        <li className="flex items-start gap-2">
-                          <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                          <span><strong>Higher Rates:</strong> Commercial spaces often command premium pricing</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                          <span><strong>Weekend Availability:</strong> Ideal for businesses that close on weekends</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                          <span><strong>Professional Setup:</strong> Often already configured for human activity</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                          <span><strong>Easier Access:</strong> Better parking and loading facilities</span>
-                        </li>
-                      </ul>
-                    </div>
-                    
-                    <div>
-                      <h3 className="text-xl font-semibold mb-4">In-Demand Commercial Spaces:</h3>
-                      <div className="space-y-4">
-                        <div className="p-4 bg-white rounded-lg shadow-sm">
-                          <h4 className="font-semibold">Office Settings</h4>
-                          <p className="text-sm text-muted-foreground">Modern offices, boardrooms, and corporate environments</p>
-                        </div>
-                        
-                        <div className="p-4 bg-white rounded-lg shadow-sm">
-                          <h4 className="font-semibold">Restaurants & Cafés</h4>
-                          <p className="text-sm text-muted-foreground">Dining establishments that can be filmed during off-hours</p>
-                        </div>
-                        
-                        <div className="p-4 bg-white rounded-lg shadow-sm">
-                          <h4 className="font-semibold">Retail Spaces</h4>
-                          <p className="text-sm text-muted-foreground">Shops, boutiques, and storefronts for commercial scenes</p>
-                        </div>
-                        
-                        <div className="p-4 bg-white rounded-lg shadow-sm">
-                          <h4 className="font-semibold">Event Spaces</h4>
-                          <p className="text-sm text-muted-foreground">Halls, lounges, and venues for entertainment sequences</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="unique" className="mt-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                      <h3 className="text-xl font-semibold mb-4">The Value of Unique Spaces:</h3>
-                      <ul className="space-y-3">
-                        <li className="flex items-start gap-2">
-                          <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                          <span><strong>Premium Pricing:</strong> Unique spaces often earn the highest rates</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                          <span><strong>High Demand:</strong> Hard-to-find locations are frequently booked</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                          <span><strong>Less Competition:</strong> Fewer similar properties available</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                          <span><strong>Production Exposure:</strong> Often featured prominently in shows</span>
-                        </li>
-                      </ul>
-                    </div>
-                    
-                    <div>
-                      <h3 className="text-xl font-semibold mb-4">Sought-After Unique Spaces:</h3>
-                      <div className="space-y-4">
-                        <div className="p-4 bg-white rounded-lg shadow-sm">
-                          <h4 className="font-semibold">Industrial Settings</h4>
-                          <p className="text-sm text-muted-foreground">Warehouses, factories, and workshop spaces</p>
-                        </div>
-                        
-                        <div className="p-4 bg-white rounded-lg shadow-sm">
-                          <h4 className="font-semibold">Historical Properties</h4>
-                          <p className="text-sm text-muted-foreground">Colonial-era buildings and traditional architecture</p>
-                        </div>
-                        
-                        <div className="p-4 bg-white rounded-lg shadow-sm">
-                          <h4 className="font-semibold">Scenic Outdoor Areas</h4>
-                          <p className="text-sm text-muted-foreground">Private beaches, gardens, or waterfront properties</p>
-                        </div>
-                        
-                        <div className="p-4 bg-white rounded-lg shadow-sm">
-                          <h4 className="font-semibold">Specialty Spaces</h4>
-                          <p className="text-sm text-muted-foreground">Studios, gymnasiums, churches, or school settings</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </TabsContent>
-              </Tabs>
-            </div>
-          </section>
-          
-          <section className="py-16 bg-muted/30">
-            <div className="container mx-auto px-4">
-              <h2 className="text-3xl font-bold mb-12 text-center">Host Success Stories</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                <div className="bg-white p-6 rounded-lg shadow-sm">
-                  <div className="mb-4">
-                    <h3 className="text-xl font-semibold">Adeola J.</h3>
-                    <p className="text-sm text-muted-foreground">Ikoyi, Lagos</p>
-                  </div>
-                  <p className="italic mb-4">"My apartment has been booked over 15 times in the past year. I've earned over ₦1.5 million just by allowing film crews to use my space a few days each month."</p>
-                  <p className="text-sm">Property: Modern 3-bedroom apartment</p>
-                </div>
-                
-                <div className="bg-white p-6 rounded-lg shadow-sm">
-                  <div className="mb-4">
-                    <h3 className="text-xl font-semibold">Michael O.</h3>
-                    <p className="text-sm text-muted-foreground">Victoria Island, Lagos</p>
-                  </div>
-                  <p className="italic mb-4">"My office space is rented during weekends when we're closed. It's additional income with zero impact on our business operations. The process has been seamless."</p>
-                  <p className="text-sm">Property: Corporate office with conference room</p>
-                </div>
-                
-                <div className="bg-white p-6 rounded-lg shadow-sm">
-                  <div className="mb-4">
-                    <h3 className="text-xl font-semibold">Funmi A.</h3>
-                    <p className="text-sm text-muted-foreground">Lekki, Lagos</p>
-                  </div>
-                  <p className="italic mb-4">"My family home has been featured in three major Nollywood films. The income helped us renovate our property, and it's exciting to see our home on screen!"</p>
-                  <p className="text-sm">Property: Traditional family compound with garden</p>
-                </div>
-              </div>
-            </div>
-          </section>
-          
-          <section className="py-16">
-            <div className="container mx-auto px-4">
               <div className="max-w-4xl mx-auto">
-                <h2 className="text-3xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div>
-                    <h3 className="text-xl font-semibold mb-4">Hosting Questions</h3>
-                    
-                    <div className="space-y-6">
-                      <div>
-                        <h4 className="font-semibold mb-2">Do I need to be present during filming?</h4>
-                        <p className="text-muted-foreground">It's your choice. Many hosts choose to be present for the first hour to do a walkthrough, then return for checkout. Others prefer to remain on-site throughout filming.</p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold mb-2">How much can I really earn?</h4>
-                        <p className="text-muted-foreground">Earnings vary based on your property's size, uniqueness, and location. Standard homes typically earn ₦50,000-150,000 per day, while premium or unique properties can command ₦200,000-500,000 daily.</p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold mb-2">How often will my property be booked?</h4>
-                        <p className="text-muted-foreground">Booking frequency depends on your location, availability, and the appeal of your property. Some hosts have multiple bookings monthly, while others may have seasonal demand.</p>
-                      </div>
-                    </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                  <div className="flex items-center">
+                    <img 
+                      src="https://images.unsplash.com/photo-1560518883-729e1bfc7a76?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
+                      alt="Modern home interior" 
+                      className="rounded-lg shadow-xl"
+                    />
                   </div>
                   
                   <div>
-                    <h3 className="text-xl font-semibold mb-4">Safety & Logistics</h3>
-                    
-                    <div className="space-y-6">
-                      <div>
-                        <h4 className="font-semibold mb-2">Is my property protected from damage?</h4>
-                        <p className="text-muted-foreground">Yes. All bookings require a security deposit, and our Host Guarantee provides additional protection. Filmmakers must also have liability insurance for larger productions.</p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold mb-2">How are payments handled?</h4>
-                        <p className="text-muted-foreground">All payments are processed securely through our platform. Funds are released to you 24 hours after the filmmaker checks in, allowing time to ensure everything is in order.</p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold mb-2">What if I need to cancel a booking?</h4>
-                        <p className="text-muted-foreground">While we encourage hosts to honor all bookings, we understand emergencies happen. Our cancellation policy outlines the process and any applicable fees for host cancellations.</p>
-                      </div>
-                    </div>
+                    <ol className="relative border-l border-nollywood-primary">
+                      <li className="mb-10 ml-6">
+                        <span className="absolute flex items-center justify-center w-8 h-8 bg-nollywood-primary rounded-full -left-4 text-white">1</span>
+                        <h3 className="text-lg font-semibold mb-1">Create Your Listing</h3>
+                        <p className="text-muted-foreground">
+                          Sign up and create a detailed listing with professional photos, property features, and available dates.
+                        </p>
+                      </li>
+                      <li className="mb-10 ml-6">
+                        <span className="absolute flex items-center justify-center w-8 h-8 bg-nollywood-primary rounded-full -left-4 text-white">2</span>
+                        <h3 className="text-lg font-semibold mb-1">Set Your Rates</h3>
+                        <p className="text-muted-foreground">
+                          Determine your daily rates, minimum booking requirements, and any special conditions.
+                        </p>
+                      </li>
+                      <li className="mb-10 ml-6">
+                        <span className="absolute flex items-center justify-center w-8 h-8 bg-nollywood-primary rounded-full -left-4 text-white">3</span>
+                        <h3 className="text-lg font-semibold mb-1">Review Booking Requests</h3>
+                        <p className="text-muted-foreground">
+                          Receive notifications when filmmakers are interested in your property. Review details and approve bookings.
+                        </p>
+                      </li>
+                      <li className="ml-6">
+                        <span className="absolute flex items-center justify-center w-8 h-8 bg-nollywood-primary rounded-full -left-4 text-white">4</span>
+                        <h3 className="text-lg font-semibold mb-1">Get Paid</h3>
+                        <p className="text-muted-foreground">
+                          Receive secure payments through our platform after the filming is completed.
+                        </p>
+                      </li>
+                    </ol>
                   </div>
                 </div>
               </div>
             </div>
           </section>
           
-          <section className="py-16 bg-nollywood-dark text-white">
+          {/* Property Types */}
+          <section className="py-16">
+            <div className="container mx-auto px-4">
+              <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">Properties in Demand</h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="relative overflow-hidden rounded-lg group h-64">
+                  <img 
+                    src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
+                    alt="Modern home" 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 p-4">
+                    <h3 className="text-xl font-semibold text-white">Modern Homes</h3>
+                    <p className="text-white/80 text-sm">Popular for contemporary dramas</p>
+                  </div>
+                </div>
+                
+                <div className="relative overflow-hidden rounded-lg group h-64">
+                  <img 
+                    src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
+                    alt="Luxury villa" 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 p-4">
+                    <h3 className="text-xl font-semibold text-white">Luxury Villas</h3>
+                    <p className="text-white/80 text-sm">Highly sought for upscale productions</p>
+                  </div>
+                </div>
+                
+                <div className="relative overflow-hidden rounded-lg group h-64">
+                  <img 
+                    src="https://images.unsplash.com/photo-1566633806327-68e152aaf26d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
+                    alt="Traditional homes" 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 p-4">
+                    <h3 className="text-xl font-semibold text-white">Traditional Homes</h3>
+                    <p className="text-white/80 text-sm">Perfect for cultural and historical films</p>
+                  </div>
+                </div>
+                
+                <div className="relative overflow-hidden rounded-lg group h-64">
+                  <img 
+                    src="https://images.unsplash.com/photo-1577415124269-fc1140a69e91?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
+                    alt="Office spaces" 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 p-4">
+                    <h3 className="text-xl font-semibold text-white">Office Spaces</h3>
+                    <p className="text-white/80 text-sm">Essential for corporate scenes</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          
+          {/* Rates & Earnings */}
+          <section className="py-16 bg-nollywood-primary/5">
+            <div className="container mx-auto px-4">
+              <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">Potential Earnings</h2>
+              
+              <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-sm">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b">
+                        <th className="text-left pb-4 font-semibold">Property Type</th>
+                        <th className="text-right pb-4 font-semibold">Average Daily Rate</th>
+                        <th className="text-right pb-4 font-semibold">Potential Monthly (4 days)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b">
+                        <td className="py-4">Apartment</td>
+                        <td className="text-right py-4">₦50,000 - ₦150,000</td>
+                        <td className="text-right py-4">₦200,000 - ₦600,000</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-4">Urban Home</td>
+                        <td className="text-right py-4">₦100,000 - ₦250,000</td>
+                        <td className="text-right py-4">₦400,000 - ₦1,000,000</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-4">Luxury Villa</td>
+                        <td className="text-right py-4">₦250,000 - ₦500,000</td>
+                        <td className="text-right py-4">₦1,000,000 - ₦2,000,000</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-4">Office Space</td>
+                        <td className="text-right py-4">₦150,000 - ₦300,000</td>
+                        <td className="text-right py-4">₦600,000 - ₦1,200,000</td>
+                      </tr>
+                      <tr>
+                        <td className="py-4">Unique/Specialty Location</td>
+                        <td className="text-right py-4">₦200,000 - ₦800,000</td>
+                        <td className="text-right py-4">₦800,000 - ₦3,200,000</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                
+                <div className="mt-6 bg-nollywood-primary/5 p-4 rounded-lg">
+                  <div className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-nollywood-primary mr-3 mt-0.5 flex-shrink-0" />
+                    <p className="text-sm">
+                      <strong>Note:</strong> Rates vary based on property size, condition, uniqueness, location, and demand. Film Loca charges a 3% commission on successful bookings.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          
+          {/* Testimonials */}
+          <section className="py-16">
+            <div className="container mx-auto px-4">
+              <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">What Property Owners Say</h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <Card className="p-6">
+                  <div className="flex flex-col h-full">
+                    <div className="mb-4">
+                      <div className="flex text-amber-400">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                          </svg>
+                        ))}
+                      </div>
+                    </div>
+                    <blockquote className="flex-grow mb-4 italic text-muted-foreground">
+                      "I've made more from 3 days of filming than a month of traditional rental. The Film Loca team handles everything professionally and the crews have been respectful of my property."
+                    </blockquote>
+                    <div className="mt-auto">
+                      <p className="font-semibold">Michael Adeyemi</p>
+                      <p className="text-sm text-muted-foreground">Luxury Villa Owner, Ikoyi</p>
+                    </div>
+                  </div>
+                </Card>
+                
+                <Card className="p-6">
+                  <div className="flex flex-col h-full">
+                    <div className="mb-4">
+                      <div className="flex text-amber-400">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                          </svg>
+                        ))}
+                      </div>
+                    </div>
+                    <blockquote className="flex-grow mb-4 italic text-muted-foreground">
+                      "As a business owner, I was hesitant to have filming in my office space. But Film Loca made sure everything went smoothly, and it was a great source of additional income."
+                    </blockquote>
+                    <div className="mt-auto">
+                      <p className="font-semibold">Amina Bello</p>
+                      <p className="text-sm text-muted-foreground">Office Space Owner, Victoria Island</p>
+                    </div>
+                  </div>
+                </Card>
+                
+                <Card className="p-6">
+                  <div className="flex flex-col h-full">
+                    <div className="mb-4">
+                      <div className="flex text-amber-400">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                          </svg>
+                        ))}
+                      </div>
+                    </div>
+                    <blockquote className="flex-grow mb-4 italic text-muted-foreground">
+                      "It's exciting to see my home in films and TV shows! The platform is easy to use, and I've had multiple bookings within the first month of listing."
+                    </blockquote>
+                    <div className="mt-auto">
+                      <p className="font-semibold">James Okafor</p>
+                      <p className="text-sm text-muted-foreground">Apartment Owner, Lekki</p>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            </div>
+          </section>
+          
+          {/* CTA Section */}
+          <section className="py-16 bg-nollywood-primary text-white">
             <div className="container mx-auto px-4 text-center">
-              <h2 className="text-3xl font-bold mb-6">Ready to Host Nollywood Productions?</h2>
-              <p className="text-xl max-w-2xl mx-auto mb-8">List your property today and start earning from the growing Nigerian film industry.</p>
+              <h2 className="text-3xl font-bold mb-6">Ready to List Your Property?</h2>
+              <p className="text-xl max-w-2xl mx-auto mb-8">
+                Join hundreds of property owners earning significant income by hosting film productions.
+              </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Link to="/list-property">
-                  <Button size="lg" className="bg-nollywood-primary hover:bg-nollywood-primary/90 text-white">
-                    List Your Property Now
+                <Link to="/auth?tab=signup">
+                  <Button size="lg" variant="outline" className="border-white hover:bg-white/20 text-white">
+                    Sign Up Now
                   </Button>
                 </Link>
-                <Link to="/auth?tab=signup">
-                  <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                    Create Host Account
+                <Link to="/list-property">
+                  <Button size="lg" className="bg-white text-nollywood-primary hover:bg-white/90">
+                    List Your Property
                   </Button>
                 </Link>
               </div>

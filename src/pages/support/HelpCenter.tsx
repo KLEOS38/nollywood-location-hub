@@ -1,224 +1,200 @@
 
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { 
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { HelpCircle, MessageSquare, Phone, Mail } from "lucide-react";
 
 const HelpCenter = () => {
   return (
     <>
       <Helmet>
-        <title>Help Center | Nollywood Locations</title>
-        <meta name="description" content="Get help with using Nollywood Locations platform, booking properties, and managing your filmmaking needs." />
+        <title>Help Center | Film Loca</title>
+        <meta name="description" content="Get help with booking locations, managing your listings, or any other questions about Film Loca." />
       </Helmet>
       
       <div className="flex flex-col min-h-screen">
         <Header />
         
-        <main className="flex-1">
-          <section className="bg-nollywood-primary/10 py-16">
+        <main className="flex-grow">
+          {/* Hero Section */}
+          <section className="bg-nollywood-primary/10 py-10">
             <div className="container mx-auto px-4">
-              <div className="max-w-3xl mx-auto text-center">
-                <h1 className="text-3xl md:text-4xl font-bold mb-4">Help Center</h1>
-                <p className="text-lg text-muted-foreground mb-8">Find answers to common questions about using Nollywood Locations</p>
-                
-                <div className="relative max-w-2xl mx-auto">
-                  <Input
-                    type="text"
-                    placeholder="Search for answers..."
-                    className="pl-10 pr-4 py-6 h-14 bg-white"
+              <h1 className="text-3xl md:text-4xl font-bold mb-4 text-center">How can we help you?</h1>
+              <div className="max-w-xl mx-auto">
+                <div className="relative">
+                  <Input 
+                    type="text" 
+                    placeholder="Search for help topics..." 
+                    className="pr-10 py-6 text-lg"
                   />
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                  <Button className="absolute right-1 top-1/2 transform -translate-y-1/2">
+                    Search
+                  </Button>
                 </div>
               </div>
             </div>
           </section>
           
+          {/* Help Categories */}
           <section className="py-12">
             <div className="container mx-auto px-4">
-              <Tabs defaultValue="filmmakers" className="w-full max-w-4xl mx-auto">
-                <TabsList className="grid w-full grid-cols-3 mb-8">
-                  <TabsTrigger value="filmmakers">For Filmmakers</TabsTrigger>
-                  <TabsTrigger value="hosts">For Property Owners</TabsTrigger>
-                  <TabsTrigger value="general">General</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="filmmakers" className="mt-6">
-                  <div className="grid md:grid-cols-2 gap-8 mb-12">
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Booking Locations</CardTitle>
-                        <CardDescription>Help with finding and securing filming venues</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <ul className="space-y-2">
-                          <li><a href="#" className="text-nollywood-primary hover:underline">How to search for locations</a></li>
-                          <li><a href="#" className="text-nollywood-primary hover:underline">Understanding location details</a></li>
-                          <li><a href="#" className="text-nollywood-primary hover:underline">Booking and payment process</a></li>
-                          <li><a href="#" className="text-nollywood-primary hover:underline">Cancellation policies</a></li>
-                        </ul>
-                      </CardContent>
-                    </Card>
-                    
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>During Your Shoot</CardTitle>
-                        <CardDescription>Guidance for your filming day</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <ul className="space-y-2">
-                          <li><a href="#" className="text-nollywood-primary hover:underline">Check-in procedures</a></li>
-                          <li><a href="#" className="text-nollywood-primary hover:underline">Property rules and guidelines</a></li>
-                          <li><a href="#" className="text-nollywood-primary hover:underline">Handling issues during your shoot</a></li>
-                          <li><a href="#" className="text-nollywood-primary hover:underline">Extensions and overtime</a></li>
-                        </ul>
-                      </CardContent>
-                    </Card>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <Card className="p-6">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="bg-nollywood-primary/10 p-4 rounded-full mb-4">
+                      <HelpCircle className="h-8 w-8 text-nollywood-primary" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3">Frequently Asked Questions</h3>
+                    <p className="text-muted-foreground mb-4">Find quick answers to common questions about booking and listing locations.</p>
+                    <Button variant="outline">Browse FAQs</Button>
                   </div>
-                  
-                  <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
-                  
-                  <Accordion type="single" collapsible className="w-full">
-                    <AccordionItem value="item-1">
-                      <AccordionTrigger>How do I book a location for filming?</AccordionTrigger>
-                      <AccordionContent>
-                        <p className="mb-4">Booking a location on Nollywood Locations is simple:</p>
-                        <ol className="list-decimal pl-5 space-y-2">
-                          <li>Search for locations using filters to find ones that match your needs.</li>
-                          <li>Review the location details, amenities, rules, and availability.</li>
-                          <li>Submit a booking request with your filming dates and details.</li>
-                          <li>Wait for the host to approve your booking (usually within 24 hours).</li>
-                          <li>Once approved, complete the payment to secure your booking.</li>
-                        </ol>
-                      </AccordionContent>
-                    </AccordionItem>
-                    
-                    <AccordionItem value="item-2">
-                      <AccordionTrigger>What if I need to cancel my booking?</AccordionTrigger>
-                      <AccordionContent>
-                        <p>Cancellation policies vary by location. Each property listing clearly displays its cancellation policy before you book. Generally, you can receive a full refund if you cancel within 48 hours of booking and at least 14 days before your scheduled shoot. Partial refunds may be available for cancellations made between 7-14 days before your booking. Cancellations made less than 7 days before your booking may not be eligible for refunds. Check the specific policy on your booking confirmation.</p>
-                      </AccordionContent>
-                    </AccordionItem>
-                    
-                    <AccordionItem value="item-3">
-                      <AccordionTrigger>Do I need insurance to book a location?</AccordionTrigger>
-                      <AccordionContent>
-                        <p>Some locations require proof of production insurance before booking, while others do not. The insurance requirements are clearly stated on each listing. For high-value properties or commercial shoots, hosts typically require a Certificate of Insurance (COI) naming them as additional insured. If you don't have production insurance, we offer connections to affordable short-term insurance providers tailored for Nollywood productions.</p>
-                      </AccordionContent>
-                    </AccordionItem>
-                    
-                    <AccordionItem value="item-4">
-                      <AccordionTrigger>Can I visit a location before booking?</AccordionTrigger>
-                      <AccordionContent>
-                        <p>Yes, many hosts offer location scouts for a small fee that is credited toward your booking if you choose to book the location. You can request a scout directly through the listing page by clicking the "Request Scout" button and proposing dates and times that work for you. The host will confirm if they can accommodate your scout request.</p>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </TabsContent>
+                </Card>
                 
-                <TabsContent value="hosts">
-                  <h2 className="text-2xl font-bold mb-6">For Property Owners</h2>
-                  <p className="mb-8">Information and guidance for hosting film productions at your property.</p>
-                  
-                  <Accordion type="single" collapsible className="w-full">
-                    <AccordionItem value="item-1">
-                      <AccordionTrigger>How do I list my property on Nollywood Locations?</AccordionTrigger>
-                      <AccordionContent>
-                        <p>To list your property, simply click on "List Your Property" in the navigation menu and follow the step-by-step guide. You'll need to provide photos, a description, amenities, house rules, and set your availability and pricing. Our team will review your listing before it goes live to ensure it meets our quality standards.</p>
-                      </AccordionContent>
-                    </AccordionItem>
-                    
-                    <AccordionItem value="item-2">
-                      <AccordionTrigger>How much should I charge for my location?</AccordionTrigger>
-                      <AccordionContent>
-                        <p>Pricing depends on factors like your property's size, uniqueness, amenities, and location. Urban properties in Lagos typically range from ₦50,000 to ₦200,000 per day for residential spaces and higher for commercial or luxury properties. Our pricing tool can provide recommendations based on similar properties in your area. You can adjust your pricing seasonally or for different types of productions.</p>
-                      </AccordionContent>
-                    </AccordionItem>
-                    
-                    <AccordionItem value="item-3">
-                      <AccordionTrigger>How am I protected as a host?</AccordionTrigger>
-                      <AccordionContent>
-                        <p>Nollywood Locations provides several protections for hosts:</p>
-                        <ul className="list-disc pl-5 space-y-2 mt-2">
-                          <li>Security deposits that cover minor damages</li>
-                          <li>Production insurance requirements for larger shoots</li>
-                          <li>Host Guarantee program that provides additional protection</li>
-                          <li>Verified filmmaker profiles with reviews and ratings</li>
-                          <li>Support team available to help resolve any issues</li>
-                        </ul>
-                      </AccordionContent>
-                    </AccordionItem>
-                    
-                    <AccordionItem value="item-4">
-                      <AccordionTrigger>When and how do I get paid?</AccordionTrigger>
-                      <AccordionContent>
-                        <p>Payment is processed 24 hours after the filmmaker successfully checks in at your property. This gives both parties time to confirm that everything is in order. The funds are then transferred to your designated bank account, which typically takes 1-3 business days to appear depending on your bank. You can view all your transactions in your host dashboard.</p>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </TabsContent>
+                <Card className="p-6">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="bg-nollywood-secondary/10 p-4 rounded-full mb-4">
+                      <MessageSquare className="h-8 w-8 text-nollywood-secondary" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3">Contact Support</h3>
+                    <p className="text-muted-foreground mb-4">Need more help? Our support team is ready to assist you with any issues.</p>
+                    <Button>Get in Touch</Button>
+                  </div>
+                </Card>
                 
-                <TabsContent value="general">
-                  <h2 className="text-2xl font-bold mb-6">General Help</h2>
-                  <p className="mb-8">General information about using Nollywood Locations platform.</p>
-                  
-                  <Accordion type="single" collapsible className="w-full">
-                    <AccordionItem value="item-1">
-                      <AccordionTrigger>How do I create and manage my account?</AccordionTrigger>
-                      <AccordionContent>
-                        <p>Creating an account is easy. Click "Sign Up" in the top navigation, enter your email and create a password. After verifying your email, complete your profile with your name, phone number, and profile picture. You can manage your account settings, including payment methods and notifications, from your profile page.</p>
-                      </AccordionContent>
-                    </AccordionItem>
-                    
-                    <AccordionItem value="item-2">
-                      <AccordionTrigger>What payment methods are accepted?</AccordionTrigger>
-                      <AccordionContent>
-                        <p>We accept various payment methods including credit/debit cards, bank transfers, and selected mobile payment platforms popular in Nigeria. All payments are processed securely through our payment partners with industry-standard encryption.</p>
-                      </AccordionContent>
-                    </AccordionItem>
-                    
-                    <AccordionItem value="item-3">
-                      <AccordionTrigger>How does the review system work?</AccordionTrigger>
-                      <AccordionContent>
-                        <p>After a booking is completed, both filmmakers and hosts have 14 days to leave reviews for each other. Reviews include star ratings and written feedback about the experience. These reviews help build trust in our community and improve the quality of future interactions. Reviews cannot be edited once posted, but users can respond to reviews they've received.</p>
-                      </AccordionContent>
-                    </AccordionItem>
-                    
-                    <AccordionItem value="item-4">
-                      <AccordionTrigger>How can I contact customer support?</AccordionTrigger>
-                      <AccordionContent>
-                        <p>You can reach our customer support team through several channels:</p>
-                        <ul className="list-disc pl-5 space-y-2 mt-2">
-                          <li>Email: support@nollywoodlocations.com</li>
-                          <li>Live chat: Available on our website during business hours (9am-6pm WAT)</li>
-                          <li>Phone: +234 (0) 700-NOLLYWOOD (weekdays 8am-8pm WAT)</li>
-                          <li>Emergency support is available 24/7 for urgent issues during active bookings</li>
-                        </ul>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </TabsContent>
-              </Tabs>
+                <Card className="p-6">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="bg-nollywood-accent/20 p-4 rounded-full mb-4">
+                      <Phone className="h-8 w-8 text-nollywood-accent" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3">Call Us</h3>
+                    <p className="text-muted-foreground mb-4">Talk to our team directly for urgent matters or complex questions.</p>
+                    <Button variant="outline">+234 800 123 4567</Button>
+                  </div>
+                </Card>
+              </div>
             </div>
           </section>
           
+          {/* FAQ Section */}
           <section className="py-12 bg-muted/30">
-            <div className="container mx-auto px-4 text-center">
-              <h2 className="text-2xl md:text-3xl font-bold mb-4">Still Need Help?</h2>
-              <p className="text-lg mb-8 max-w-2xl mx-auto">Our support team is ready to assist you with any questions or concerns.</p>
-              <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Button className="bg-nollywood-primary hover:bg-nollywood-primary/90">
-                  Contact Support
-                </Button>
-                <Button variant="outline">
-                  Send us a Message
-                </Button>
+            <div className="container mx-auto px-4">
+              <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
+              
+              <div className="max-w-3xl mx-auto">
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="item-1">
+                    <AccordionTrigger>How do I book a location?</AccordionTrigger>
+                    <AccordionContent>
+                      To book a location, browse our listings and select the one you're interested in. Check availability for your dates, then click "Request to Book." The property owner will review your request and confirm if the location is available.
+                    </AccordionContent>
+                  </AccordionItem>
+                  
+                  <AccordionItem value="item-2">
+                    <AccordionTrigger>What payment methods do you accept?</AccordionTrigger>
+                    <AccordionContent>
+                      We accept all major credit cards, including Visa, Mastercard, and American Express. We also support bank transfers for certain bookings. Payment is only processed after your booking is confirmed.
+                    </AccordionContent>
+                  </AccordionItem>
+                  
+                  <AccordionItem value="item-3">
+                    <AccordionTrigger>How do I list my property?</AccordionTrigger>
+                    <AccordionContent>
+                      To list your property, create an account and click on "List Your Property" in the navigation. Follow the step-by-step process to add details, photos, pricing, and availability for your location.
+                    </AccordionContent>
+                  </AccordionItem>
+                  
+                  <AccordionItem value="item-4">
+                    <AccordionTrigger>What fees does Film Loca charge?</AccordionTrigger>
+                    <AccordionContent>
+                      Film Loca charges a 10% service fee to filmmakers for each booking. Property owners pay a 3% commission on successful bookings. These fees help us maintain the platform and provide customer support.
+                    </AccordionContent>
+                  </AccordionItem>
+                  
+                  <AccordionItem value="item-5">
+                    <AccordionTrigger>How do I cancel a booking?</AccordionTrigger>
+                    <AccordionContent>
+                      To cancel a booking, go to your account dashboard and select the booking you wish to cancel. Follow the cancellation process, and your refund will be processed according to the location's cancellation policy.
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </div>
+            </div>
+          </section>
+          
+          {/* Contact Form */}
+          <section className="py-12">
+            <div className="container mx-auto px-4">
+              <div className="max-w-4xl mx-auto">
+                <div className="flex flex-col md:flex-row">
+                  <div className="md:w-1/2 p-6">
+                    <h2 className="text-2xl font-bold mb-4">Get in Touch</h2>
+                    <p className="text-muted-foreground mb-6">
+                      Can't find what you're looking for? Send us a message and our support team will get back to you as soon as possible.
+                    </p>
+                    
+                    <div className="space-y-4">
+                      <div className="flex items-center">
+                        <Mail className="h-5 w-5 mr-3 text-nollywood-primary" />
+                        <span>support@filmloca.com</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Phone className="h-5 w-5 mr-3 text-nollywood-primary" />
+                        <span>+234 800 123 4567</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="md:w-1/2 bg-white p-6 shadow-sm rounded-lg">
+                    <form className="space-y-4">
+                      <div>
+                        <label htmlFor="name" className="block text-sm font-medium mb-1">
+                          Name
+                        </label>
+                        <Input id="name" placeholder="Your name" />
+                      </div>
+                      
+                      <div>
+                        <label htmlFor="email" className="block text-sm font-medium mb-1">
+                          Email
+                        </label>
+                        <Input id="email" type="email" placeholder="Your email" />
+                      </div>
+                      
+                      <div>
+                        <label htmlFor="subject" className="block text-sm font-medium mb-1">
+                          Subject
+                        </label>
+                        <Input id="subject" placeholder="What's this about?" />
+                      </div>
+                      
+                      <div>
+                        <label htmlFor="message" className="block text-sm font-medium mb-1">
+                          Message
+                        </label>
+                        <textarea
+                          id="message"
+                          rows={4}
+                          className="w-full px-3 py-2 border border-input rounded-md"
+                          placeholder="How can we help you?"
+                        ></textarea>
+                      </div>
+                      
+                      <Button type="submit" className="w-full">
+                        Send Message
+                      </Button>
+                    </form>
+                  </div>
+                </div>
               </div>
             </div>
           </section>

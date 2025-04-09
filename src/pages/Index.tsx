@@ -27,8 +27,8 @@ const Index = () => {
         <div className="absolute inset-0 z-20 flex items-center">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">Find Perfect Locations for Your Nollywood Production</h1>
-              <p className="text-xl text-white mb-8">The marketplace that connects Nollywood filmmakers with verified filming locations across Lagos.</p>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">Find Perfect Locations for Your Film Production</h1>
+              <p className="text-xl text-white mb-8">The marketplace that connects filmmakers with verified filming locations across Lagos.</p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/locations">
                   <Button size="lg" className="bg-nollywood-primary hover:bg-nollywood-primary/90 text-white">
@@ -75,7 +75,7 @@ const Index = () => {
                 <Clapperboard className="h-8 w-8 text-nollywood-primary" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Find Your Location</h3>
-              <p className="text-muted-foreground">Browse verified homes, studios, and unique spaces for your next Nollywood production.</p>
+              <p className="text-muted-foreground">Browse verified homes, studios, and unique spaces for your next film production.</p>
             </div>
             
             <div className="flex flex-col items-center text-center">
@@ -91,7 +91,7 @@ const Index = () => {
                 <ThumbsUp className="h-8 w-8 text-nollywood-accent" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Shoot Your Film</h3>
-              <p className="text-muted-foreground">Get support during your shoot and leave reviews to help the Nollywood community.</p>
+              <p className="text-muted-foreground">Get support during your shoot and leave reviews to help the film community.</p>
             </div>
           </div>
         </div>
@@ -103,7 +103,7 @@ const Index = () => {
           <div className="flex flex-col md:flex-row items-center gap-10">
             <div className="md:w-1/2">
               <h2 className="text-2xl md:text-3xl font-bold mb-4">We've Got Your Back</h2>
-              <p className="text-lg mb-6">At Nollywood Locations, we understand the importance of reliable and truthful property listings for your production.</p>
+              <p className="text-lg mb-6">At Film Loca, we understand the importance of reliable and truthful property listings for your production.</p>
               
               <ul className="space-y-4">
                 <li className="flex items-start">
@@ -117,7 +117,7 @@ const Index = () => {
                   <Shield className="h-6 w-6 text-nollywood-primary mr-3 mt-0.5 flex-shrink-0" />
                   <div>
                     <h3 className="font-semibold mb-1">Filmmaker Reviews</h3>
-                    <p className="text-muted-foreground">Real reviews from Nollywood professionals who have filmed at the locations.</p>
+                    <p className="text-muted-foreground">Real reviews from film professionals who have filmed at the locations.</p>
                   </div>
                 </li>
                 <li className="flex items-start">
@@ -139,7 +139,7 @@ const Index = () => {
             <div className="md:w-1/2">
               <img 
                 src="https://images.unsplash.com/photo-1573164574572-cb89e39749b4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
-                alt="Nigerian film production" 
+                alt="Film production" 
                 className="rounded-lg shadow-xl"
               />
             </div>
@@ -158,7 +158,7 @@ const Index = () => {
         ></div>
         <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Ready to Find Your Next Filming Location?</h2>
-          <p className="text-xl max-w-2xl mx-auto mb-8 text-white">Join hundreds of Nollywood filmmakers who are discovering perfect filming locations across Lagos.</p>
+          <p className="text-xl max-w-2xl mx-auto mb-8 text-white">Join hundreds of filmmakers who are discovering perfect filming locations across Lagos.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link to="/auth?tab=signup">
               <Button size="lg" className="bg-nollywood-primary hover:bg-nollywood-primary/90 text-white">

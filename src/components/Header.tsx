@@ -49,8 +49,8 @@ const Header = () => {
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-border shadow-sm">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
-          <span className="text-nollywood-primary text-2xl font-bold">Nollywood</span>
-          <span className="text-nollywood-secondary text-2xl font-bold">Locations</span>
+          <span className="text-nollywood-primary text-2xl font-bold">Film</span>
+          <span className="text-nollywood-secondary text-2xl font-bold">Loca</span>
         </Link>
 
         {!isMobile && (

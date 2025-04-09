@@ -54,13 +54,13 @@ const Footer = () => {
                 <Youtube size={20} />
               </a>
             </div>
-            <p className="text-sm text-muted-foreground">Subscribe to our newsletter for updates on new locations and Nollywood filming tips.</p>
+            <p className="text-sm text-muted-foreground">Subscribe to our newsletter for updates on new locations and filming tips.</p>
           </div>
         </div>
         
         <div className="border-t border-border mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0">
-            <p className="text-sm text-muted-foreground">© 2025 Nollywood Locations. All rights reserved.</p>
+            <p className="text-sm text-muted-foreground">© 2025 Film Loca. All rights reserved.</p>
           </div>
           <div className="flex space-x-6">
             <Link to="/privacy" className="text-sm text-muted-foreground hover:text-nollywood-primary">Privacy</Link>

@@ -1,470 +1,353 @@
 
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { Clapperboard, Home, Calendar, CreditCard, Camera, Star, Users, ArrowRight } from 'lucide-react';
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { Clapperboard, Home, ThumbsUp, DollarSign, Shield, Search } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const HowItWorks = () => {
   return (
     <>
       <Helmet>
-        <title>How It Works | Nollywood Locations</title>
-        <meta name="description" content="Learn how Nollywood Locations connects filmmakers with perfect filming locations across Lagos and how our platform works for both parties." />
+        <title>How It Works | Film Loca</title>
+        <meta name="description" content="Learn how Film Loca connects filmmakers with perfect filming locations." />
       </Helmet>
       
       <div className="flex flex-col min-h-screen">
         <Header />
         
-        <main className="flex-1">
+        <main className="flex-grow">
+          {/* Hero Section */}
           <section className="bg-nollywood-primary/10 py-16">
-            <div className="container mx-auto px-4">
-              <div className="max-w-3xl mx-auto text-center">
-                <h1 className="text-3xl md:text-4xl font-bold mb-4">How Nollywood Locations Works</h1>
-                <p className="text-lg text-muted-foreground mb-6">Our platform connects filmmakers with perfect locations while giving property owners a way to earn from their spaces</p>
-              </div>
+            <div className="container mx-auto px-4 text-center">
+              <h1 className="text-3xl md:text-4xl font-bold mb-4">How Film Loca Works</h1>
+              <p className="text-xl max-w-2xl mx-auto">
+                Film Loca is the marketplace that connects filmmakers with verified filming locations. Here's everything you need to know about our platform.
+              </p>
             </div>
           </section>
           
+          {/* For Filmmakers */}
           <section className="py-16">
             <div className="container mx-auto px-4">
-              <Tabs defaultValue="filmmakers" className="w-full max-w-4xl mx-auto">
-                <TabsList className="grid w-full grid-cols-2 mb-12">
-                  <TabsTrigger value="filmmakers" className="text-lg py-3">For Filmmakers</TabsTrigger>
-                  <TabsTrigger value="hosts" className="text-lg py-3">For Property Owners</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="filmmakers" className="mt-0">
-                  <div className="space-y-16">
-                    <div className="flex flex-col md:flex-row gap-12 items-center">
-                      <div className="md:w-1/2">
-                        <div className="bg-nollywood-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                          <Clapperboard className="h-8 w-8 text-nollywood-primary" />
-                        </div>
-                        <h2 className="text-2xl font-bold mb-4">1. Search for Locations</h2>
-                        <p className="text-lg text-muted-foreground mb-6">Browse our extensive database of verified filming locations. Filter by location type, area, budget, amenities, and more to find spaces that match your production needs.</p>
-                        <ul className="space-y-2">
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                            <span>Search by neighborhood, property type, or specific features</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                            <span>View high-quality photos of each space</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                            <span>Read detailed descriptions and amenities lists</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                            <span>Check reviews from other filmmakers</span>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="md:w-1/2">
-                        <img 
-                          src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
-                          alt="Searching for filming locations" 
-                          className="rounded-lg shadow-lg"
-                        />
-                      </div>
-                    </div>
-                    
-                    <div className="flex flex-col md:flex-row gap-12 items-center">
-                      <div className="md:w-1/2 order-2 md:order-1">
-                        <img 
-                          src="https://images.unsplash.com/photo-1551184451-76b792384f93?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
-                          alt="Booking a filming location" 
-                          className="rounded-lg shadow-lg"
-                        />
-                      </div>
-                      <div className="md:w-1/2 order-1 md:order-2">
-                        <div className="bg-nollywood-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                          <Calendar className="h-8 w-8 text-nollywood-primary" />
-                        </div>
-                        <h2 className="text-2xl font-bold mb-4">2. Book Your Location</h2>
-                        <p className="text-lg text-muted-foreground mb-6">Once you find the perfect location, submit a booking request with your filming details. Our streamlined process makes securing locations quick and efficient.</p>
-                        <ul className="space-y-2">
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                            <span>Select your filming dates and times</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                            <span>Share details about your production and crew size</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                            <span>Message hosts with specific questions</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                            <span>Request scouting visits if needed</span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    
-                    <div className="flex flex-col md:flex-row gap-12 items-center">
-                      <div className="md:w-1/2">
-                        <div className="bg-nollywood-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                          <CreditCard className="h-8 w-8 text-nollywood-primary" />
-                        </div>
-                        <h2 className="text-2xl font-bold mb-4">3. Secure Payment Process</h2>
-                        <p className="text-lg text-muted-foreground mb-6">When your booking is approved, complete the reservation with our secure payment system. Payments are held until check-in to ensure your satisfaction.</p>
-                        <ul className="space-y-2">
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                            <span>Transparent pricing with no hidden fees</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                            <span>Secure payment processing</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                            <span>Funds held in escrow until successful check-in</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                            <span>Digital location agreement and receipts</span>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="md:w-1/2">
-                        <img 
-                          src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
-                          alt="Secure payment for booking" 
-                          className="rounded-lg shadow-lg"
-                        />
-                      </div>
-                    </div>
-                    
-                    <div className="flex flex-col md:flex-row gap-12 items-center">
-                      <div className="md:w-1/2 order-2 md:order-1">
-                        <img 
-                          src="https://images.unsplash.com/photo-1532800783378-1bed60adaf58?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
-                          alt="Film crew shooting" 
-                          className="rounded-lg shadow-lg"
-                        />
-                      </div>
-                      <div className="md:w-1/2 order-1 md:order-2">
-                        <div className="bg-nollywood-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                          <Camera className="h-8 w-8 text-nollywood-primary" />
-                        </div>
-                        <h2 className="text-2xl font-bold mb-4">4. Shoot Your Production</h2>
-                        <p className="text-lg text-muted-foreground mb-6">Arrive at your location and start filming with confidence. Our team is available to assist with any issues that may arise during your shoot.</p>
-                        <ul className="space-y-2">
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                            <span>Smooth check-in process with the property owner</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                            <span>24/7 support for urgent issues</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                            <span>Option to extend booking if needed (subject to availability)</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                            <span>Clear communication channels with the host</span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    
-                    <div className="flex flex-col md:flex-row gap-12 items-center">
-                      <div className="md:w-1/2">
-                        <div className="bg-nollywood-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                          <Star className="h-8 w-8 text-nollywood-primary" />
-                        </div>
-                        <h2 className="text-2xl font-bold mb-4">5. Share Your Experience</h2>
-                        <p className="text-lg text-muted-foreground mb-6">After your shoot, leave a review to help other filmmakers and strengthen our community. Your feedback improves our platform for everyone.</p>
-                        <ul className="space-y-2">
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                            <span>Rate your experience with the location and host</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                            <span>Share specific feedback about filming conditions</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                            <span>Help other filmmakers make informed decisions</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-primary flex-shrink-0 mt-0.5" />
-                            <span>Build your profile and reputation in the community</span>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="md:w-1/2">
-                        <img 
-                          src="https://images.unsplash.com/photo-1622290319146-7b63df48a635?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
-                          alt="Sharing feedback after filming" 
-                          className="rounded-lg shadow-lg"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-12 text-center">
-                    <Link to="/locations">
-                      <Button size="lg" className="bg-nollywood-primary hover:bg-nollywood-primary/90">
-                        Start Browsing Locations
-                      </Button>
-                    </Link>
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="hosts" className="mt-0">
-                  <div className="space-y-16">
-                    <div className="flex flex-col md:flex-row gap-12 items-center">
-                      <div className="md:w-1/2">
-                        <div className="bg-nollywood-secondary/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                          <Home className="h-8 w-8 text-nollywood-secondary" />
-                        </div>
-                        <h2 className="text-2xl font-bold mb-4">1. List Your Property</h2>
-                        <p className="text-lg text-muted-foreground mb-6">Create a detailed listing for your property, showcasing its features and unique aspects that would appeal to filmmakers.</p>
-                        <ul className="space-y-2">
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-secondary flex-shrink-0 mt-0.5" />
-                            <span>Upload high-quality photos of your space</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-secondary flex-shrink-0 mt-0.5" />
-                            <span>Write detailed descriptions highlighting filming advantages</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-secondary flex-shrink-0 mt-0.5" />
-                            <span>List amenities, specifications, and house rules</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-secondary flex-shrink-0 mt-0.5" />
-                            <span>Set your availability calendar and pricing</span>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="md:w-1/2">
-                        <img 
-                          src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
-                          alt="Listing a property for filming" 
-                          className="rounded-lg shadow-lg"
-                        />
-                      </div>
-                    </div>
-                    
-                    <div className="flex flex-col md:flex-row gap-12 items-center">
-                      <div className="md:w-1/2 order-2 md:order-1">
-                        <img 
-                          src="https://images.unsplash.com/photo-1616587226157-48e49175ee20?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
-                          alt="Reviewing booking requests" 
-                          className="rounded-lg shadow-lg"
-                        />
-                      </div>
-                      <div className="md:w-1/2 order-1 md:order-2">
-                        <div className="bg-nollywood-secondary/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                          <Calendar className="h-8 w-8 text-nollywood-secondary" />
-                        </div>
-                        <h2 className="text-2xl font-bold mb-4">2. Receive Booking Requests</h2>
-                        <p className="text-lg text-muted-foreground mb-6">Review and respond to booking requests from filmmakers. You have full control over which productions you approve for your space.</p>
-                        <ul className="space-y-2">
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-secondary flex-shrink-0 mt-0.5" />
-                            <span>Get notified when filmmakers are interested in your property</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-secondary flex-shrink-0 mt-0.5" />
-                            <span>Review production details and crew size</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-secondary flex-shrink-0 mt-0.5" />
-                            <span>Communicate directly with filmmakers to answer questions</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-secondary flex-shrink-0 mt-0.5" />
-                            <span>Accept or decline requests based on your preference</span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    
-                    <div className="flex flex-col md:flex-row gap-12 items-center">
-                      <div className="md:w-1/2">
-                        <div className="bg-nollywood-secondary/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                          <Users className="h-8 w-8 text-nollywood-secondary" />
-                        </div>
-                        <h2 className="text-2xl font-bold mb-4">3. Prepare for Filming</h2>
-                        <p className="text-lg text-muted-foreground mb-6">Once a booking is confirmed, prepare your property for the production crew's arrival. We provide guidelines to help ensure a smooth experience.</p>
-                        <ul className="space-y-2">
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-secondary flex-shrink-0 mt-0.5" />
-                            <span>Receive a preparation checklist from our team</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-secondary flex-shrink-0 mt-0.5" />
-                            <span>Coordinate check-in details with the filmmaker</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-secondary flex-shrink-0 mt-0.5" />
-                            <span>Secure or remove valuables if desired</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-secondary flex-shrink-0 mt-0.5" />
-                            <span>Prepare any specific areas mentioned in the booking</span>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="md:w-1/2">
-                        <img 
-                          src="https://images.unsplash.com/photo-1615876234886-fd9a39fda97f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
-                          alt="Preparing home for filming" 
-                          className="rounded-lg shadow-lg"
-                        />
-                      </div>
-                    </div>
-                    
-                    <div className="flex flex-col md:flex-row gap-12 items-center">
-                      <div className="md:w-1/2 order-2 md:order-1">
-                        <img 
-                          src="https://images.unsplash.com/photo-1457305237443-44c3d5a30b89?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
-                          alt="Host welcoming film crew" 
-                          className="rounded-lg shadow-lg"
-                        />
-                      </div>
-                      <div className="md:w-1/2 order-1 md:order-2">
-                        <div className="bg-nollywood-secondary/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                          <Camera className="h-8 w-8 text-nollywood-secondary" />
-                        </div>
-                        <h2 className="text-2xl font-bold mb-4">4. Host the Production</h2>
-                        <p className="text-lg text-muted-foreground mb-6">Welcome the film crew to your property and provide access as agreed. You can choose to be present during filming or give the crew their space.</p>
-                        <ul className="space-y-2">
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-secondary flex-shrink-0 mt-0.5" />
-                            <span>Conduct a property walkthrough with the production manager</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-secondary flex-shrink-0 mt-0.5" />
-                            <span>Review house rules and important information</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-secondary flex-shrink-0 mt-0.5" />
-                            <span>Decide whether to remain on-site or return later</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-secondary flex-shrink-0 mt-0.5" />
-                            <span>Ensure smooth communication during the shoot</span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    
-                    <div className="flex flex-col md:flex-row gap-12 items-center">
-                      <div className="md:w-1/2">
-                        <div className="bg-nollywood-secondary/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                          <CreditCard className="h-8 w-8 text-nollywood-secondary" />
-                        </div>
-                        <h2 className="text-2xl font-bold mb-4">5. Get Paid and Leave Reviews</h2>
-                        <p className="text-lg text-muted-foreground mb-6">Receive payment after the successful check-in, and share your experience with other hosts by reviewing the filmmaker and production team.</p>
-                        <ul className="space-y-2">
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-secondary flex-shrink-0 mt-0.5" />
-                            <span>Payment is released 24 hours after successful check-in</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-secondary flex-shrink-0 mt-0.5" />
-                            <span>Funds deposited directly to your bank account</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-secondary flex-shrink-0 mt-0.5" />
-                            <span>Share your experience by reviewing the filmmaker</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <ArrowRight className="h-5 w-5 text-nollywood-secondary flex-shrink-0 mt-0.5" />
-                            <span>Build your reputation as a reliable host</span>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="md:w-1/2">
-                        <img 
-                          src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
-                          alt="Getting paid for property rental" 
-                          className="rounded-lg shadow-lg"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-12 text-center">
-                    <Link to="/list-property">
-                      <Button size="lg" className="bg-nollywood-primary hover:bg-nollywood-primary/90">
-                        List Your Property
-                      </Button>
-                    </Link>
-                  </div>
-                </TabsContent>
-              </Tabs>
-            </div>
-          </section>
-          
-          <section className="py-16 bg-muted/30">
-            <div className="container mx-auto px-4">
-              <h2 className="text-3xl font-bold mb-12 text-center">Why Choose Nollywood Locations</h2>
+              <div className="text-center mb-12">
+                <h2 className="text-2xl md:text-3xl font-bold mb-4">For Filmmakers</h2>
+                <p className="text-lg max-w-3xl mx-auto">
+                  Find and book the perfect location for your next production in just a few simple steps.
+                </p>
+              </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <Card className="bg-white hover:shadow-md transition-shadow">
-                  <CardContent className="pt-6">
-                    <div className="bg-nollywood-primary/10 w-12 h-12 rounded-full flex items-center justify-center mb-4">
-                      <Star className="h-6 w-6 text-nollywood-primary" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-3">Verified Listings</h3>
-                    <p className="text-muted-foreground">All premium listings are physically verified to ensure accuracy and quality. What you see is what you get.</p>
-                  </CardContent>
-                </Card>
+                <div className="flex flex-col items-center text-center">
+                  <div className="bg-nollywood-primary/10 p-4 rounded-full mb-4">
+                    <Search className="h-8 w-8 text-nollywood-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">1. Search Locations</h3>
+                  <p className="text-muted-foreground">
+                    Browse our extensive database of filming locations. Filter by location type, area, amenities, and budget.
+                  </p>
+                </div>
                 
-                <Card className="bg-white hover:shadow-md transition-shadow">
-                  <CardContent className="pt-6">
-                    <div className="bg-nollywood-primary/10 w-12 h-12 rounded-full flex items-center justify-center mb-4">
-                      <CreditCard className="h-6 w-6 text-nollywood-primary" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-3">Secure Payments</h3>
-                    <p className="text-muted-foreground">Our secure escrow payment system protects both parties and ensures transparent transactions.</p>
-                  </CardContent>
-                </Card>
+                <div className="flex flex-col items-center text-center">
+                  <div className="bg-nollywood-secondary/10 p-4 rounded-full mb-4">
+                    <Home className="h-8 w-8 text-nollywood-secondary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">2. Book with Confidence</h3>
+                  <p className="text-muted-foreground">
+                    Review location details, check availability, and submit a booking request. All premium listings are verified by our team.
+                  </p>
+                </div>
                 
-                <Card className="bg-white hover:shadow-md transition-shadow">
-                  <CardContent className="pt-6">
-                    <div className="bg-nollywood-primary/10 w-12 h-12 rounded-full flex items-center justify-center mb-4">
-                      <Users className="h-6 w-6 text-nollywood-primary" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-3">Community Trust</h3>
-                    <p className="text-muted-foreground">Our review system and verification process creates accountability and builds trust within the Nollywood community.</p>
-                  </CardContent>
-                </Card>
+                <div className="flex flex-col items-center text-center">
+                  <div className="bg-nollywood-accent/20 p-4 rounded-full mb-4">
+                    <Clapperboard className="h-8 w-8 text-nollywood-accent" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">3. Shoot Your Film</h3>
+                  <p className="text-muted-foreground">
+                    Arrive at the location, meet the host, and start filming. After your shoot, leave a review to help the community.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="text-center mt-10">
+                <Link to="/filmmakers">
+                  <Button className="bg-nollywood-primary hover:bg-nollywood-primary/90 text-white">
+                    Learn More for Filmmakers
+                  </Button>
+                </Link>
               </div>
             </div>
           </section>
           
-          <section className="py-16 bg-nollywood-dark text-white">
+          {/* For Property Owners */}
+          <section className="py-16 bg-muted/30">
+            <div className="container mx-auto px-4">
+              <div className="text-center mb-12">
+                <h2 className="text-2xl md:text-3xl font-bold mb-4">For Property Owners</h2>
+                <p className="text-lg max-w-3xl mx-auto">
+                  List your property as a filming location and earn additional income.
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="flex flex-col items-center text-center">
+                  <div className="bg-nollywood-primary/10 p-4 rounded-full mb-4">
+                    <Home className="h-8 w-8 text-nollywood-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">1. List Your Property</h3>
+                  <p className="text-muted-foreground">
+                    Create a detailed listing with high-quality photos, description, amenities, and house rules for filming.
+                  </p>
+                </div>
+                
+                <div className="flex flex-col items-center text-center">
+                  <div className="bg-nollywood-secondary/10 p-4 rounded-full mb-4">
+                    <ThumbsUp className="h-8 w-8 text-nollywood-secondary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">2. Approve Bookings</h3>
+                  <p className="text-muted-foreground">
+                    Review booking requests from filmmakers and approve those that match your requirements and availability.
+                  </p>
+                </div>
+                
+                <div className="flex flex-col items-center text-center">
+                  <div className="bg-nollywood-accent/20 p-4 rounded-full mb-4">
+                    <DollarSign className="h-8 w-8 text-nollywood-accent" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">3. Earn Income</h3>
+                  <p className="text-muted-foreground">
+                    Host the film crew and receive payment securely through our platform once the filming is complete.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="text-center mt-10">
+                <Link to="/homeowners">
+                  <Button className="bg-nollywood-primary hover:bg-nollywood-primary/90 text-white">
+                    Learn More for Property Owners
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </section>
+          
+          {/* Trust & Safety */}
+          <section className="py-16">
+            <div className="container mx-auto px-4">
+              <div className="text-center mb-12">
+                <h2 className="text-2xl md:text-3xl font-bold mb-4">Trust & Safety</h2>
+                <p className="text-lg max-w-3xl mx-auto">
+                  Film Loca is built on a foundation of trust and safety for both filmmakers and property owners.
+                </p>
+              </div>
+              
+              <div className="flex flex-col md:flex-row items-center gap-10">
+                <div className="md:w-1/2">
+                  <ul className="space-y-6">
+                    <li className="flex items-start">
+                      <Shield className="h-6 w-6 text-nollywood-primary mr-3 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <h3 className="font-semibold mb-1">Verified Listings</h3>
+                        <p className="text-muted-foreground">All premium listings are physically verified by our team to ensure accuracy.</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <Shield className="h-6 w-6 text-nollywood-primary mr-3 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <h3 className="font-semibold mb-1">Secure Payments</h3>
+                        <p className="text-muted-foreground">Payments are processed securely and held until the filming is completed.</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <Shield className="h-6 w-6 text-nollywood-primary mr-3 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <h3 className="font-semibold mb-1">Insurance Requirements</h3>
+                        <p className="text-muted-foreground">We ensure filmmakers have appropriate insurance coverage for their shoots.</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <Shield className="h-6 w-6 text-nollywood-primary mr-3 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <h3 className="font-semibold mb-1">User Verification</h3>
+                        <p className="text-muted-foreground">We verify the identity of both filmmakers and property owners to create a trusted community.</p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div className="md:w-1/2">
+                  <img 
+                    src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
+                    alt="Film crew collaboration" 
+                    className="rounded-lg shadow-xl"
+                  />
+                </div>
+              </div>
+              
+              <div className="text-center mt-10">
+                <Link to="/safety">
+                  <Button className="bg-nollywood-primary hover:bg-nollywood-primary/90 text-white">
+                    Learn More About Safety
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </section>
+          
+          {/* Fees & Pricing */}
+          <section className="py-16 bg-muted/30">
+            <div className="container mx-auto px-4">
+              <div className="text-center mb-12">
+                <h2 className="text-2xl md:text-3xl font-bold mb-4">Fees & Pricing</h2>
+                <p className="text-lg max-w-3xl mx-auto">
+                  Transparent pricing with no hidden fees.
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div className="bg-white p-8 rounded-lg shadow-sm">
+                  <div className="flex items-center mb-4">
+                    <Clapperboard className="h-8 w-8 text-nollywood-primary mr-3" />
+                    <h3 className="text-xl font-semibold">For Filmmakers</h3>
+                  </div>
+                  
+                  <ul className="space-y-4">
+                    <li className="flex justify-between">
+                      <span>Service Fee</span>
+                      <span className="font-semibold">10% of booking</span>
+                    </li>
+                    <li className="flex justify-between">
+                      <span>Booking Processing</span>
+                      <span className="font-semibold">Free</span>
+                    </li>
+                    <li className="flex justify-between">
+                      <span>Cancellation Fee</span>
+                      <span className="font-semibold">Varies by policy</span>
+                    </li>
+                    <li className="flex justify-between">
+                      <span>Account Creation</span>
+                      <span className="font-semibold">Free</span>
+                    </li>
+                  </ul>
+                  
+                  <p className="text-sm text-muted-foreground mt-6">
+                    The service fee helps us maintain the platform, verify listings, and provide customer support.
+                  </p>
+                </div>
+                
+                <div className="bg-white p-8 rounded-lg shadow-sm">
+                  <div className="flex items-center mb-4">
+                    <Home className="h-8 w-8 text-nollywood-primary mr-3" />
+                    <h3 className="text-xl font-semibold">For Property Owners</h3>
+                  </div>
+                  
+                  <ul className="space-y-4">
+                    <li className="flex justify-between">
+                      <span>Listing Fee</span>
+                      <span className="font-semibold">Free</span>
+                    </li>
+                    <li className="flex justify-between">
+                      <span>Commission</span>
+                      <span className="font-semibold">3% of booking</span>
+                    </li>
+                    <li className="flex justify-between">
+                      <span>Property Verification</span>
+                      <span className="font-semibold">Free</span>
+                    </li>
+                    <li className="flex justify-between">
+                      <span>Premium Listing</span>
+                      <span className="font-semibold">Optional upgrade</span>
+                    </li>
+                  </ul>
+                  
+                  <p className="text-sm text-muted-foreground mt-6">
+                    You only pay when you earn. Our commission is deducted automatically when you receive payment from a filmmaker.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+          
+          {/* FAQ Section */}
+          <section className="py-16">
+            <div className="container mx-auto px-4">
+              <div className="text-center mb-12">
+                <h2 className="text-2xl md:text-3xl font-bold mb-4">Frequently Asked Questions</h2>
+              </div>
+              
+              <div className="max-w-3xl mx-auto">
+                <div className="space-y-6">
+                  <div className="border-b pb-6">
+                    <h3 className="text-lg font-semibold mb-2">How do I book a location?</h3>
+                    <p className="text-muted-foreground">
+                      Browse our listings and select the location you're interested in. Check the availability calendar, then click "Request to Book." The property owner will review your request and confirm if the location is available for your dates.
+                    </p>
+                  </div>
+                  
+                  <div className="border-b pb-6">
+                    <h3 className="text-lg font-semibold mb-2">How much can I earn from my property?</h3>
+                    <p className="text-muted-foreground">
+                      Earnings vary based on your property's size, location, uniqueness, and condition. Typical rates in Lagos range from ₦50,000 to ₦500,000 per day depending on these factors. Visit our <Link to="/homeowners" className="text-nollywood-primary hover:underline">For Property Owners</Link> page for more details.
+                    </p>
+                  </div>
+                  
+                  <div className="border-b pb-6">
+                    <h3 className="text-lg font-semibold mb-2">What insurance is required for filming?</h3>
+                    <p className="text-muted-foreground">
+                      Filmmakers are required to have general liability insurance that covers property damage and personal injury. Some locations may have specific insurance requirements, which will be listed on the location's page.
+                    </p>
+                  </div>
+                  
+                  <div className="border-b pb-6">
+                    <h3 className="text-lg font-semibold mb-2">How are payments handled?</h3>
+                    <p className="text-muted-foreground">
+                      All payments are processed securely through our platform. Filmmakers pay when their booking is confirmed, and funds are released to property owners after the filming is completed.
+                    </p>
+                  </div>
+                  
+                  <div className="border-b pb-6">
+                    <h3 className="text-lg font-semibold mb-2">Can I list multiple properties?</h3>
+                    <p className="text-muted-foreground">
+                      Yes, property owners can list multiple properties on Film Loca. Each property will have its own listing, calendar, and settings.
+                    </p>
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-lg font-semibold mb-2">What if there's damage to my property?</h3>
+                    <p className="text-muted-foreground">
+                      All filmmakers are required to have insurance that covers potential damages. In the event of damage, we have a process to help property owners file claims with the filmmaker's insurance.
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="text-center mt-10">
+                  <Link to="/help">
+                    <Button variant="outline">
+                      View All FAQs
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </section>
+          
+          {/* CTA Section */}
+          <section className="py-16 bg-nollywood-primary text-white">
             <div className="container mx-auto px-4 text-center">
               <h2 className="text-3xl font-bold mb-6">Ready to Get Started?</h2>
-              <p className="text-xl max-w-2xl mx-auto mb-8">Join our growing community of filmmakers and property owners revolutionizing location scouting in Nigeria.</p>
+              <p className="text-xl max-w-2xl mx-auto mb-8">
+                Join Film Loca today and be part of the community connecting filmmakers with amazing filming locations.
+              </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <Link to="/locations">
-                  <Button size="lg" className="bg-nollywood-primary hover:bg-nollywood-primary/90 text-white">
+                  <Button size="lg" variant="outline" className="border-white hover:bg-white/20 text-white">
                     Browse Locations
                   </Button>
                 </Link>
                 <Link to="/list-property">
-                  <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                  <Button size="lg" className="bg-white text-nollywood-primary hover:bg-white/90">
                     List Your Property
                   </Button>
                 </Link>
