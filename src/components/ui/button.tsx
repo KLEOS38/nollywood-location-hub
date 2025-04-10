@@ -21,7 +21,7 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         // Improved light variant for better contrast
         light: "bg-white text-gray-800 hover:bg-gray-100 border border-border shadow-sm",
-        // Improved property variant with high contrast to the background
+        // Improved property variant with higher contrast
         property: "bg-nollywood-secondary text-white hover:bg-nollywood-secondary/90 shadow-sm border border-nollywood-secondary/20 font-semibold",
       },
       size: {

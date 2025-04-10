@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -12,7 +11,7 @@ const Index = () => {
   const featuredLocations = MOCK_LOCATIONS.slice(0, 4);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen page-wrapper">
       <Header />
       
       {/* Hero Section */}
@@ -47,8 +46,8 @@ const Index = () => {
       </section>
       
       {/* Featured Locations */}
-      <section className="py-16 bg-muted/30">
-        <div className="container mx-auto px-4">
+      <section className="py-16 bg-muted/30 content-padding">
+        <div className="container mx-auto">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold">Featured Locations</h2>
             <Link to="/locations" className="flex items-center text-nollywood-primary hover:underline">
@@ -65,8 +64,8 @@ const Index = () => {
       </section>
       
       {/* How It Works */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
+      <section className="py-16 content-padding">
+        <div className="container mx-auto">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">How It Works</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -98,8 +97,8 @@ const Index = () => {
       </section>
       
       {/* Trust & Safety */}
-      <section className="py-16 bg-nollywood-primary/5">
-        <div className="container mx-auto px-4">
+      <section className="py-16 bg-nollywood-primary/5 content-padding">
+        <div className="container mx-auto">
           <div className="flex flex-col md:flex-row items-center gap-10">
             <div className="md:w-1/2">
               <h2 className="text-2xl md:text-3xl font-bold mb-4">We've Got Your Back</h2>
@@ -148,7 +147,7 @@ const Index = () => {
       </section>
       
       {/* CTA */}
-      <section className="py-20 bg-no-repeat bg-cover bg-center relative">
+      <section className="py-20 bg-no-repeat bg-cover bg-center relative content-padding">
         <div className="absolute inset-0 bg-nollywood-dark/90 z-0"></div>
         <div 
           className="absolute inset-0 z-0 bg-cover bg-center opacity-40"
