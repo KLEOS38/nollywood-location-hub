@@ -9,12 +9,43 @@ interface ReviewSectionProps {
 }
 
 const ReviewSection = ({ rating, reviewCount }: ReviewSectionProps) => {
+  // Function to render star ratings with partial fills
+  const renderStarRating = (rating: number, maxStars: number = 5) => {
+    return Array(maxStars).fill(0).map((_, i) => {
+      // For partial stars
+      if (i < Math.floor(rating) && i + 1 > rating) {
+        // This is a partial star (e.g. 4.3 stars would have 4 full stars and 1 partial star)
+        return (
+          <div key={i} className="relative">
+            <Star 
+              className="h-4 w-4 text-gray-300" 
+            />
+            <div className="absolute top-0 left-0 overflow-hidden" style={{ width: `${(rating - Math.floor(rating)) * 100}%` }}>
+              <Star 
+                className="h-4 w-4 fill-yellow-400 text-yellow-400" 
+              />
+            </div>
+          </div>
+        );
+      }
+      
+      return (
+        <Star 
+          key={i} 
+          className={`h-4 w-4 ${i < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`} 
+        />
+      );
+    });
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold">Reviews</h2>
         <div className="flex items-center">
-          <Star className="h-5 w-5 fill-yellow-400 text-yellow-400 mr-1" />
+          <div className="flex mr-2">
+            {renderStarRating(rating)}
+          </div>
           <span className="font-medium">{rating.toFixed(1)}</span>
           <span className="text-muted-foreground ml-1">({reviewCount} reviews)</span>
         </div>
@@ -33,12 +64,7 @@ const ReviewSection = ({ rating, reviewCount }: ReviewSectionProps) => {
             </div>
           </div>
           <div className="flex mb-2">
-            {Array(5).fill(0).map((_, i) => (
-              <Star 
-                key={i} 
-                className={`h-4 w-4 ${i < 5 ? "fill-yellow-400 text-yellow-400" : "text-muted"}`} 
-              />
-            ))}
+            {renderStarRating(5)}
           </div>
           <p className="text-sm">
             Great location for our drama series! The lighting was perfect, and all amenities worked as advertised. The owner was very accommodating with our shooting schedule. Highly recommend for any production.
@@ -56,12 +82,7 @@ const ReviewSection = ({ rating, reviewCount }: ReviewSectionProps) => {
             </div>
           </div>
           <div className="flex mb-2">
-            {Array(5).fill(0).map((_, i) => (
-              <Star 
-                key={i} 
-                className={`h-4 w-4 ${i < 4 ? "fill-yellow-400 text-yellow-400" : "text-muted"}`} 
-              />
-            ))}
+            {renderStarRating(4)}
           </div>
           <p className="text-sm">
             The space was mostly as described. We had a minor issue with the generator, but the host was quick to fix it. The neighborhood was quiet which was great for sound recording.

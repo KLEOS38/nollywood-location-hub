@@ -72,7 +72,7 @@ const Header = () => {
               <Button variant="ghost" className="text-gray-700 hover:text-nollywood-primary">Browse Locations</Button>
             </Link>
             <Link to="/list-property">
-              <Button variant="ghost" className="text-gray-700 hover:text-nollywood-primary">List Your Property</Button>
+              <Button variant="property" className="text-white hover:text-white">List Your Property</Button>
             </Link>
             <Link to="/about">
               <Button variant="ghost" className="text-gray-700 hover:text-nollywood-primary">About Us</Button>
@@ -110,7 +110,7 @@ const Header = () => {
               <Button variant="ghost" className="w-full justify-start text-gray-700">Browse Locations</Button>
             </Link>
             <Link to="/list-property" onClick={toggleMenu}>
-              <Button variant="ghost" className="w-full justify-start text-gray-700">List Your Property</Button>
+              <Button variant="property" className="w-full justify-start text-white">List Your Property</Button>
             </Link>
             <Link to="/about" onClick={toggleMenu}>
               <Button variant="ghost" className="w-full justify-start text-gray-700">About Us</Button>

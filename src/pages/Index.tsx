@@ -36,7 +36,7 @@ const Index = () => {
                   </Button>
                 </Link>
                 <Link to="/list-property">
-                  <Button size="lg" variant="outline" className="bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white/20">
+                  <Button size="lg" variant="property" className="text-white">
                     List Your Property
                   </Button>
                 </Link>
@@ -166,7 +166,7 @@ const Index = () => {
               </Button>
             </Link>
             <Link to="/list-property">
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+              <Button size="lg" variant="property" className="text-white">
                 List Your Property
               </Button>
             </Link>
