@@ -83,7 +83,7 @@
   }
   
   main {
-    @apply px-5 md:px-10;
+    @apply px-5 md:px-5;
   }
   
   section {
@@ -91,7 +91,7 @@
   }
   
   .container {
-    @apply px-5 md:px-10;
+    @apply px-5 md:px-5;
     max-width: 1280px;
     margin: 0 auto;
   }
@@ -131,11 +131,11 @@
 }
 
 .page-content {
-  @apply px-5 sm:px-10;
+  @apply px-5 sm:px-5;
 }
 
 .page-wrapper {
-  @apply max-w-[1440px] mx-auto px-5 md:px-10;
+  @apply max-w-[1440px] mx-auto px-5 md:px-5;
 }
 
 @media (max-width: 640px) {
@@ -164,7 +164,7 @@
 }
 
 .content-padding {
-  @apply px-5 md:px-10;
+  @apply px-5 md:px-5;
 }
 
 ::-webkit-scrollbar {
