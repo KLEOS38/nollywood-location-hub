@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -24,7 +25,7 @@ const Index = () => {
           }}
         ></div>
         <div className="absolute inset-0 z-20 flex items-center">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto">
             <div className="max-w-3xl">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">Find Perfect Locations for Your Film Production</h1>
               <p className="text-xl text-white mb-8">The marketplace that connects filmmakers with verified filming locations across Lagos.</p>
@@ -46,7 +47,7 @@ const Index = () => {
       </section>
       
       {/* Featured Locations */}
-      <section className="py-16 bg-muted/30 content-padding">
+      <section className="py-16 bg-muted/30">
         <div className="container mx-auto">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold">Featured Locations</h2>
@@ -64,7 +65,7 @@ const Index = () => {
       </section>
       
       {/* How It Works */}
-      <section className="py-16 content-padding">
+      <section className="py-16">
         <div className="container mx-auto">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">How It Works</h2>
           
@@ -97,7 +98,7 @@ const Index = () => {
       </section>
       
       {/* Trust & Safety */}
-      <section className="py-16 bg-nollywood-primary/5 content-padding">
+      <section className="py-16 bg-nollywood-primary/5">
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row items-center gap-10">
             <div className="md:w-1/2">
@@ -147,7 +148,7 @@ const Index = () => {
       </section>
       
       {/* CTA */}
-      <section className="py-20 bg-no-repeat bg-cover bg-center relative content-padding">
+      <section className="py-20 bg-no-repeat bg-cover bg-center relative">
         <div className="absolute inset-0 bg-nollywood-dark/90 z-0"></div>
         <div 
           className="absolute inset-0 z-0 bg-cover bg-center opacity-40"
@@ -155,7 +156,7 @@ const Index = () => {
             backgroundImage: "url('https://images.unsplash.com/photo-1472396961693-142e6e269027?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80')" 
           }}
         ></div>
-        <div className="container mx-auto px-4 text-center relative z-10">
+        <div className="container mx-auto text-center relative z-10">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Ready to Find Your Next Filming Location?</h2>
           <p className="text-xl max-w-2xl mx-auto mb-8 text-white">Join hundreds of filmmakers who are discovering perfect filming locations across Lagos.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">

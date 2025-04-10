@@ -83,15 +83,15 @@
   }
   
   main {
-    @apply px-6 md:px-10 lg:px-16;
+    @apply px-5 md:px-10;
   }
   
   section {
-    @apply py-8 md:py-12 lg:py-16 px-4 md:px-6;
+    @apply py-8 md:py-12 lg:py-16;
   }
   
   .container {
-    @apply px-6 md:px-10 lg:px-16;
+    @apply px-5 md:px-10;
     max-width: 1280px;
     margin: 0 auto;
   }
@@ -131,11 +131,11 @@
 }
 
 .page-content {
-  @apply px-4 sm:px-6;
+  @apply px-5 sm:px-10;
 }
 
 .page-wrapper {
-  @apply max-w-[1440px] mx-auto;
+  @apply max-w-[1440px] mx-auto px-5 md:px-10;
 }
 
 @media (max-width: 640px) {
@@ -164,7 +164,7 @@
 }
 
 .content-padding {
-  @apply px-5 md:px-10 lg:px-16;
+  @apply px-5 md:px-10;
 }
 
 ::-webkit-scrollbar {
