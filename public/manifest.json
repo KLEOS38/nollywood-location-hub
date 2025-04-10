@@ -5,6 +5,7 @@
   "description": "Find Perfect Filming Venues in Lagos",
   "start_url": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#F05A28",
   "icons": [
@@ -55,6 +56,26 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "splash_pages": null,
+  "scope": "/",
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Browse Locations",
+      "short_name": "Locations",
+      "description": "Browse all filming locations",
+      "url": "/locations",
+      "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "List Your Property",
+      "short_name": "List Property",
+      "description": "Add your property as a filming location",
+      "url": "/list-property",
+      "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
     }
   ]
 }

@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
     <title>Film Loca | Find Perfect Filming Venues in Lagos</title>
     <meta name="description" content="Discover verified filming locations across Lagos for your Nollywood production. Browse houses, apartments, studios and unique spaces with real filmmaker reviews." />
     <meta name="keywords" content="film locations, movie locations, filming venues, lagos filming venues, nollywood production spaces" />
@@ -31,10 +31,27 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="theme-color" content="#F05A28" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="Film Loca" />
+    <meta name="apple-mobile-web-app-title" content="Film Loca" />
     
-    <!-- PWA manifest and icons -->
-    <link rel="manifest" href="/manifest.json" />
+    <!-- iOS icons -->
     <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-192x192.png" />
+    <link rel="apple-touch-icon" sizes="167x167" href="/icons/icon-152x152.png" />
+    
+    <!-- iOS splash screens -->
+    <link rel="apple-touch-startup-image" href="/icons/splash-640x1136.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" />
+    <link rel="apple-touch-startup-image" href="/icons/splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" />
+    <link rel="apple-touch-startup-image" href="/icons/splash-1242x2208.png" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)" />
+    <link rel="apple-touch-startup-image" href="/icons/splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" />
+    <link rel="apple-touch-startup-image" href="/icons/splash-1536x2048.png" media="(min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-device-pixel-ratio: 2)" />
+    <link rel="apple-touch-startup-image" href="/icons/splash-1668x2224.png" media="(min-device-width: 834px) and (max-device-width: 834px) and (-webkit-device-pixel-ratio: 2)" />
+    <link rel="apple-touch-startup-image" href="/icons/splash-2048x2732.png" media="(min-device-width: 1024px) and (max-device-width: 1024px) and (-webkit-device-pixel-ratio: 2)" />
+    
+    <!-- PWA manifest -->
+    <link rel="manifest" href="/manifest.json" />
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/favicon.ico" />
@@ -62,6 +79,35 @@
               console.log('ServiceWorker registration failed: ', error);
             });
         });
+      }
+      
+      // Add to Home Screen prompt handler
+      let deferredPrompt;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        // Prevent the mini-infobar from appearing on mobile
+        e.preventDefault();
+        // Stash the event so it can be triggered later
+        deferredPrompt = e;
+        // Update UI to notify the user they can install the PWA
+        // You can add your custom UI logic here
+      });
+      
+      // Function to show the install prompt (call this from a button click)
+      function showInstallPrompt() {
+        if (deferredPrompt) {
+          // Show the install prompt
+          deferredPrompt.prompt();
+          // Wait for the user to respond to the prompt
+          deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              console.log('User accepted the install prompt');
+            } else {
+              console.log('User dismissed the install prompt');
+            }
+            // Clear the saved prompt since it can't be used again
+            deferredPrompt = null;
+          });
+        }
       }
     </script>
   </body>

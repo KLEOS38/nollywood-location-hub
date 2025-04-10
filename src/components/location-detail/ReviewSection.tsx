@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Star, Users, MessageSquare } from 'lucide-react';
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ReviewSectionProps {
   rating: number;
@@ -9,6 +10,8 @@ interface ReviewSectionProps {
 }
 
 const ReviewSection = ({ rating, reviewCount }: ReviewSectionProps) => {
+  const isMobile = useIsMobile();
+  
   // Function to render star ratings with partial fills
   const renderStarRating = (rating: number, maxStars: number = 5) => {
     return Array(maxStars).fill(0).map((_, i) => {
@@ -16,13 +19,13 @@ const ReviewSection = ({ rating, reviewCount }: ReviewSectionProps) => {
       if (i < Math.floor(rating) && i + 1 > rating) {
         // This is a partial star (e.g. 4.3 stars would have 4 full stars and 1 partial star)
         return (
-          <div key={i} className="relative">
+          <div key={i} className="relative inline-block">
             <Star 
-              className="h-4 w-4 text-gray-300" 
+              className={`h-4 w-4 text-gray-300 ${isMobile ? 'h-3.5 w-3.5' : ''}`} 
             />
             <div className="absolute top-0 left-0 overflow-hidden" style={{ width: `${(rating - Math.floor(rating)) * 100}%` }}>
               <Star 
-                className="h-4 w-4 fill-yellow-400 text-yellow-400" 
+                className={`h-4 w-4 fill-yellow-400 text-yellow-400 ${isMobile ? 'h-3.5 w-3.5' : ''}`} 
               />
             </div>
           </div>
@@ -32,14 +35,14 @@ const ReviewSection = ({ rating, reviewCount }: ReviewSectionProps) => {
       return (
         <Star 
           key={i} 
-          className={`h-4 w-4 ${i < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`} 
+          className={`h-4 w-4 ${i < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"} ${isMobile ? 'h-3.5 w-3.5' : ''}`} 
         />
       );
     });
   };
 
   return (
-    <div>
+    <div className="p-1">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold">Reviews</h2>
         <div className="flex items-center">
