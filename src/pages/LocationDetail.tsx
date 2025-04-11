@@ -183,22 +183,19 @@ const LocationDetail = () => {
     }
     
     setIsFavorite(!isFavorite);
-    toast({
-      title: isFavorite ? "Removed from favorites" : "Added to favorites",
-      description: isFavorite 
-        ? "This location has been removed from your favorites" 
-        : "This location has been added to your favorites",
-    });
+    
+    if (isFavorite) {
+      toast.success("Removed from favorites");
+    } else {
+      toast.success("Added to favorites");
+    }
     
     // TODO: Implement favorites in database
   };
   
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
-    toast({
-      title: "Link copied!",
-      description: "The link to this location has been copied to your clipboard",
-    });
+    toast.success("Link copied to clipboard!");
   };
 
   return (
