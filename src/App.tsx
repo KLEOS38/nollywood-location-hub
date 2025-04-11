@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import ScrollToTop from "./components/ScrollToTop";
+import { AuthProvider } from "./contexts/AuthContext";
 import Index from "./pages/Index";
 import LocationsPage from "./pages/LocationsPage";
 import LocationDetail from "./pages/LocationDetail";
@@ -43,48 +44,50 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <HelmetProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <ScrollToTop />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/locations" element={<LocationsPage />} />
-            <Route path="/locations/:id" element={<LocationDetail />} />
-            <Route path="/auth" element={<AuthPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/list-property" element={<ListPropertyPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            
-            {/* Support Pages */}
-            <Route path="/help" element={<HelpCenter />} />
-            <Route path="/safety" element={<SafetyInfo />} />
-            <Route path="/cancellation" element={<CancellationOptions />} />
-            <Route path="/covid" element={<CovidGuidelines />} />
-            
-            {/* Community Pages */}
-            <Route path="/filmmakers" element={<ForFilmmakers />} />
-            <Route path="/homeowners" element={<ForPropertyOwners />} />
-            <Route path="/forum" element={<CommunityForum />} />
-            <Route path="/resources" element={<FilmingResources />} />
-            
-            {/* About Pages */}
-            <Route path="/how-it-works" element={<HowItWorks />} />
-            <Route path="/news" element={<Newsroom />} />
-            <Route path="/investors" element={<Investors />} />
-            <Route path="/careers" element={<Careers />} />
-            
-            {/* Legal Pages */}
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/sitemap" element={<Sitemap />} />
-            
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <ScrollToTop />
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/locations" element={<LocationsPage />} />
+              <Route path="/locations/:id" element={<LocationDetail />} />
+              <Route path="/auth" element={<AuthPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/list-property" element={<ListPropertyPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              
+              {/* Support Pages */}
+              <Route path="/help" element={<HelpCenter />} />
+              <Route path="/safety" element={<SafetyInfo />} />
+              <Route path="/cancellation" element={<CancellationOptions />} />
+              <Route path="/covid" element={<CovidGuidelines />} />
+              
+              {/* Community Pages */}
+              <Route path="/filmmakers" element={<ForFilmmakers />} />
+              <Route path="/homeowners" element={<ForPropertyOwners />} />
+              <Route path="/forum" element={<CommunityForum />} />
+              <Route path="/resources" element={<FilmingResources />} />
+              
+              {/* About Pages */}
+              <Route path="/how-it-works" element={<HowItWorks />} />
+              <Route path="/news" element={<Newsroom />} />
+              <Route path="/investors" element={<Investors />} />
+              <Route path="/careers" element={<Careers />} />
+              
+              {/* Legal Pages */}
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/sitemap" element={<Sitemap />} />
+              
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </AuthProvider>
     </HelmetProvider>
   </QueryClientProvider>
 );

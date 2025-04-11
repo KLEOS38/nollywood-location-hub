@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { z } from 'zod';
@@ -15,6 +15,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { useAuth } from '@/contexts/AuthContext';
 
 // Define form schemas
 const loginSchema = z.object({
@@ -41,8 +42,16 @@ type SignupFormValues = z.infer<typeof signupSchema>;
 const AuthPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { signIn, signUp, user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const initialTab = location.search.includes('listing') ? 'signup' : 'login';
+
+  useEffect(() => {
+    // If user is already logged in, redirect to profile
+    if (user) {
+      navigate('/profile');
+    }
+  }, [user, navigate]);
 
   // Login form
   const loginForm = useForm<LoginFormValues>({
@@ -65,47 +74,39 @@ const AuthPage = () => {
     },
   });
 
-  const onLogin = (values: LoginFormValues) => {
+  const onLogin = async (values: LoginFormValues) => {
     setIsLoading(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      // Store user data in localStorage for demonstration purposes
-      localStorage.setItem('user', JSON.stringify({
-        email: values.email,
-        isLoggedIn: true,
-        // In a real app, you would have more data from the backend
-      }));
-      
-      toast.success("Login successful!");
+    try {
+      await signIn(values.email, values.password);
       navigate('/profile');
-    }, 1500);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const onSignup = (values: SignupFormValues) => {
+  const onSignup = async (values: SignupFormValues) => {
     setIsLoading(true);
     
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      await signUp(
+        values.email, 
+        values.password, 
+        {
+          name: values.name,
+          full_name: values.name,
+          user_type: values.userType
+        }
+      );
+      
+      // Wait for redirect in useEffect when auth state changes
+    } catch (error) {
+      console.error(error);
+    } finally {
       setIsLoading(false);
-      // Store user data in localStorage for demonstration purposes
-      localStorage.setItem('user', JSON.stringify({
-        name: values.name,
-        email: values.email,
-        userType: values.userType,
-        isLoggedIn: true,
-        // In a real app, you would have more data from the backend
-      }));
-      
-      toast.success("Account created successfully!");
-      
-      if (values.userType === "homeowner") {
-        navigate('/list-property');
-      } else {
-        navigate('/profile');
-      }
-    }, 1500);
+    }
   };
 
   return (

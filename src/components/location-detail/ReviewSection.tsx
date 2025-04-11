@@ -1,103 +1,260 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Star, Users, MessageSquare } from 'lucide-react';
-import { useIsMobile } from "@/hooks/use-mobile";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import { useNavigate } from 'react-router-dom';
+import { Star } from 'lucide-react';
+import { toast } from 'sonner';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
 
 interface ReviewSectionProps {
   rating: number;
   reviewCount: number;
+  propertyId: string;
 }
 
-const ReviewSection = ({ rating, reviewCount }: ReviewSectionProps) => {
-  const isMobile = useIsMobile();
+const ReviewSection = ({ rating, reviewCount, propertyId }: ReviewSectionProps) => {
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [userReview, setUserReview] = useState("");
+  const [userRating, setUserRating] = useState(5);
+  const [canReview, setCanReview] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { user } = useAuth();
+  const navigate = useNavigate();
   
-  // Function to render star ratings with partial fills
-  const renderStarRating = (rating: number, maxStars: number = 5) => {
-    return Array(maxStars).fill(0).map((_, i) => {
-      // For partial stars
-      if (i < Math.floor(rating) && i + 1 > rating) {
-        // This is a partial star (e.g. 4.3 stars would have 4 full stars and 1 partial star)
-        return (
-          <div key={i} className="relative inline-block">
-            <Star 
-              className={`h-4 w-4 text-gray-300 ${isMobile ? 'h-3.5 w-3.5' : ''}`} 
-            />
-            <div className="absolute top-0 left-0 overflow-hidden" style={{ width: `${(rating - Math.floor(rating)) * 100}%` }}>
-              <Star 
-                className={`h-4 w-4 fill-yellow-400 text-yellow-400 ${isMobile ? 'h-3.5 w-3.5' : ''}`} 
+  // Load reviews and check if user can review
+  useEffect(() => {
+    const fetchReviews = async () => {
+      setIsLoading(true);
+      
+      try {
+        // Get published reviews for this property
+        const { data: reviewsData, error: reviewsError } = await supabase
+          .from('reviews')
+          .select(`
+            *,
+            profiles:user_id(name, avatar_url)
+          `)
+          .eq('property_id', propertyId)
+          .eq('is_published', true)
+          .order('created_at', { ascending: false });
+        
+        if (reviewsError) throw reviewsError;
+        
+        setReviews(reviewsData || []);
+        
+        // Check if user can leave a review (must have a completed booking)
+        if (user) {
+          const { data: bookingsData, error: bookingsError } = await supabase
+            .from('bookings')
+            .select('id')
+            .eq('property_id', propertyId)
+            .eq('user_id', user.id)
+            .eq('status', 'completed')
+            .limit(1);
+          
+          if (bookingsError) throw bookingsError;
+          
+          // Check if the user has already left a review
+          const { data: existingReview, error: reviewError } = await supabase
+            .from('reviews')
+            .select('id')
+            .eq('property_id', propertyId)
+            .eq('user_id', user.id)
+            .limit(1);
+          
+          if (reviewError) throw reviewError;
+          
+          // User can review if they have a completed booking and haven't already reviewed
+          setCanReview(bookingsData?.length > 0 && !existingReview?.length);
+        }
+      } catch (error) {
+        console.error("Error loading reviews:", error);
+        // Fallback to mock data or empty state
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchReviews();
+  }, [propertyId, user]);
+  
+  const handleSubmitReview = async () => {
+    if (!user) {
+      toast.error("Please sign in to leave a review");
+      navigate('/auth');
+      return;
+    }
+    
+    if (userReview.trim() === "") {
+      toast.error("Please enter a review comment");
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    try {
+      // Get the user's booking ID
+      const { data: booking, error: bookingError } = await supabase
+        .from('bookings')
+        .select('id')
+        .eq('property_id', propertyId)
+        .eq('user_id', user.id)
+        .eq('status', 'completed')
+        .limit(1)
+        .single();
+      
+      if (bookingError) throw bookingError;
+      
+      // Submit the review
+      const { error: reviewError } = await supabase
+        .from('reviews')
+        .insert({
+          property_id: propertyId,
+          user_id: user.id,
+          booking_id: booking.id,
+          rating: userRating,
+          comment: userReview,
+          is_published: true
+        });
+      
+      if (reviewError) throw reviewError;
+      
+      toast.success("Review submitted successfully!");
+      
+      // Clear the form
+      setUserReview("");
+      setUserRating(5);
+      setCanReview(false);
+      
+      // Reload reviews to show the new one
+      const { data: updatedReviews } = await supabase
+        .from('reviews')
+        .select(`
+          *,
+          profiles:user_id(name, avatar_url)
+        `)
+        .eq('property_id', propertyId)
+        .eq('is_published', true)
+        .order('created_at', { ascending: false });
+      
+      setReviews(updatedReviews || []);
+      
+    } catch (error) {
+      console.error("Error submitting review:", error);
+      toast.error("Failed to submit review");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  
+  return (
+    <Card className="mt-8">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          Reviews 
+          <div className="flex items-center text-sm font-normal">
+            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
+            <span className="mr-1">{rating.toFixed(1)}</span>
+            <span className="text-muted-foreground">({reviewCount} reviews)</span>
+          </div>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {canReview && (
+          <div className="mb-8 border-b pb-6">
+            <h3 className="text-lg font-medium mb-4">Write a Review</h3>
+            <div className="mb-4">
+              <div className="flex items-center mb-2">
+                <span className="mr-2">Rating:</span>
+                <div className="flex">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => setUserRating(star)}
+                      className="focus:outline-none"
+                    >
+                      <Star
+                        className={`h-5 w-5 ${
+                          star <= userRating
+                            ? "fill-yellow-400 text-yellow-400"
+                            : "text-gray-300"
+                        }`}
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <Textarea
+                value={userReview}
+                onChange={(e) => setUserReview(e.target.value)}
+                placeholder="Share your experience with this location..."
+                className="min-h-24"
               />
             </div>
+            <Button 
+              onClick={handleSubmitReview} 
+              disabled={isSubmitting || userReview.trim() === ""}
+            >
+              {isSubmitting ? "Submitting..." : "Submit Review"}
+            </Button>
           </div>
-        );
-      }
-      
-      return (
-        <Star 
-          key={i} 
-          className={`h-4 w-4 ${i < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"} ${isMobile ? 'h-3.5 w-3.5' : ''}`} 
-        />
-      );
-    });
-  };
+        )}
 
-  return (
-    <div className="p-1">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold">Reviews</h2>
-        <div className="flex items-center">
-          <div className="flex mr-2">
-            {renderStarRating(rating)}
+        {isLoading ? (
+          <div className="py-4 text-center">Loading reviews...</div>
+        ) : reviews.length > 0 ? (
+          <div className="space-y-6">
+            {reviews.map((review) => (
+              <div key={review.id} className="border-b pb-4 last:border-b-0">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="h-10 w-10 rounded-full bg-muted overflow-hidden">
+                    {review.profiles?.avatar_url ? (
+                      <img 
+                        src={review.profiles.avatar_url} 
+                        alt={review.profiles.name || "User"} 
+                        className="object-cover w-full h-full"
+                      />
+                    ) : (
+                      <div className="h-full w-full flex items-center justify-center text-sm font-medium">
+                        {(review.profiles?.name || "U").charAt(0)}
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <p className="font-medium">{review.profiles?.name || "User"}</p>
+                    <div className="flex items-center">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`h-3 w-3 ${
+                            i < review.rating 
+                              ? "fill-yellow-400 text-yellow-400" 
+                              : "text-gray-300"
+                          }`}
+                        />
+                      ))}
+                      <span className="text-xs text-muted-foreground ml-2">
+                        {new Date(review.created_at).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-sm">{review.comment}</p>
+              </div>
+            ))}
           </div>
-          <span className="font-medium">{rating.toFixed(1)}</span>
-          <span className="text-muted-foreground ml-1">({reviewCount} reviews)</span>
-        </div>
-      </div>
-      
-      {/* Reviews preview */}
-      <div className="space-y-4 mb-4">
-        <div className="p-4 rounded-lg border">
-          <div className="flex items-center mb-2">
-            <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center mr-3">
-              <Users size={20} className="text-muted-foreground" />
-            </div>
-            <div>
-              <h4 className="font-medium">Chioma Okeke</h4>
-              <p className="text-xs text-muted-foreground">2 months ago</p>
-            </div>
+        ) : (
+          <div className="py-4 text-center text-muted-foreground">
+            No reviews yet for this location.
           </div>
-          <div className="flex mb-2">
-            {renderStarRating(5)}
-          </div>
-          <p className="text-sm">
-            Great location for our drama series! The lighting was perfect, and all amenities worked as advertised. The owner was very accommodating with our shooting schedule. Highly recommend for any production.
-          </p>
-        </div>
-        
-        <div className="p-4 rounded-lg border">
-          <div className="flex items-center mb-2">
-            <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center mr-3">
-              <Users size={20} className="text-muted-foreground" />
-            </div>
-            <div>
-              <h4 className="font-medium">Adebayo Johnson</h4>
-              <p className="text-xs text-muted-foreground">4 months ago</p>
-            </div>
-          </div>
-          <div className="flex mb-2">
-            {renderStarRating(4)}
-          </div>
-          <p className="text-sm">
-            The space was mostly as described. We had a minor issue with the generator, but the host was quick to fix it. The neighborhood was quiet which was great for sound recording.
-          </p>
-        </div>
-      </div>
-      
-      <Button variant="outline" className="w-full flex items-center gap-2">
-        <MessageSquare size={16} />
-        Read all {reviewCount} reviews
-      </Button>
-    </div>
+        )}
+      </CardContent>
+    </Card>
   );
 };
 

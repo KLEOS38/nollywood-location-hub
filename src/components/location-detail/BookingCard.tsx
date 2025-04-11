@@ -1,12 +1,16 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from 'sonner';
 import { Calendar, Users, Star } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
 
 interface BookingCardProps {
+  propertyId: string;
   price: number;
   rating: number;
   reviewCount: number;
@@ -14,18 +18,77 @@ interface BookingCardProps {
   setDays: (days: number) => void;
 }
 
-const BookingCard = ({ price, rating, reviewCount, days, setDays }: BookingCardProps) => {
+const BookingCard = ({ propertyId, price, rating, reviewCount, days, setDays }: BookingCardProps) => {
   const [bookingDate, setBookingDate] = useState("");
-  const [teamSize, setTeamSize] = useState("");
-  const { toast } = useToast();
+  const [teamSize, setTeamSize] = useState("1");
+  const [isLoading, setIsLoading] = useState(false);
+  const { user } = useAuth();
+  const navigate = useNavigate();
   
   const totalPrice = price * days;
   
-  const handleBookNow = () => {
-    toast({
-      title: "Booking request sent!",
-      description: "The property owner will contact you shortly to confirm availability.",
-    });
+  const handleBookNow = async () => {
+    if (!user) {
+      toast.error("Please sign in to book this location");
+      navigate('/auth');
+      return;
+    }
+    
+    if (!bookingDate) {
+      toast.error("Please select a start date");
+      return;
+    }
+    
+    setIsLoading(true);
+    
+    try {
+      // Calculate end date
+      const startDate = new Date(bookingDate);
+      const endDate = new Date(startDate);
+      endDate.setDate(endDate.getDate() + days);
+      
+      // Check availability first
+      const { data: isAvailable } = await supabase.rpc('is_property_available', {
+        property_id: propertyId,
+        check_in: bookingDate,
+        check_out: endDate.toISOString().split('T')[0]
+      });
+      
+      if (!isAvailable) {
+        toast.error("This property is not available for the selected dates");
+        setIsLoading(false);
+        return;
+      }
+      
+      // Call our payment function
+      const { data, error } = await supabase.functions.invoke('create-payment', {
+        body: {
+          propertyId,
+          startDate: bookingDate,
+          endDate: endDate.toISOString().split('T')[0],
+          totalPrice,
+          teamSize: parseInt(teamSize),
+          notes: ""
+        }
+      });
+      
+      if (error) {
+        console.error("Payment error:", error);
+        toast.error("Failed to process booking");
+        return;
+      }
+      
+      toast.success("Booking confirmed! The property owner will contact you shortly.");
+      // Reset form
+      setBookingDate("");
+      setTeamSize("1");
+      
+    } catch (error) {
+      console.error("Booking error:", error);
+      toast.error("An error occurred while processing your booking");
+    } finally {
+      setIsLoading(false);
+    }
   };
   
   return (
@@ -52,6 +115,7 @@ const BookingCard = ({ price, rating, reviewCount, days, setDays }: BookingCardP
               value={bookingDate} 
               onChange={(e) => setBookingDate(e.target.value)}
               className="mt-1"
+              min={new Date().toISOString().split('T')[0]} // Prevent past dates
             />
           </div>
         </div>
@@ -65,6 +129,7 @@ const BookingCard = ({ price, rating, reviewCount, days, setDays }: BookingCardP
               placeholder="Number of crew members" 
               value={teamSize} 
               onChange={(e) => setTeamSize(e.target.value)}
+              min="1"
               className="mt-1"
             />
           </div>
@@ -94,8 +159,12 @@ const BookingCard = ({ price, rating, reviewCount, days, setDays }: BookingCardP
         <span className="text-xl font-bold">₦{totalPrice.toLocaleString()}</span>
       </div>
       
-      <Button className="w-full mb-3" onClick={handleBookNow}>
-        Book Now
+      <Button 
+        className="w-full mb-3" 
+        onClick={handleBookNow}
+        disabled={isLoading}
+      >
+        {isLoading ? "Processing..." : "Book Now"}
       </Button>
       
       <Button variant="outline" className="w-full">
@@ -103,7 +172,7 @@ const BookingCard = ({ price, rating, reviewCount, days, setDays }: BookingCardP
       </Button>
       
       <div className="mt-6 text-sm text-center text-muted-foreground">
-        You won't be charged yet. Booking will be confirmed after host approval.
+        You won't be charged until the host approves your booking request.
       </div>
     </div>
   );
