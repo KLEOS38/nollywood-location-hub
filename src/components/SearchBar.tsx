@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, MapPin, Home } from 'lucide-react';
+import { Search, MapPin, Home, Building } from 'lucide-react';
 import { MOCK_LOCATIONS } from "@/data/mockLocations";
 import { 
   CommandDialog, 
@@ -22,7 +22,7 @@ interface SearchBarProps {
 }
 
 const SearchBar = ({ 
-  placeholder = "Search for locations...", 
+  placeholder = "Search for filming locations...", 
   onSearch,
   className = "" 
 }: SearchBarProps) => {
@@ -51,7 +51,7 @@ const SearchBar = ({
     if (onSearch) {
       onSearch(searchQuery);
     } else {
-      // Default behavior if no onSearch function is provided
+      // Default behavior: redirect to locations page with search query
       navigate(`/locations?search=${encodeURIComponent(searchQuery)}`);
     }
     setOpen(false);
@@ -73,7 +73,7 @@ const SearchBar = ({
       const allLocations = getLocations();
       const lowerCaseQuery = searchQuery.toLowerCase();
       
-      // Search for locations
+      // Prioritize locations by exact match, then neighborhood, then type
       const locations = allLocations.filter(location => 
         location.title.toLowerCase().includes(lowerCaseQuery) ||
         location.neighborhood.toLowerCase().includes(lowerCaseQuery) ||
@@ -121,7 +121,7 @@ const SearchBar = ({
       <div className={`relative ${className}`}>
         <form onSubmit={handleSearch} className="w-full">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               type="text"
               placeholder={placeholder}
@@ -148,17 +148,17 @@ const SearchBar = ({
       
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput 
-          placeholder="Search locations, neighborhoods, amenities..." 
+          placeholder="Search for filming locations, neighborhoods..." 
           value={searchQuery}
           onValueChange={setSearchQuery}
         />
         <CommandList>
           {(searchResults.length === 0 && neighborhoodResults.length === 0 && typeResults.length === 0) && searchQuery && (
-            <CommandEmpty>No results found for "{searchQuery}"</CommandEmpty>
+            <CommandEmpty>No locations found for "{searchQuery}"</CommandEmpty>
           )}
           
           {searchResults.length > 0 && (
-            <CommandGroup heading="Locations">
+            <CommandGroup heading="Filming Locations">
               {searchResults.slice(0, 5).map((location) => (
                 <CommandItem
                   key={location.id}
@@ -221,7 +221,7 @@ const SearchBar = ({
                       setOpen(false);
                     }}
                   >
-                    <Home className="mr-2 h-4 w-4" />
+                    <Building className="mr-2 h-4 w-4" />
                     <span>{type}</span>
                   </CommandItem>
                 ))}
@@ -238,7 +238,7 @@ const SearchBar = ({
               }}
             >
               <Search className="mr-2 h-4 w-4" />
-              <span>Search all for "{searchQuery}"</span>
+              <span>Search all locations for "{searchQuery}"</span>
             </CommandItem>
             <CommandItem
               onSelect={() => {
@@ -246,8 +246,8 @@ const SearchBar = ({
                 setOpen(false);
               }}
             >
-              <Search className="mr-2 h-4 w-4" />
-              <span>Browse all locations</span>
+              <MapPin className="mr-2 h-4 w-4" />
+              <span>Browse all filming locations</span>
             </CommandItem>
           </CommandGroup>
         </CommandList>
