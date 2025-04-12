@@ -11,7 +11,8 @@ import {
   CommandList, 
   CommandEmpty, 
   CommandGroup, 
-  CommandItem 
+  CommandItem,
+  CommandSeparator
 } from "@/components/ui/command";
 
 interface SearchBarProps {
@@ -28,6 +29,8 @@ const SearchBar = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [open, setOpen] = useState(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [neighborhoodResults, setNeighborhoodResults] = useState<string[]>([]);
+  const [typeResults, setTypeResults] = useState<string[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -70,7 +73,8 @@ const SearchBar = ({
       const allLocations = getLocations();
       const lowerCaseQuery = searchQuery.toLowerCase();
       
-      const results = allLocations.filter(location => 
+      // Search for locations
+      const locations = allLocations.filter(location => 
         location.title.toLowerCase().includes(lowerCaseQuery) ||
         location.neighborhood.toLowerCase().includes(lowerCaseQuery) ||
         location.type.toLowerCase().includes(lowerCaseQuery) ||
@@ -79,9 +83,31 @@ const SearchBar = ({
         ))
       );
       
-      setSearchResults(results);
+      // Search for neighborhoods
+      const neighborhoods = [...new Set(
+        allLocations
+          .map(location => location.neighborhood)
+          .filter(neighborhood => 
+            neighborhood.toLowerCase().includes(lowerCaseQuery)
+          )
+      )];
+      
+      // Search for property types
+      const types = [...new Set(
+        allLocations
+          .map(location => location.type)
+          .filter(type => 
+            type.toLowerCase().includes(lowerCaseQuery)
+          )
+      )];
+      
+      setSearchResults(locations);
+      setNeighborhoodResults(neighborhoods);
+      setTypeResults(types);
     } else {
       setSearchResults([]);
+      setNeighborhoodResults([]);
+      setTypeResults([]);
     }
   }, [searchQuery]);
 
@@ -92,25 +118,33 @@ const SearchBar = ({
 
   return (
     <>
-      <form onSubmit={handleSearch} className={`relative ${className}`}>
-        <Input
-          type="text"
-          placeholder={placeholder}
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-10 pr-20 py-5 h-11 bg-muted/50"
-          onClick={() => setOpen(true)}
-        />
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Button 
-          type="submit"
-          size="sm"
-          variant="ghost"
-          className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 hover:bg-muted"
-        >
-          Search
-        </Button>
-      </form>
+      <div className={`relative ${className}`}>
+        <form onSubmit={handleSearch} className="w-full">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder={placeholder}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 pr-20 py-5 h-11 bg-muted/50"
+              onClick={() => setOpen(true)}
+            />
+            <Button 
+              type="submit"
+              size="sm"
+              variant="ghost"
+              className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 hover:bg-muted"
+            >
+              Search
+            </Button>
+          </div>
+        </form>
+        
+        <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-xs text-muted-foreground hidden md:block">
+          Press <kbd className="border border-gray-200 rounded px-1">⌘</kbd> + <kbd className="border border-gray-200 rounded px-1">K</kbd>
+        </div>
+      </div>
       
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput 
@@ -119,12 +153,13 @@ const SearchBar = ({
           onValueChange={setSearchQuery}
         />
         <CommandList>
-          {searchResults.length === 0 && searchQuery && (
+          {(searchResults.length === 0 && neighborhoodResults.length === 0 && typeResults.length === 0) && searchQuery && (
             <CommandEmpty>No results found for "{searchQuery}"</CommandEmpty>
           )}
+          
           {searchResults.length > 0 && (
             <CommandGroup heading="Locations">
-              {searchResults.map((location) => (
+              {searchResults.slice(0, 5).map((location) => (
                 <CommandItem
                   key={location.id}
                   onSelect={() => {
@@ -153,18 +188,68 @@ const SearchBar = ({
               ))}
             </CommandGroup>
           )}
-          {searchQuery && (
-            <CommandGroup>
-              <CommandItem
-                onSelect={() => {
-                  navigate(`/locations?search=${encodeURIComponent(searchQuery)}`);
-                  setOpen(false);
-                }}
-              >
-                <span>View all results for "{searchQuery}"</span>
-              </CommandItem>
-            </CommandGroup>
+          
+          {neighborhoodResults.length > 0 && (
+            <>
+              {searchResults.length > 0 && <CommandSeparator />}
+              <CommandGroup heading="Neighborhoods">
+                {neighborhoodResults.map((neighborhood) => (
+                  <CommandItem
+                    key={neighborhood}
+                    onSelect={() => {
+                      navigate(`/locations?search=${encodeURIComponent(neighborhood)}`);
+                      setOpen(false);
+                    }}
+                  >
+                    <MapPin className="mr-2 h-4 w-4" />
+                    <span>{neighborhood}</span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </>
           )}
+          
+          {typeResults.length > 0 && (
+            <>
+              {(searchResults.length > 0 || neighborhoodResults.length > 0) && <CommandSeparator />}
+              <CommandGroup heading="Property Types">
+                {typeResults.map((type) => (
+                  <CommandItem
+                    key={type}
+                    onSelect={() => {
+                      navigate(`/locations?search=${encodeURIComponent(type)}`);
+                      setOpen(false);
+                    }}
+                  >
+                    <Home className="mr-2 h-4 w-4" />
+                    <span>{type}</span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </>
+          )}
+          
+          <CommandSeparator />
+          <CommandGroup>
+            <CommandItem
+              onSelect={() => {
+                navigate(`/locations?search=${encodeURIComponent(searchQuery)}`);
+                setOpen(false);
+              }}
+            >
+              <Search className="mr-2 h-4 w-4" />
+              <span>Search all for "{searchQuery}"</span>
+            </CommandItem>
+            <CommandItem
+              onSelect={() => {
+                navigate(`/locations`);
+                setOpen(false);
+              }}
+            >
+              <Search className="mr-2 h-4 w-4" />
+              <span>Browse all locations</span>
+            </CommandItem>
+          </CommandGroup>
         </CommandList>
       </CommandDialog>
     </>

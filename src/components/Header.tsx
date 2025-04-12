@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
@@ -24,6 +25,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from '@/contexts/AuthContext';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import SearchBar from "@/components/SearchBar";
+import { MOCK_LOCATIONS } from "@/data/mockLocations";
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -74,6 +77,11 @@ const Header = () => {
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
   };
 
+  const handleSearch = (query: string) => {
+    navigate(`/locations?search=${encodeURIComponent(query)}`);
+    closeMobileMenu();
+  };
+
   return (
     <header className={`sticky top-0 z-40 w-full ${isScrolled ? 'bg-white/95 shadow-sm backdrop-blur-md' : 'bg-white'} transition-all duration-200`}>
       <div className="max-w-[1440px] mx-auto">
@@ -82,10 +90,15 @@ const Header = () => {
             <span className="text-xl font-bold">Film<span className="text-primary">Loca</span></span>
           </Link>
           
+          <div className="hidden md:flex items-center space-x-4 flex-1 max-w-md mx-4">
+            <SearchBar 
+              placeholder="Search locations, areas, amenities..." 
+              onSearch={handleSearch}
+              className="w-full"
+            />
+          </div>
+          
           <nav className="hidden md:flex items-center space-x-4 lg:space-x-6">
-            <Link to="/" className="text-sm font-medium transition-colors hover:text-primary">
-              Home
-            </Link>
             <Link to="/locations" className="text-sm font-medium transition-colors hover:text-primary">
               Browse Locations
             </Link>
@@ -181,13 +194,14 @@ const Header = () => {
       {isMobileMenuOpen && (
         <div className="fixed inset-0 top-16 z-50 bg-white md:hidden overflow-y-auto">
           <div className="flex flex-col p-6 space-y-4">
-            <Link 
-              to="/" 
-              className="flex items-center py-3 text-base hover:text-primary" 
-              onClick={closeMobileMenu}
-            >
-              Home
-            </Link>
+            <div className="mb-2">
+              <SearchBar 
+                placeholder="Search locations, areas, amenities..." 
+                onSearch={handleSearch}
+                className="w-full"
+              />
+            </div>
+            
             <Link 
               to="/locations" 
               className="flex items-center py-3 text-base hover:text-primary" 
