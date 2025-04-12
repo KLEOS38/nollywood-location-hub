@@ -1,7 +1,6 @@
 
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
@@ -15,6 +14,8 @@ import ProfilePage from "./pages/ProfilePage";
 import ListPropertyPage from "./pages/ListPropertyPage";
 import AboutPage from "./pages/AboutPage";
 import NotFound from "./pages/NotFound";
+import BookingSuccessPage from "./pages/BookingSuccessPage";
+import BookingCanceledPage from "./pages/BookingCanceledPage";
 
 // Help Center Pages
 import HelpCenter from "./pages/support/HelpCenter";
@@ -57,6 +58,8 @@ const App = () => (
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/list-property" element={<ListPropertyPage />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/booking-success" element={<BookingSuccessPage />} />
+            <Route path="/booking-canceled" element={<BookingCanceledPage />} />
             
             {/* Support Pages */}
             <Route path="/help" element={<HelpCenter />} />

@@ -1,180 +1,308 @@
 
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
-import { Slider } from "@/components/ui/slider";
-import { toast } from 'sonner';
-import { Calendar, Users, Star } from 'lucide-react';
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { CalendarIcon, LoaderCircle } from "lucide-react";
+import { format, addDays, differenceInDays, isWithinInterval, isBefore } from "date-fns";
 import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
+import { toast } from 'sonner';
 
 interface BookingCardProps {
   propertyId: string;
   price: number;
   rating: number;
   reviewCount: number;
-  days: number;
-  setDays: (days: number) => void;
+  days?: number;
+  setDays?: (days: number) => void;
 }
 
-const BookingCard = ({ propertyId, price, rating, reviewCount, days, setDays }: BookingCardProps) => {
-  const [bookingDate, setBookingDate] = useState("");
-  const [teamSize, setTeamSize] = useState("1");
-  const [isLoading, setIsLoading] = useState(false);
+const BookingCard = ({ 
+  propertyId, 
+  price, 
+  rating, 
+  reviewCount,
+  days: externalDays,
+  setDays: setExternalDays
+}: BookingCardProps) => {
+  const [startDate, setStartDate] = useState<Date | undefined>(new Date());
+  const [endDate, setEndDate] = useState<Date | undefined>(addDays(new Date(), externalDays || 1));
+  const [teamSize, setTeamSize] = useState<number>(5);
+  const [notes, setNotes] = useState<string>("");
+  const [isBooking, setIsBooking] = useState<boolean>(false);
+  const [unavailableDates, setUnavailableDates] = useState<{start: Date, end: Date}[]>([]);
   const { user } = useAuth();
   const navigate = useNavigate();
   
-  const totalPrice = price * days;
+  // Calculate days from date range
+  const daysCount = startDate && endDate 
+    ? Math.max(1, differenceInDays(endDate, startDate) + 1) 
+    : externalDays || 1;
+    
+  // Sync with external days state if provided
+  useEffect(() => {
+    if (setExternalDays && daysCount !== externalDays) {
+      setExternalDays(daysCount);
+    }
+  }, [daysCount, externalDays, setExternalDays]);
+  
+  // Fetch unavailable dates
+  useEffect(() => {
+    const fetchUnavailableDates = async () => {
+      try {
+        // Fetch booked dates
+        const { data: bookings, error: bookingsError } = await supabase
+          .from('bookings')
+          .select('start_date, end_date')
+          .eq('property_id', propertyId)
+          .in('status', ['confirmed', 'completed'])
+          .in('payment_status', ['paid', 'completed']);
+          
+        if (bookingsError) throw bookingsError;
+        
+        // Fetch manually blocked dates
+        const { data: unavailability, error: unavailabilityError } = await supabase
+          .from('property_unavailability')
+          .select('start_date, end_date')
+          .eq('property_id', propertyId);
+          
+        if (unavailabilityError) throw unavailabilityError;
+        
+        // Combine both sets of dates
+        const combinedUnavailable = [
+          ...(bookings || []).map(booking => ({
+            start: new Date(booking.start_date),
+            end: new Date(booking.end_date)
+          })),
+          ...(unavailability || []).map(block => ({
+            start: new Date(block.start_date),
+            end: new Date(block.end_date)
+          }))
+        ];
+        
+        setUnavailableDates(combinedUnavailable);
+      } catch (error) {
+        console.error("Error fetching unavailable dates:", error);
+      }
+    };
+    
+    if (propertyId) {
+      fetchUnavailableDates();
+    }
+  }, [propertyId]);
+  
+  // Calculate total price
+  const totalPrice = price * daysCount;
+  
+  // Date picker helper functions
+  const isDateUnavailable = (date: Date) => {
+    // Disable dates in the past
+    if (isBefore(date, new Date())) {
+      return true;
+    }
+    
+    // Check if date falls within any unavailable period
+    return unavailableDates.some(period => 
+      isWithinInterval(date, { start: period.start, end: period.end })
+    );
+  };
+  
+  const handleStartDateSelect = (date: Date | undefined) => {
+    setStartDate(date);
+    // If end date is before new start date, reset it
+    if (date && endDate && isBefore(endDate, date)) {
+      setEndDate(addDays(date, 1));
+    }
+  };
+  
+  const handleEndDateSelect = (date: Date | undefined) => {
+    setEndDate(date);
+  };
   
   const handleBookNow = async () => {
     if (!user) {
-      toast.error("Please sign in to book this location");
+      toast("Please sign in to book this location");
       navigate('/auth');
       return;
     }
     
-    if (!bookingDate) {
-      toast.error("Please select a start date");
+    if (!startDate || !endDate) {
+      toast.error("Please select start and end dates");
       return;
     }
     
-    setIsLoading(true);
+    setIsBooking(true);
     
     try {
-      // Calculate end date
-      const startDate = new Date(bookingDate);
-      const endDate = new Date(startDate);
-      endDate.setDate(endDate.getDate() + days);
-      
-      // Check availability first
-      const { data: isAvailable } = await supabase.rpc('is_property_available', {
-        property_id: propertyId,
-        check_in: bookingDate,
-        check_out: endDate.toISOString().split('T')[0]
-      });
-      
-      if (!isAvailable) {
-        toast.error("This property is not available for the selected dates");
-        setIsLoading(false);
-        return;
-      }
-      
-      // Call our payment function
+      // Call the create-payment function to create a Stripe checkout session
       const { data, error } = await supabase.functions.invoke('create-payment', {
         body: {
           propertyId,
-          startDate: bookingDate,
-          endDate: endDate.toISOString().split('T')[0],
+          startDate: format(startDate, 'yyyy-MM-dd'),
+          endDate: format(endDate, 'yyyy-MM-dd'),
           totalPrice,
-          teamSize: parseInt(teamSize),
-          notes: ""
+          teamSize,
+          notes
         }
       });
       
-      if (error) {
-        console.error("Payment error:", error);
-        toast.error("Failed to process booking");
-        return;
-      }
+      if (error) throw error;
       
-      toast.success("Booking confirmed! The property owner will contact you shortly.");
-      // Reset form
-      setBookingDate("");
-      setTeamSize("1");
-      
+      // Redirect to Stripe Checkout
+      window.location.href = data.url;
     } catch (error) {
       console.error("Booking error:", error);
-      toast.error("An error occurred while processing your booking");
-    } finally {
-      setIsLoading(false);
+      toast.error("Failed to process booking");
+      setIsBooking(false);
     }
   };
   
   return (
-    <div className="sticky top-28 border rounded-lg shadow-sm p-6">
-      <div className="mb-4">
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-2xl font-bold">₦{price.toLocaleString()}</span>
-          <span className="text-muted-foreground">per day</span>
-        </div>
-        <div className="flex items-center">
-          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-          <span>{rating.toFixed(1)}</span>
-          <span className="text-muted-foreground ml-1">({reviewCount} reviews)</span>
-        </div>
-      </div>
-      
-      <div className="mb-6">
-        <div className="flex items-center gap-2 p-3 border rounded-lg mb-3">
-          <Calendar size={20} className="text-muted-foreground" />
-          <div className="flex-1">
-            <div className="text-sm font-medium">Pick a date</div>
-            <Input 
-              type="date" 
-              value={bookingDate} 
-              onChange={(e) => setBookingDate(e.target.value)}
-              className="mt-1"
-              min={new Date().toISOString().split('T')[0]} // Prevent past dates
-            />
-          </div>
-        </div>
-        
-        <div className="flex items-center gap-2 p-3 border rounded-lg mb-3">
-          <Users size={20} className="text-muted-foreground" />
-          <div className="flex-1">
-            <div className="text-sm font-medium">Team size</div>
-            <Input 
-              type="number" 
-              placeholder="Number of crew members" 
-              value={teamSize} 
-              onChange={(e) => setTeamSize(e.target.value)}
-              min="1"
-              className="mt-1"
-            />
-          </div>
-        </div>
-        
-        <div className="flex items-center gap-2 p-3 border rounded-lg">
-          <Calendar size={20} className="text-muted-foreground" />
-          <div className="flex-1">
-            <div className="text-sm font-medium">Number of days</div>
-            <div className="flex items-center gap-2 mt-1">
-              <Slider 
-                value={[days]} 
-                onValueChange={(value) => setDays(value[0])}
-                max={14}
-                min={1}
-                step={1}
-                className="flex-1"
-              />
-              <span className="font-medium w-6 text-center">{days}</span>
+    <Card className="sticky top-8">
+      <CardHeader>
+        <CardTitle>Book This Location</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="flex items-center justify-between">
+          <span className="text-xl font-bold">₦{price.toLocaleString()} / day</span>
+          {rating > 0 && (
+            <div className="flex items-center text-sm">
+              <span className="flex items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-4 h-4 text-yellow-500 mr-1"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                {rating.toFixed(1)}
+              </span>
+              <span className="mx-1">·</span>
+              <span className="text-muted-foreground">{reviewCount} reviews</span>
             </div>
+          )}
+        </div>
+        
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="start-date">Check In</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  id="start-date"
+                  variant="outline"
+                  className="w-full justify-start text-left font-normal"
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {startDate ? format(startDate, "PPP") : "Select date"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  mode="single"
+                  selected={startDate}
+                  onSelect={handleStartDateSelect}
+                  disabled={isDateUnavailable}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="end-date">Check Out</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  id="end-date"
+                  variant="outline"
+                  className="w-full justify-start text-left font-normal"
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {endDate ? format(endDate, "PPP") : "Select date"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  mode="single"
+                  selected={endDate}
+                  onSelect={handleEndDateSelect}
+                  disabled={(date) => 
+                    isDateUnavailable(date) || 
+                    (startDate ? isBefore(date, startDate) : false)
+                  }
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
           </div>
         </div>
-      </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="team-size">Team Size</Label>
+          <Input
+            id="team-size"
+            type="number"
+            min={1}
+            max={100}
+            value={teamSize}
+            onChange={(e) => setTeamSize(parseInt(e.target.value) || 1)}
+          />
+          <p className="text-xs text-muted-foreground">Number of people in your filming team</p>
+        </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="notes">Additional Notes</Label>
+          <Textarea
+            id="notes"
+            placeholder="Tell the host about your project and any special requirements..."
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+          />
+        </div>
+        
+        <div className="pt-4 border-t">
+          <div className="flex justify-between mb-2">
+            <span>₦{price.toLocaleString()} x {daysCount} days</span>
+            <span>₦{totalPrice.toLocaleString()}</span>
+          </div>
+          
+          <div className="flex justify-between font-bold text-lg mt-4 pt-4 border-t">
+            <span>Total</span>
+            <span>₦{totalPrice.toLocaleString()}</span>
+          </div>
+        </div>
+      </CardContent>
       
-      <div className="flex justify-between items-center border-t border-b py-3 mb-4">
-        <span className="font-medium">Total</span>
-        <span className="text-xl font-bold">₦{totalPrice.toLocaleString()}</span>
-      </div>
-      
-      <Button 
-        className="w-full mb-3" 
-        onClick={handleBookNow}
-        disabled={isLoading}
-      >
-        {isLoading ? "Processing..." : "Book Now"}
-      </Button>
-      
-      <Button variant="outline" className="w-full">
-        Contact Host
-      </Button>
-      
-      <div className="mt-6 text-sm text-center text-muted-foreground">
-        You won't be charged until the host approves your booking request.
-      </div>
-    </div>
+      <CardFooter>
+        <Button 
+          className="w-full" 
+          size="lg" 
+          onClick={handleBookNow}
+          disabled={isBooking}
+        >
+          {isBooking ? (
+            <>
+              <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+              Processing...
+            </>
+          ) : (
+            "Book Now"
+          )}
+        </Button>
+      </CardFooter>
+    </Card>
   );
 };
 

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from 'react-router-dom';
-import { Star } from 'lucide-react';
+import { Star, LoaderCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
@@ -20,8 +20,13 @@ const ReviewSection = ({ rating, reviewCount, propertyId }: ReviewSectionProps) 
   const [userReview, setUserReview] = useState("");
   const [userRating, setUserRating] = useState(5);
   const [canReview, setCanReview] = useState(false);
+  const [bookingId, setBookingId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [verificationStatus, setVerificationStatus] = useState<{
+    hasCompletedBooking: boolean;
+    hasReviewed: boolean;
+  } | null>(null);
   const { user } = useAuth();
   const navigate = useNavigate();
   
@@ -46,36 +51,74 @@ const ReviewSection = ({ rating, reviewCount, propertyId }: ReviewSectionProps) 
         
         setReviews(reviewsData || []);
         
-        // Check if user can leave a review (must have a completed booking)
+        // Check if user can leave a review using edge function
         if (user) {
-          const { data: bookingsData, error: bookingsError } = await supabase
-            .from('bookings')
-            .select('id')
-            .eq('property_id', propertyId)
-            .eq('user_id', user.id)
-            .eq('status', 'completed')
-            .limit(1);
-          
-          if (bookingsError) throw bookingsError;
-          
-          // Check if the user has already left a review
-          const { data: existingReview, error: reviewError } = await supabase
-            .from('reviews')
-            .select('id')
-            .eq('property_id', propertyId)
-            .eq('user_id', user.id)
-            .limit(1);
-          
-          if (reviewError) throw reviewError;
-          
-          // User can review if they have a completed booking and haven't already reviewed
-          setCanReview(bookingsData?.length > 0 && !existingReview?.length);
+          try {
+            const { data, error } = await supabase.functions.invoke('verify-booking', {
+              body: { propertyId }
+            });
+            
+            if (error) throw error;
+            
+            setCanReview(data.canReview);
+            setBookingId(data.bookingId);
+            setVerificationStatus({
+              hasCompletedBooking: data.hasCompletedBooking,
+              hasReviewed: data.hasReviewed
+            });
+          } catch (error) {
+            console.error("Error verifying booking:", error);
+            // Fallback to database check
+            checkBookingInDatabase();
+          }
         }
       } catch (error) {
         console.error("Error loading reviews:", error);
-        // Fallback to mock data or empty state
+        // Fallback to database check if edge function fails
+        if (user) {
+          checkBookingInDatabase();
+        }
       } finally {
         setIsLoading(false);
+      }
+    };
+    
+    // Fallback to direct database check if edge function is not available
+    const checkBookingInDatabase = async () => {
+      try {
+        // Check if user has a completed booking
+        const { data: bookingsData, error: bookingsError } = await supabase
+          .from('bookings')
+          .select('id')
+          .eq('property_id', propertyId)
+          .eq('user_id', user?.id)
+          .eq('status', 'completed')
+          .limit(1);
+        
+        if (bookingsError) throw bookingsError;
+        
+        // Check if the user has already left a review
+        const { data: existingReview, error: reviewError } = await supabase
+          .from('reviews')
+          .select('id')
+          .eq('property_id', propertyId)
+          .eq('user_id', user?.id)
+          .limit(1);
+        
+        if (reviewError) throw reviewError;
+        
+        // User can review if they have a completed booking and haven't already reviewed
+        const hasCompletedBooking = bookingsData && bookingsData.length > 0;
+        const hasReviewed = existingReview && existingReview.length > 0;
+        
+        setCanReview(hasCompletedBooking && !hasReviewed);
+        setBookingId(hasCompletedBooking ? bookingsData[0].id : null);
+        setVerificationStatus({
+          hasCompletedBooking,
+          hasReviewed
+        });
+      } catch (error) {
+        console.error("Error checking booking in database:", error);
       }
     };
     
@@ -94,28 +137,21 @@ const ReviewSection = ({ rating, reviewCount, propertyId }: ReviewSectionProps) 
       return;
     }
     
+    if (!bookingId) {
+      toast.error("You must have completed a booking to leave a review");
+      return;
+    }
+    
     setIsSubmitting(true);
     
     try {
-      // Get the user's booking ID
-      const { data: booking, error: bookingError } = await supabase
-        .from('bookings')
-        .select('id')
-        .eq('property_id', propertyId)
-        .eq('user_id', user.id)
-        .eq('status', 'completed')
-        .limit(1)
-        .single();
-      
-      if (bookingError) throw bookingError;
-      
       // Submit the review
       const { error: reviewError } = await supabase
         .from('reviews')
         .insert({
           property_id: propertyId,
           user_id: user.id,
-          booking_id: booking.id,
+          booking_id: bookingId,
           rating: userRating,
           comment: userReview,
           is_published: true
@@ -129,6 +165,7 @@ const ReviewSection = ({ rating, reviewCount, propertyId }: ReviewSectionProps) 
       setUserReview("");
       setUserRating(5);
       setCanReview(false);
+      setVerificationStatus(prev => prev ? {...prev, hasReviewed: true} : null);
       
       // Reload reviews to show the new one
       const { data: updatedReviews } = await supabase
@@ -151,6 +188,43 @@ const ReviewSection = ({ rating, reviewCount, propertyId }: ReviewSectionProps) 
     }
   };
   
+  const renderReviewStatus = () => {
+    if (!user) {
+      return (
+        <div className="mb-8 border-b pb-6">
+          <p className="text-center">
+            <Button variant="link" onClick={() => navigate('/auth')}>
+              Sign in
+            </Button> 
+            to leave a review
+          </p>
+        </div>
+      );
+    }
+    
+    if (verificationStatus?.hasReviewed) {
+      return (
+        <div className="mb-8 border-b pb-6">
+          <p className="text-center text-muted-foreground">
+            You've already reviewed this property. Thank you for your feedback!
+          </p>
+        </div>
+      );
+    }
+    
+    if (verificationStatus?.hasCompletedBooking === false) {
+      return (
+        <div className="mb-8 border-b pb-6">
+          <p className="text-center text-muted-foreground">
+            Only guests who have stayed at this property can leave a review.
+          </p>
+        </div>
+      );
+    }
+    
+    return null;
+  };
+  
   return (
     <Card className="mt-8">
       <CardHeader>
@@ -164,6 +238,8 @@ const ReviewSection = ({ rating, reviewCount, propertyId }: ReviewSectionProps) 
         </CardTitle>
       </CardHeader>
       <CardContent>
+        {!canReview && renderReviewStatus()}
+        
         {canReview && (
           <div className="mb-8 border-b pb-6">
             <h3 className="text-lg font-medium mb-4">Write a Review</h3>
@@ -200,13 +276,23 @@ const ReviewSection = ({ rating, reviewCount, propertyId }: ReviewSectionProps) 
               onClick={handleSubmitReview} 
               disabled={isSubmitting || userReview.trim() === ""}
             >
-              {isSubmitting ? "Submitting..." : "Submit Review"}
+              {isSubmitting ? (
+                <>
+                  <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+                  Submitting...
+                </>
+              ) : (
+                "Submit Review"
+              )}
             </Button>
           </div>
         )}
 
         {isLoading ? (
-          <div className="py-4 text-center">Loading reviews...</div>
+          <div className="py-4 text-center">
+            <LoaderCircle className="h-6 w-6 animate-spin mx-auto mb-2" />
+            <p>Loading reviews...</p>
+          </div>
         ) : reviews.length > 0 ? (
           <div className="space-y-6">
             {reviews.map((review) => (
