@@ -44,7 +44,7 @@ const AuthPage = () => {
   const location = useLocation();
   const { signIn, signUp, user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
-  const initialTab = location.search.includes('listing') ? 'signup' : 'login';
+  const initialTab = location.search.includes('tab=signup') ? 'signup' : 'login';
 
   useEffect(() => {
     // If user is already logged in, redirect to profile
@@ -112,8 +112,8 @@ const AuthPage = () => {
   return (
     <>
       <Helmet>
-        <title>Login or Sign Up | Nollywood Locations</title>
-        <meta name="description" content="Sign in to your Nollywood Locations account or create a new account to start booking or listing filming locations in Lagos." />
+        <title>Login or Sign Up | Film Loca</title>
+        <meta name="description" content="Sign in to your Film Loca account or create a new account to start booking or listing filming locations." />
       </Helmet>
       
       <div className="flex flex-col min-h-screen">

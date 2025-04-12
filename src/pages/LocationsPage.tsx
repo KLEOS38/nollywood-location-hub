@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from "@/components/Header";
@@ -28,7 +27,6 @@ const LocationsPage = () => {
   const [selectedNeighborhood, setSelectedNeighborhood] = useState<string>('');
   const [sortBy, setSortBy] = useState<string>('default');
   
-  // Get custom properties from localStorage if available
   const getLocations = () => {
     try {
       const customProperties = JSON.parse(localStorage.getItem('properties') || '[]');
@@ -39,7 +37,6 @@ const LocationsPage = () => {
     }
   };
   
-  // Get search query from URL on initial load
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const query = searchParams.get('search');
@@ -49,11 +46,9 @@ const LocationsPage = () => {
     }
   }, [location.search]);
   
-  // Filter locations when search or filters change
   useEffect(() => {
     let results = getLocations();
     
-    // Apply search filter
     if (searchQuery) {
       const lowerCaseQuery = searchQuery.toLowerCase();
       results = results.filter(location => 
@@ -66,21 +61,18 @@ const LocationsPage = () => {
       );
     }
     
-    // Apply type filter
     if (selectedType && selectedType !== 'all_types') {
       results = results.filter(location => 
         location.type.toLowerCase() === selectedType.toLowerCase()
       );
     }
     
-    // Apply neighborhood filter
     if (selectedNeighborhood && selectedNeighborhood !== 'all_areas') {
       results = results.filter(location => 
         location.neighborhood.toLowerCase().includes(selectedNeighborhood.toLowerCase())
       );
     }
     
-    // Apply sorting
     if (sortBy === 'price-asc') {
       results.sort((a, b) => a.price - b.price);
     } else if (sortBy === 'price-desc') {
@@ -92,13 +84,11 @@ const LocationsPage = () => {
     setFilteredLocations(results);
   }, [searchQuery, selectedType, selectedNeighborhood, sortBy, location.search]);
   
-  // Handle search
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     navigate(`/locations?search=${encodeURIComponent(query)}`, { replace: true });
   };
   
-  // Reset all filters
   const resetFilters = () => {
     setSearchQuery('');
     setSelectedType('');
@@ -112,18 +102,16 @@ const LocationsPage = () => {
     });
   };
   
-  // Get unique property types for filter
   const propertyTypes = [...new Set(getLocations().map(location => location.type))];
   
-  // Get unique neighborhoods for filter
   const neighborhoods = [...new Set(getLocations().map(location => location.neighborhood))];
 
   return (
     <>
       <Helmet>
-        <title>Browse Filming Locations in Lagos | Nollywood Locations</title>
-        <meta name="description" content="Find the perfect house, apartment, or studio for your next Nollywood film production in Lagos. All locations verified with filmmaker reviews." />
-        <link rel="canonical" href="https://www.nollywoodlocations.com/locations" />
+        <title>Browse Filming Locations | Film Loca</title>
+        <meta name="description" content="Find the perfect house, apartment, or studio for your next film production in Lagos. All locations verified with filmmaker reviews." />
+        <link rel="canonical" href="https://www.filmloca.com/locations" />
       </Helmet>
       
       <div className="flex flex-col min-h-screen">
@@ -134,13 +122,12 @@ const LocationsPage = () => {
           <div className="container mx-auto px-4">
             <section aria-labelledby="locations-heading">
               <div className="mb-6">
-                <h1 id="locations-heading" className="text-2xl font-bold mb-2">Filming Locations in Lagos</h1>
+                <h1 id="locations-heading" className="text-2xl font-bold mb-2">Filming Locations</h1>
                 <p className="text-muted-foreground">
                   {filteredLocations.length} {filteredLocations.length === 1 ? 'location' : 'locations'} available for your next production
                 </p>
               </div>
               
-              {/* Search and Filters */}
               <div className="mb-8 space-y-4">
                 <div className="flex flex-col md:flex-row gap-4">
                   <div className="flex-1">
@@ -194,7 +181,6 @@ const LocationsPage = () => {
                   </div>
                 </div>
                 
-                {/* Active filters */}
                 {(searchQuery || selectedType || selectedNeighborhood) && (
                   <div className="flex items-center gap-2 mt-2">
                     <span className="text-sm text-muted-foreground">Active filters:</span>
@@ -240,7 +226,6 @@ const LocationsPage = () => {
                 )}
               </div>
               
-              {/* Results */}
               {filteredLocations.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {filteredLocations.map((location) => (

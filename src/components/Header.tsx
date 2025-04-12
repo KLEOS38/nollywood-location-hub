@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
@@ -32,7 +31,6 @@ const Header = () => {
   const navigate = useNavigate();
   const { user, profile, signOut } = useAuth();
   
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
@@ -46,7 +44,6 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   
-  // Handle mobile menu close on navigation
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -72,7 +69,6 @@ const Header = () => {
     navigate('/');
   };
   
-  // Generate initials for avatar
   const getInitials = (name: string | null) => {
     if (!name) return "U";
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
@@ -82,12 +78,10 @@ const Header = () => {
     <header className={`sticky top-0 z-40 w-full ${isScrolled ? 'bg-white/95 shadow-sm backdrop-blur-md' : 'bg-white'} transition-all duration-200`}>
       <div className="max-w-[1440px] mx-auto">
         <div className="flex items-center justify-between h-16 px-4 md:px-6">
-          {/* Logo */}
           <Link to="/" className="flex items-center" onClick={closeMobileMenu}>
-            <span className="text-xl font-bold">Nollywood<span className="text-primary">Locations</span></span>
+            <span className="text-xl font-bold">Film<span className="text-primary">Loca</span></span>
           </Link>
           
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-4 lg:space-x-6">
             <Link to="/" className="text-sm font-medium transition-colors hover:text-primary">
               Home
@@ -105,7 +99,6 @@ const Header = () => {
             )}
           </nav>
           
-          {/* Desktop Right Section */}
           <div className="hidden md:flex items-center space-x-4">
             {user ? (
               <DropdownMenu>
@@ -171,7 +164,6 @@ const Header = () => {
             )}
           </div>
           
-          {/* Mobile Menu Button */}
           <button 
             className="flex md:hidden" 
             onClick={toggleMobileMenu}
@@ -186,7 +178,6 @@ const Header = () => {
         </div>
       </div>
       
-      {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="fixed inset-0 top-16 z-50 bg-white md:hidden overflow-y-auto">
           <div className="flex flex-col p-6 space-y-4">
