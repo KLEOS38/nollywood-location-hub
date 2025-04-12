@@ -15,10 +15,10 @@ interface AuthContextType {
   updateProfile: (data: any) => Promise<void>;
 }
 
-// Create context with undefined as initial value
+// Create context with a default value
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Actual AuthProvider component implementation
+// Properly define the AuthProvider as a React functional component
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
@@ -170,7 +170,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 };
 
-// Create the useAuth hook correctly
+// Create the useAuth hook
 export const useAuth = () => {
   const context = useContext(AuthContext);
   
