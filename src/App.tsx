@@ -44,13 +44,11 @@ import Sitemap from "./pages/legal/Sitemap";
 const queryClient = new QueryClient();
 
 const App = () => (
-  <HelmetProvider>
-    <QueryClientProvider client={queryClient}>
+  <QueryClientProvider client={queryClient}>
+    <HelmetProvider>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <BrowserRouter>
           <AuthProvider>
-            <Toaster />
-            <Sonner />
             <ScrollToTop />
             <Routes>
               <Route path="/" element={<Index />} />
@@ -89,11 +87,13 @@ const App = () => (
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
+            <Toaster />
+            <Sonner />
           </AuthProvider>
         </BrowserRouter>
       </ThemeProvider>
-    </QueryClientProvider>
-  </HelmetProvider>
+    </HelmetProvider>
+  </QueryClientProvider>
 );
 
 export default App;
