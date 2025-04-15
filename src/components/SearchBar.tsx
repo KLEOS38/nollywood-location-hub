@@ -1,9 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, MapPin, Home } from 'lucide-react';
-import { MOCK_LOCATIONS } from "@/data/mockLocations";
 import { 
   CommandDialog, 
   CommandInput, 
@@ -21,7 +21,7 @@ interface SearchBarProps {
 }
 
 const SearchBar = ({ 
-  placeholder = "Search locations...", 
+  placeholder = "Search Locations...", 
   onSearch,
   className = "" 
 }: SearchBarProps) => {
@@ -129,7 +129,7 @@ const SearchBar = ({
               variant="ghost"
               className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 hover:bg-muted"
             >
-              Search Locations
+              Search
             </Button>
           </div>
         </form>
@@ -141,7 +141,7 @@ const SearchBar = ({
       
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput 
-          placeholder="Search locations, neighborhoods, amenities..." 
+          placeholder="Search Locations..." 
           value={searchQuery}
           onValueChange={setSearchQuery}
         />

@@ -91,12 +91,85 @@ const Header = () => {
           
           <div className="hidden md:flex items-center space-x-4 flex-1 max-w-md mx-4">
             <SearchBar 
-              placeholder="Search locations..." 
+              placeholder="Search Locations..." 
               onSearch={handleSearch}
               className="w-full"
             />
           </div>
           
+          <div className="hidden md:flex items-center space-x-4">
+            <Button variant="ghost" onClick={() => navigate('/locations')}>
+              Browse Locations
+            </Button>
+            {profile?.user_type === 'homeowner' && (
+              <Button variant="ghost" onClick={() => navigate('/list-property')}>
+                List Your Property
+              </Button>
+            )}
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative rounded-full h-8 w-8 p-0">
+                    <Avatar>
+                      <AvatarImage src={profile?.avatar_url} />
+                      <AvatarFallback>{getInitials(profile?.name)}</AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium">{profile?.name}</p>
+                      <p className="text-xs text-muted-foreground">{user.email}</p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigate('/profile')}>
+                    <User className="mr-2 h-4 w-4" />
+                    <span>My Profile</span>
+                  </DropdownMenuItem>
+                  {profile?.user_type === 'homeowner' && (
+                    <DropdownMenuItem onClick={() => navigate('/list-property')}>
+                      <Home className="mr-2 h-4 w-4" />
+                      <span>List a Property</span>
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuItem onClick={() => navigate('/locations')}>
+                    <MapPin className="mr-2 h-4 w-4" />
+                    <span>Browse Locations</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/profile')}>
+                    <Heart className="mr-2 h-4 w-4" />
+                    <span>Favorites</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigate('/help')}>
+                    <HelpCircle className="mr-2 h-4 w-4" />
+                    <span>Help Center</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/profile')}>
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <>
+                <Button variant="ghost" onClick={() => navigate('/auth')}>
+                  Login
+                </Button>
+                <Button onClick={() => navigate('/auth?tab=signup')}>
+                  Sign Up
+                </Button>
+              </>
+            )}
+          </div>
+
           {/* Mobile menu button */}
           <button 
             className="md:hidden p-2" 
@@ -113,10 +186,10 @@ const Header = () => {
           {/* Mobile menu */}
           {isMobileMenuOpen && (
             <div className="fixed inset-0 top-16 z-50 bg-white md:hidden">
-              <div className="flex flex-col p-4">
+              <div className="flex flex-col p-4 h-full overflow-y-auto">
                 <div className="mb-4">
                   <SearchBar 
-                    placeholder="Search locations..." 
+                    placeholder="Search Locations..." 
                     onSearch={handleSearch}
                     className="w-full"
                   />
@@ -128,8 +201,19 @@ const Header = () => {
                     className="flex items-center py-3 text-base hover:text-primary" 
                     onClick={closeMobileMenu}
                   >
+                    <MapPin className="mr-2 h-4 w-4" />
                     Browse Locations
                   </Link>
+                  {profile?.user_type === 'homeowner' && (
+                    <Link 
+                      to="/list-property" 
+                      className="flex items-center py-3 text-base hover:text-primary" 
+                      onClick={closeMobileMenu}
+                    >
+                      <Home className="mr-2 h-4 w-4" />
+                      List Your Property
+                    </Link>
+                  )}
                   <Link 
                     to="/how-it-works" 
                     className="flex items-center py-3 text-base hover:text-primary" 
@@ -227,71 +311,6 @@ const Header = () => {
               </div>
             </div>
           )}
-          
-          <div className="hidden md:flex items-center space-x-4">
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative rounded-full h-8 w-8 p-0">
-                    <Avatar>
-                      <AvatarImage src={profile?.avatar_url} />
-                      <AvatarFallback>{getInitials(profile?.name)}</AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuLabel>
-                    <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium">{profile?.name}</p>
-                      <p className="text-xs text-muted-foreground">{user.email}</p>
-                    </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => navigate('/profile')}>
-                    <User className="mr-2 h-4 w-4" />
-                    <span>My Profile</span>
-                  </DropdownMenuItem>
-                  {profile?.user_type === 'homeowner' && (
-                    <DropdownMenuItem onClick={() => navigate('/list-property')}>
-                      <Home className="mr-2 h-4 w-4" />
-                      <span>List a Property</span>
-                    </DropdownMenuItem>
-                  )}
-                  <DropdownMenuItem onClick={() => navigate('/locations')}>
-                    <MapPin className="mr-2 h-4 w-4" />
-                    <span>Browse Locations</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate('/profile')}>
-                    <Heart className="mr-2 h-4 w-4" />
-                    <span>Favorites</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => navigate('/help')}>
-                    <HelpCircle className="mr-2 h-4 w-4" />
-                    <span>Help Center</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate('/profile')}>
-                    <Settings className="mr-2 h-4 w-4" />
-                    <span>Settings</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout}>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Log out</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <>
-                <Button variant="ghost" onClick={() => navigate('/auth')}>
-                  Login
-                </Button>
-                <Button onClick={() => navigate('/auth?tab=signup')}>
-                  Sign Up
-                </Button>
-              </>
-            )}
-          </div>
         </div>
       </div>
     </header>
