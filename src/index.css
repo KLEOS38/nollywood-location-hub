@@ -21,7 +21,7 @@
     --secondary: 180 100% 25%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 30 10% 95%;
+    --muted: 30 10% 92%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
     --accent: 42 100% 70%;
@@ -83,15 +83,15 @@
   }
   
   main {
-    @apply px-5 md:px-5 bg-white;
+    @apply px-5 md:px-5;
   }
   
   section {
-    @apply py-8 md:py-12 lg:py-16 bg-white;
+    @apply py-8 md:py-12 lg:py-16;
   }
   
   .container {
-    @apply px-5 md:px-5 bg-white;
+    @apply px-5 md:px-5;
     max-width: 1280px;
     margin: 0 auto;
   }
