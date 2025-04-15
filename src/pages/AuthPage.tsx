@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -47,7 +46,6 @@ const AuthPage = () => {
   const initialTab = location.search.includes('tab=signup') ? 'signup' : 'login';
 
   useEffect(() => {
-    // If user is already logged in, redirect to profile
     if (user) {
       navigate('/profile');
     }
@@ -76,12 +74,13 @@ const AuthPage = () => {
 
   const onLogin = async (values: LoginFormValues) => {
     setIsLoading(true);
-    
     try {
       await signIn(values.email, values.password);
+      toast.success('Logged in successfully');
       navigate('/profile');
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      console.error('Login error:', error);
+      toast.error(error.message || 'Failed to login');
     } finally {
       setIsLoading(false);
     }
@@ -89,7 +88,6 @@ const AuthPage = () => {
 
   const onSignup = async (values: SignupFormValues) => {
     setIsLoading(true);
-    
     try {
       await signUp(
         values.email, 
@@ -100,10 +98,10 @@ const AuthPage = () => {
           user_type: values.userType
         }
       );
-      
-      // Wait for redirect in useEffect when auth state changes
-    } catch (error) {
-      console.error(error);
+      toast.success('Account created! Please check your email.');
+    } catch (error: any) {
+      console.error('Signup error:', error);
+      toast.error(error.message || 'Failed to create account');
     } finally {
       setIsLoading(false);
     }

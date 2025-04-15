@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
@@ -85,32 +84,149 @@ const Header = () => {
   return (
     <header className={`sticky top-0 z-40 w-full ${isScrolled ? 'bg-white/95 shadow-sm backdrop-blur-md' : 'bg-white'} transition-all duration-200`}>
       <div className="max-w-[1440px] mx-auto">
-        <div className="flex items-center justify-between h-16 px-4 md:px-6">
+        <div className="flex items-center justify-between h-16 px-4">
           <Link to="/" className="flex items-center" onClick={closeMobileMenu}>
             <span className="text-xl font-bold">Film<span className="text-primary">Loca</span></span>
           </Link>
           
           <div className="hidden md:flex items-center space-x-4 flex-1 max-w-md mx-4">
             <SearchBar 
-              placeholder="Search locations, areas, amenities..." 
+              placeholder="Search locations..." 
               onSearch={handleSearch}
               className="w-full"
             />
           </div>
           
-          <nav className="hidden md:flex items-center space-x-4 lg:space-x-6">
-            <Link to="/locations" className="text-sm font-medium transition-colors hover:text-primary">
-              Browse Locations
-            </Link>
-            <Link to="/how-it-works" className="text-sm font-medium transition-colors hover:text-primary">
-              How It Works
-            </Link>
-            {profile?.user_type === 'homeowner' && (
-              <Link to="/list-property" className="text-sm font-medium transition-colors hover:text-primary">
-                List Your Property
-              </Link>
+          {/* Mobile menu button */}
+          <button 
+            className="md:hidden p-2" 
+            onClick={toggleMobileMenu}
+            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+          >
+            {isMobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
             )}
-          </nav>
+          </button>
+          
+          {/* Mobile menu */}
+          {isMobileMenuOpen && (
+            <div className="fixed inset-0 top-16 z-50 bg-white md:hidden">
+              <div className="flex flex-col p-4">
+                <div className="mb-4">
+                  <SearchBar 
+                    placeholder="Search locations..." 
+                    onSearch={handleSearch}
+                    className="w-full"
+                  />
+                </div>
+                
+                <nav className="flex flex-col space-y-4">
+                  <Link 
+                    to="/locations" 
+                    className="flex items-center py-3 text-base hover:text-primary" 
+                    onClick={closeMobileMenu}
+                  >
+                    Browse Locations
+                  </Link>
+                  <Link 
+                    to="/how-it-works" 
+                    className="flex items-center py-3 text-base hover:text-primary" 
+                    onClick={closeMobileMenu}
+                  >
+                    How It Works
+                  </Link>
+                  {profile?.user_type === 'homeowner' && (
+                    <Link 
+                      to="/list-property" 
+                      className="flex items-center py-3 text-base hover:text-primary" 
+                      onClick={closeMobileMenu}
+                    >
+                      List Your Property
+                    </Link>
+                  )}
+                </nav>
+                
+                <div className="mt-4 pt-4 border-t">
+                  {user ? (
+                    <div className="space-y-4">
+                      <div className="flex items-center mb-4">
+                        <Avatar className="mr-3">
+                          <AvatarImage src={profile?.avatar_url} />
+                          <AvatarFallback>{getInitials(profile?.name)}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="font-medium">{profile?.name}</p>
+                          <p className="text-sm text-muted-foreground">{user.email}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-3">
+                        <Button 
+                          variant="ghost" 
+                          className="w-full justify-start" 
+                          onClick={() => {
+                            navigate('/profile');
+                            closeMobileMenu();
+                          }}
+                        >
+                          <User className="mr-2 h-4 w-4" />
+                          My Profile
+                        </Button>
+                        
+                        <Button 
+                          variant="ghost" 
+                          className="w-full justify-start" 
+                          onClick={() => {
+                            navigate('/help');
+                            closeMobileMenu();
+                          }}
+                        >
+                          <HelpCircle className="mr-2 h-4 w-4" />
+                          Help Center
+                        </Button>
+                        
+                        <Button 
+                          variant="ghost" 
+                          className="w-full justify-start" 
+                          onClick={() => {
+                            handleLogout();
+                            closeMobileMenu();
+                          }}
+                        >
+                          <LogOut className="mr-2 h-4 w-4" />
+                          Log out
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      <Button 
+                        className="w-full" 
+                        variant="outline" 
+                        onClick={() => {
+                          navigate('/auth');
+                          closeMobileMenu();
+                        }}
+                      >
+                        Login
+                      </Button>
+                      <Button 
+                        className="w-full" 
+                        onClick={() => {
+                          navigate('/auth?tab=signup');
+                          closeMobileMenu();
+                        }}
+                      >
+                        Sign Up
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
           
           <div className="hidden md:flex items-center space-x-4">
             {user ? (
@@ -176,136 +292,8 @@ const Header = () => {
               </>
             )}
           </div>
-          
-          <button 
-            className="flex md:hidden" 
-            onClick={toggleMobileMenu}
-            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-          >
-            {isMobileMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
-          </button>
         </div>
       </div>
-      
-      {isMobileMenuOpen && (
-        <div className="fixed inset-0 top-16 z-50 bg-white md:hidden overflow-y-auto">
-          <div className="flex flex-col p-6 space-y-4">
-            <div className="mb-2">
-              <SearchBar 
-                placeholder="Search locations, areas, amenities..." 
-                onSearch={handleSearch}
-                className="w-full"
-              />
-            </div>
-            
-            <Link 
-              to="/locations" 
-              className="flex items-center py-3 text-base hover:text-primary" 
-              onClick={closeMobileMenu}
-            >
-              Browse Locations
-            </Link>
-            <Link 
-              to="/how-it-works" 
-              className="flex items-center py-3 text-base hover:text-primary" 
-              onClick={closeMobileMenu}
-            >
-              How It Works
-            </Link>
-            {profile?.user_type === 'homeowner' && (
-              <Link 
-                to="/list-property" 
-                className="flex items-center py-3 text-base hover:text-primary" 
-                onClick={closeMobileMenu}
-              >
-                List Your Property
-              </Link>
-            )}
-            
-            <div className="border-t pt-4 mt-4">
-              {user ? (
-                <>
-                  <div className="flex items-center mb-4">
-                    <Avatar className="mr-3">
-                      <AvatarImage src={profile?.avatar_url} />
-                      <AvatarFallback>{getInitials(profile?.name)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="font-medium">{profile?.name}</p>
-                      <p className="text-sm text-muted-foreground">{user.email}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-3">
-                    <Button 
-                      variant="ghost" 
-                      className="w-full justify-start" 
-                      onClick={() => {
-                        navigate('/profile');
-                        closeMobileMenu();
-                      }}
-                    >
-                      <User className="mr-2 h-4 w-4" />
-                      My Profile
-                    </Button>
-                    
-                    <Button 
-                      variant="ghost" 
-                      className="w-full justify-start" 
-                      onClick={() => {
-                        navigate('/help');
-                        closeMobileMenu();
-                      }}
-                    >
-                      <HelpCircle className="mr-2 h-4 w-4" />
-                      Help Center
-                    </Button>
-                    
-                    <Button 
-                      variant="ghost" 
-                      className="w-full justify-start" 
-                      onClick={() => {
-                        handleLogout();
-                        closeMobileMenu();
-                      }}
-                    >
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Log out
-                    </Button>
-                  </div>
-                </>
-              ) : (
-                <div className="flex flex-col space-y-3">
-                  <Button 
-                    onClick={() => {
-                      navigate('/auth');
-                      closeMobileMenu();
-                    }}
-                    variant="outline"
-                  >
-                    <User className="mr-2 h-4 w-4" />
-                    Login
-                  </Button>
-                  
-                  <Button 
-                    onClick={() => {
-                      navigate('/auth?tab=signup');
-                      closeMobileMenu();
-                    }}
-                  >
-                    <UserPlus className="mr-2 h-4 w-4" />
-                    Sign Up
-                  </Button>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
     </header>
   );
 };

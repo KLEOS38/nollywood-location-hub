@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input } from "@/components/ui/input";
@@ -22,7 +21,7 @@ interface SearchBarProps {
 }
 
 const SearchBar = ({ 
-  placeholder = "Search for locations...", 
+  placeholder = "Search locations...", 
   onSearch,
   className = "" 
 }: SearchBarProps) => {
@@ -51,13 +50,11 @@ const SearchBar = ({
     if (onSearch) {
       onSearch(searchQuery);
     } else {
-      // Default behavior if no onSearch function is provided
       navigate(`/locations?search=${encodeURIComponent(searchQuery)}`);
     }
     setOpen(false);
   };
 
-  // Get custom properties from localStorage if available
   const getLocations = () => {
     try {
       const customProperties = JSON.parse(localStorage.getItem('properties') || '[]');
@@ -73,7 +70,6 @@ const SearchBar = ({
       const allLocations = getLocations();
       const lowerCaseQuery = searchQuery.toLowerCase();
       
-      // Search for locations
       const locations = allLocations.filter(location => 
         location.title.toLowerCase().includes(lowerCaseQuery) ||
         location.neighborhood.toLowerCase().includes(lowerCaseQuery) ||
@@ -83,7 +79,6 @@ const SearchBar = ({
         ))
       );
       
-      // Search for neighborhoods
       const neighborhoods = [...new Set(
         allLocations
           .map(location => location.neighborhood)
@@ -92,7 +87,6 @@ const SearchBar = ({
           )
       )];
       
-      // Search for property types
       const types = [...new Set(
         allLocations
           .map(location => location.type)
@@ -111,7 +105,6 @@ const SearchBar = ({
     }
   }, [searchQuery]);
 
-  // Function to get a fallback image if the main one fails
   const getFallbackImage = () => {
     return "https://images.unsplash.com/photo-1600585154526-990dced4db0d";
   };
@@ -136,7 +129,7 @@ const SearchBar = ({
               variant="ghost"
               className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 hover:bg-muted"
             >
-              Search
+              Search Locations
             </Button>
           </div>
         </form>
@@ -174,7 +167,6 @@ const SearchBar = ({
                         alt={location.title} 
                         className="w-full h-full object-cover"
                         onError={(e) => {
-                          // If image fails to load, use fallback
                           e.currentTarget.src = getFallbackImage();
                         }}
                       />

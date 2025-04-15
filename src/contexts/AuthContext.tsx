@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
@@ -15,10 +14,8 @@ interface AuthContextType {
   updateProfile: (data: any) => Promise<void>;
 }
 
-// Create context with undefined as initial value
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Actual AuthProvider component implementation
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
@@ -26,13 +23,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Set up auth state listener first
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         
-        // Fetch user profile when auth state changes
         if (session?.user) {
           setTimeout(() => {
             fetchProfile(session.user.id);
@@ -43,7 +38,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     );
 
-    // Check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
@@ -145,7 +139,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw error;
       }
       
-      // Refresh profile data
       fetchProfile(user?.id as string);
       toast.success('Profile updated successfully');
     } catch (error) {
@@ -170,7 +163,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 };
 
-// Create the useAuth hook correctly
 export const useAuth = () => {
   const context = useContext(AuthContext);
   
