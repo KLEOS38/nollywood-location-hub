@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -61,30 +60,25 @@ const App = () => (
               <Route path="/booking-success" element={<BookingSuccessPage />} />
               <Route path="/booking-canceled" element={<BookingCanceledPage />} />
               
-              {/* Support Pages */}
               <Route path="/help" element={<HelpCenter />} />
               <Route path="/safety" element={<SafetyInfo />} />
               <Route path="/cancellation" element={<CancellationOptions />} />
               <Route path="/covid" element={<CovidGuidelines />} />
               
-              {/* Community Pages */}
               <Route path="/filmmakers" element={<ForFilmmakers />} />
               <Route path="/homeowners" element={<ForPropertyOwners />} />
               <Route path="/forum" element={<CommunityForum />} />
               <Route path="/resources" element={<FilmingResources />} />
               
-              {/* About Pages */}
               <Route path="/how-it-works" element={<HowItWorks />} />
               <Route path="/news" element={<Newsroom />} />
               <Route path="/investors" element={<Investors />} />
               <Route path="/careers" element={<Careers />} />
               
-              {/* Legal Pages */}
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="/sitemap" element={<Sitemap />} />
               
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Toaster />
