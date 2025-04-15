@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -22,7 +21,7 @@
     --secondary: 180 100% 25%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 30 10% 95%; // Adjusted to be closer to white
+    --muted: 30 10% 95%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
     --accent: 42 100% 70%;
@@ -84,15 +83,15 @@
   }
   
   main {
-    @apply px-5 md:px-5 bg-white; // Ensure main content is white
+    @apply px-5 md:px-5 bg-white;
   }
   
   section {
-    @apply py-8 md:py-12 lg:py-16 bg-white; // Make sections white
+    @apply py-8 md:py-12 lg:py-16 bg-white;
   }
   
   .container {
-    @apply px-5 md:px-5 bg-white; // Ensure containers are white
+    @apply px-5 md:px-5 bg-white;
     max-width: 1280px;
     margin: 0 auto;
   }
