@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -53,15 +52,14 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Custom colors
 				nollywood: {
-					primary: '#5f0f40',  // Updated to the new color
+					primary: '#fca311',
 					secondary: '#008080',
 					accent: '#FFD166',
 					light: '#FFF3E0',
 					dark: '#333333'
 				},
-				burgundy: '#5f0f40'  // Added direct color reference
+				burgundy: '#fca311'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

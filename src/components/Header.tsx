@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
@@ -164,14 +163,16 @@ const Header = () => {
                 <Button variant="ghost" onClick={() => navigate('/auth')}>
                   Login
                 </Button>
-                <Button onClick={() => navigate('/auth?tab=signup')} className="bg-burgundy hover:bg-burgundy/90 text-white">
+                <Button 
+                  onClick={() => navigate('/auth?tab=signup')} 
+                  className="bg-nollywood-primary hover:bg-nollywood-primary/90 text-white"
+                >
                   Sign Up
                 </Button>
               </>
             )}
           </div>
 
-          {/* Mobile menu button */}
           <button 
             className="md:hidden p-2" 
             onClick={toggleMobileMenu}
@@ -184,7 +185,6 @@ const Header = () => {
             )}
           </button>
           
-          {/* Mobile menu */}
           {isMobileMenuOpen && (
             <div className="fixed inset-0 top-16 z-50 bg-white md:hidden">
               <div className="flex flex-col p-4 h-full overflow-y-auto">
@@ -289,7 +289,7 @@ const Header = () => {
                         Login
                       </Button>
                       <Button 
-                        className="w-full bg-burgundy hover:bg-burgundy/90 text-white" 
+                        className="w-full bg-nollywood-primary hover:bg-nollywood-primary/90 text-white" 
                         onClick={() => {
                           navigate('/auth?tab=signup');
                           closeMobileMenu();

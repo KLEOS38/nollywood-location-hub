@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -36,7 +35,11 @@ const Index = () => {
                   </Button>
                 </Link>
                 <Link to="/list-property">
-                  <Button size="lg" variant="property" className="text-white">
+                  <Button 
+                    size="lg" 
+                    variant="light" 
+                    className="bg-white text-nollywood-primary hover:bg-gray-100 border border-nollywood-primary"
+                  >
                     List Your Property
                   </Button>
                 </Link>
@@ -161,12 +164,19 @@ const Index = () => {
           <p className="text-xl max-w-2xl mx-auto mb-8 text-white">Join hundreds of filmmakers who are discovering perfect filming locations across Lagos.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link to="/auth?tab=signup">
-              <Button size="lg" className="bg-nollywood-primary hover:bg-nollywood-primary/90 text-white">
+              <Button 
+                size="lg" 
+                className="bg-nollywood-primary hover:bg-nollywood-primary/90 text-white"
+              >
                 Sign Up as Filmmaker
               </Button>
             </Link>
             <Link to="/list-property">
-              <Button size="lg" variant="property" className="text-white">
+              <Button 
+                size="lg" 
+                variant="light" 
+                className="bg-white text-nollywood-primary hover:bg-gray-100 border border-nollywood-primary"
+              >
                 List Your Property
               </Button>
             </Link>
