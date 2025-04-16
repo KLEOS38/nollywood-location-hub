@@ -7,19 +7,18 @@ export default function ScrollToTop() {
   const lastPathRef = useRef(pathname);
   
   useEffect(() => {
-    // Only scroll when the pathname actually changes
+    // Only scroll when the pathname actually changes and not on initial render
     if (lastPathRef.current !== pathname) {
-      // Use requestAnimationFrame for smoother scrolling and to prevent rapid updates
-      requestAnimationFrame(() => {
-        window.scrollTo({
-          top: 0,
-          left: 0,
-          behavior: 'smooth'
-        });
-      });
+      // Debounce the scroll with a setTimeout
+      const timeoutId = setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 100);
       
       // Update the ref to the current pathname
       lastPathRef.current = pathname;
+      
+      // Clear timeout on cleanup
+      return () => clearTimeout(timeoutId);
     }
   }, [pathname]);
   
