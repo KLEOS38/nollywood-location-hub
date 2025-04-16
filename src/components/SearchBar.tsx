@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, MapPin, Home } from 'lucide-react';
+import { MOCK_LOCATIONS } from "@/data/mockLocations";
 import { 
   CommandDialog, 
   CommandInput, 
@@ -96,8 +97,8 @@ const SearchBar = ({
       )];
       
       setSearchResults(locations);
-      setNeighborhoodResults(neighborhoods);
-      setTypeResults(types);
+      setNeighborhoodResults(neighborhoods as string[]);
+      setTypeResults(types as string[]);
     } else {
       setSearchResults([]);
       setNeighborhoodResults([]);
