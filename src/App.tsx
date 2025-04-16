@@ -40,7 +40,7 @@ import Privacy from "./pages/legal/Privacy";
 import Terms from "./pages/legal/Terms";
 import Sitemap from "./pages/legal/Sitemap";
 
-// Create a stable, persistent QueryClient instance
+// Create a stable QueryClient instance
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -50,13 +50,13 @@ const queryClient = new QueryClient({
   },
 });
 
-// Create a stable app key to prevent unnecessary re-renders
-const APP_KEY = "film-loca-app-v1";
+// Create a stable router key
+const ROUTER_KEY = "film-loca-router-v1";
 
 const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter key={APP_KEY}>
+      <BrowserRouter key={ROUTER_KEY}>
         <AuthProvider>
           <Toaster />
           <Sonner />
