@@ -9,11 +9,13 @@ export default function ScrollToTop() {
   useEffect(() => {
     // Only scroll when the pathname actually changes
     if (lastPathRef.current !== pathname) {
-      // Scroll to top when the route changes
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'smooth'
+      // Use requestAnimationFrame for smoother scrolling and to prevent rapid updates
+      requestAnimationFrame(() => {
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: 'smooth'
+        });
       });
       
       // Update the ref to the current pathname

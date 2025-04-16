@@ -50,10 +50,13 @@ const queryClient = new QueryClient({
   },
 });
 
+// Create a stable app key to prevent unnecessary re-renders
+const APP_KEY = "film-loca-app-v1";
+
 const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
+      <BrowserRouter key={APP_KEY}>
         <AuthProvider>
           <Toaster />
           <Sonner />
