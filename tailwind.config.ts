@@ -55,12 +55,13 @@ export default {
 				},
 				// Custom colors
 				nollywood: {
-					primary: '#F05A28',
+					primary: '#5f0f40',  // Updated to the new color
 					secondary: '#008080',
 					accent: '#FFD166',
 					light: '#FFF3E0',
 					dark: '#333333'
-				}
+				},
+				burgundy: '#5f0f40'  // Added direct color reference
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

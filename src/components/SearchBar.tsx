@@ -33,18 +33,6 @@ const SearchBar = ({
   const [typeResults, setTypeResults] = useState<string[]>([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setOpen(prev => !prev);
-      }
-    };
-
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
-  }, []);
-
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -134,10 +122,6 @@ const SearchBar = ({
             </Button>
           </div>
         </form>
-        
-        <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-xs text-muted-foreground hidden md:block">
-          Press <kbd className="border border-gray-200 rounded px-1">⌘</kbd> + <kbd className="border border-gray-200 rounded px-1">K</kbd>
-        </div>
       </div>
       
       <CommandDialog open={open} onOpenChange={setOpen}>

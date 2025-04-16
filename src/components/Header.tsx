@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
@@ -86,7 +87,7 @@ const Header = () => {
       <div className="max-w-[1440px] mx-auto">
         <div className="flex items-center justify-between h-16 px-4">
           <Link to="/" className="flex items-center" onClick={closeMobileMenu}>
-            <span className="text-xl font-bold">Film<span className="text-primary">Loca</span></span>
+            <span className="text-xl font-bold">Film<span className="text-burgundy">Loca</span></span>
           </Link>
           
           <div className="hidden md:flex items-center space-x-4 flex-1 max-w-md mx-4">
@@ -101,7 +102,7 @@ const Header = () => {
             <Button variant="ghost" onClick={() => navigate('/locations')}>
               Browse Locations
             </Button>
-            {profile?.user_type === 'homeowner' && (
+            {(profile?.user_type === 'homeowner' || !user) && (
               <Button variant="ghost" onClick={() => navigate('/list-property')}>
                 List Your Property
               </Button>
@@ -163,7 +164,7 @@ const Header = () => {
                 <Button variant="ghost" onClick={() => navigate('/auth')}>
                   Login
                 </Button>
-                <Button onClick={() => navigate('/auth?tab=signup')}>
+                <Button onClick={() => navigate('/auth?tab=signup')} className="bg-burgundy hover:bg-burgundy/90 text-white">
                   Sign Up
                 </Button>
               </>
@@ -198,16 +199,16 @@ const Header = () => {
                 <nav className="flex flex-col space-y-4">
                   <Link 
                     to="/locations" 
-                    className="flex items-center py-3 text-base hover:text-primary" 
+                    className="flex items-center py-3 text-base hover:text-burgundy" 
                     onClick={closeMobileMenu}
                   >
                     <MapPin className="mr-2 h-4 w-4" />
                     Browse Locations
                   </Link>
-                  {profile?.user_type === 'homeowner' && (
+                  {(profile?.user_type === 'homeowner' || !user) && (
                     <Link 
                       to="/list-property" 
-                      className="flex items-center py-3 text-base hover:text-primary" 
+                      className="flex items-center py-3 text-base hover:text-burgundy" 
                       onClick={closeMobileMenu}
                     >
                       <Home className="mr-2 h-4 w-4" />
@@ -216,20 +217,11 @@ const Header = () => {
                   )}
                   <Link 
                     to="/how-it-works" 
-                    className="flex items-center py-3 text-base hover:text-primary" 
+                    className="flex items-center py-3 text-base hover:text-burgundy" 
                     onClick={closeMobileMenu}
                   >
                     How It Works
                   </Link>
-                  {profile?.user_type === 'homeowner' && (
-                    <Link 
-                      to="/list-property" 
-                      className="flex items-center py-3 text-base hover:text-primary" 
-                      onClick={closeMobileMenu}
-                    >
-                      List Your Property
-                    </Link>
-                  )}
                 </nav>
                 
                 <div className="mt-4 pt-4 border-t">
@@ -297,7 +289,7 @@ const Header = () => {
                         Login
                       </Button>
                       <Button 
-                        className="w-full" 
+                        className="w-full bg-burgundy hover:bg-burgundy/90 text-white" 
                         onClick={() => {
                           navigate('/auth?tab=signup');
                           closeMobileMenu();
