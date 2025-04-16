@@ -5,14 +5,21 @@ import { useLocation } from "react-router-dom";
 export default function ScrollToTop() {
   const { pathname } = useLocation();
   const lastPathRef = useRef(pathname);
+  const initialRenderRef = useRef(true);
   
   useEffect(() => {
-    // Only scroll when the pathname actually changes and not on initial render
+    // Skip the initial render to prevent unnecessary scrolling
+    if (initialRenderRef.current) {
+      initialRenderRef.current = false;
+      return;
+    }
+    
+    // Only scroll when the pathname actually changes
     if (lastPathRef.current !== pathname) {
-      // Debounce the scroll with a setTimeout
+      // Use a longer timeout to ensure we're not triggering too many history updates
       const timeoutId = setTimeout(() => {
         window.scrollTo(0, 0);
-      }, 100);
+      }, 300);
       
       // Update the ref to the current pathname
       lastPathRef.current = pathname;

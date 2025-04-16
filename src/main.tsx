@@ -10,5 +10,5 @@ if (!rootElement) throw new Error("Failed to find the root element");
 // Use a single, stable root instance
 const root = createRoot(rootElement);
 
-// Only render the app once
+// Only render the app once to prevent any re-renders that might cause the history issue
 root.render(<App />);
