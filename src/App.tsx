@@ -40,7 +40,15 @@ import Privacy from "./pages/legal/Privacy";
 import Terms from "./pages/legal/Terms";
 import Sitemap from "./pages/legal/Sitemap";
 
-const queryClient = new QueryClient();
+// Create a stable, persistent QueryClient instance
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      retry: 1,
+    },
+  },
+});
 
 const App = () => (
   <HelmetProvider>
