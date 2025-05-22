@@ -14,71 +14,66 @@ serve(async (req) => {
   }
 
   try {
-    const { propertyId } = await req.json();
-
-    // Initialize Supabase client with service role to bypass RLS
-    const supabaseAdmin = createClient(
-      Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
-    );
-
-    // Initialize client with anon key for user authentication
     const supabaseClient = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_ANON_KEY") ?? ""
     );
 
-    // Get authenticated user
+    // Get auth user
     const authHeader = req.headers.get("Authorization")!;
     const token = authHeader.replace("Bearer ", "");
     const { data: userData, error: userError } = await supabaseClient.auth.getUser(token);
     
-    if (userError || !userData.user) {
-      throw new Error("User not authenticated");
-    }
+    if (userError) throw userError;
+    if (!userData.user) throw new Error("User not authenticated");
     
     const user = userData.user;
-
-    // Check if user has a completed booking for this property
-    const { data: bookings, error: bookingError } = await supabaseAdmin
+    
+    // Get property ID from request
+    const { propertyId } = await req.json();
+    
+    if (!propertyId) throw new Error("Property ID is required");
+    
+    // Check if user has completed bookings for this property
+    const { data: bookings, error: bookingsError } = await supabaseClient
       .from("bookings")
       .select("id")
       .eq("property_id", propertyId)
       .eq("user_id", user.id)
-      .eq("status", "completed")
+      .in("status", ["completed", "confirmed"])
       .limit(1);
     
-    if (bookingError) {
-      throw new Error(`Failed to check booking: ${bookingError.message}`);
-    }
-
-    // Check if user has already reviewed this property
-    const { data: existingReviews, error: reviewError } = await supabaseAdmin
+    if (bookingsError) throw bookingsError;
+    
+    const hasCompletedBooking = bookings && bookings.length > 0;
+    let bookingId = hasCompletedBooking ? bookings[0].id : null;
+    
+    // Check if user has already left a review
+    const { data: reviews, error: reviewsError } = await supabaseClient
       .from("reviews")
       .select("id")
       .eq("property_id", propertyId)
       .eq("user_id", user.id)
       .limit(1);
     
-    if (reviewError) {
-      throw new Error(`Failed to check existing reviews: ${reviewError.message}`);
-    }
-
-    const canReview = bookings.length > 0 && existingReviews.length === 0;
-    const bookingId = bookings.length > 0 ? bookings[0].id : null;
-
-    return new Response(JSON.stringify({ 
+    if (reviewsError) throw reviewsError;
+    
+    const hasReviewed = reviews && reviews.length > 0;
+    
+    // User can review if they have completed a booking and haven't already reviewed
+    const canReview = hasCompletedBooking && !hasReviewed;
+    
+    return new Response(JSON.stringify({
       canReview,
       bookingId,
-      hasCompletedBooking: bookings.length > 0,
-      hasReviewed: existingReviews.length > 0
+      hasCompletedBooking,
+      hasReviewed
     }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,
     });
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error("Verify booking error:", errorMessage);
     
     return new Response(JSON.stringify({ error: errorMessage }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },

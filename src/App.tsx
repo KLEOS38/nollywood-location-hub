@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -39,6 +38,9 @@ import Careers from "./pages/about/Careers";
 import Privacy from "./pages/legal/Privacy";
 import Terms from "./pages/legal/Terms";
 import Sitemap from "./pages/legal/Sitemap";
+
+// Add the PropertyManagementPage import
+import PropertyManagementPage from '@/pages/PropertyManagementPage';
 
 // Create a stable QueryClient instance
 const queryClient = new QueryClient({
@@ -96,6 +98,7 @@ const App = () => (
             <Route path="/sitemap" element={<Sitemap />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="/manage-properties" element={<PropertyManagementPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

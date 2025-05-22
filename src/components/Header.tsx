@@ -156,6 +156,11 @@ const Header = () => {
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
                   </DropdownMenuItem>
+                  {user && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/manage-properties" className="w-full">Manage Properties</Link>
+                    </DropdownMenuItem>
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (

@@ -5,3 +5,5 @@ project_id = "jwuakfowjxebtpcxcqyr"
 
 [functions.verify-booking]
 
+[functions.update-availability]
+
