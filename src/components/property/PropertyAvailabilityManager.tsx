@@ -16,12 +16,19 @@ interface PropertyAvailabilityManagerProps {
   propertyId: string;
 }
 
+interface UnavailableDate {
+  id?: string;
+  start: Date;
+  end: Date;
+  type: 'booking' | 'blocked';
+}
+
 const PropertyAvailabilityManager = ({ propertyId }: PropertyAvailabilityManagerProps) => {
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(addDays(new Date(), 1));
   const [reason, setReason] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [unavailableDates, setUnavailableDates] = useState<Array<{start: Date, end: Date, id?: string}>>([]);
+  const [unavailableDates, setUnavailableDates] = useState<UnavailableDate[]>([]);
   const { user } = useAuth();
   
   // Fetch unavailable dates on component mount
@@ -52,18 +59,18 @@ const PropertyAvailabilityManager = ({ propertyId }: PropertyAvailabilityManager
       if (unavailabilityError) throw unavailabilityError;
       
       // Combine both sets of dates
-      const combinedUnavailable = [
+      const combinedUnavailable: UnavailableDate[] = [
         ...(bookings || []).map(booking => ({
           id: booking.id,
           start: new Date(booking.start_date),
           end: new Date(booking.end_date),
-          type: 'booking'
+          type: 'booking' as const
         })),
         ...(unavailability || []).map(block => ({
           id: block.id,
           start: new Date(block.start_date),
           end: new Date(block.end_date),
-          type: 'blocked'
+          type: 'blocked' as const
         }))
       ];
       
