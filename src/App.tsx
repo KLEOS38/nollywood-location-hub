@@ -43,7 +43,7 @@ import Sitemap from "./pages/legal/Sitemap";
 // Add the PropertyManagementPage import
 import PropertyManagementPage from '@/pages/PropertyManagementPage';
 
-// Create a stable QueryClient instance
+// Create a stable QueryClient instance OUTSIDE the component
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -53,13 +53,10 @@ const queryClient = new QueryClient({
   },
 });
 
-// Create a stable router key
-const ROUTER_KEY = "film-loca-router-v1";
-
 const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter key={ROUTER_KEY}>
+      <BrowserRouter>
         <AuthProvider>
           <Toaster />
           <Sonner />
