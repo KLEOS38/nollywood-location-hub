@@ -261,8 +261,8 @@ const LocationDetail = () => {
               />
             </div>
             
-            {/* Booking Card */}
-            <div className="lg:col-span-1">
+            {/* Booking Card with data attribute for scrolling */}
+            <div className="lg:col-span-1" data-booking-card>
               <BookingCard 
                 propertyId={id || ""}
                 price={location.price}

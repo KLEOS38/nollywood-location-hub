@@ -28,47 +28,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent } from "@/components/ui/card";
-
-const amenitiesList = [
-  { id: "generator", label: "Generator" },
-  { id: "ac", label: "Air Conditioning" },
-  { id: "parking", label: "Parking" },
-  { id: "security", label: "Security" },
-  { id: "pool", label: "Pool" },
-  { id: "wifi", label: "WiFi" },
-  { id: "homeTheater", label: "Home Theater" },
-  { id: "proLighting", label: "Professional Lighting" },
-  { id: "makeupRoom", label: "Makeup Room" },
-  { id: "garden", label: "Garden" },
-  { id: "elevator", label: "Elevator" },
-  { id: "highCeiling", label: "High Ceilings" },
-  { id: "loadingDock", label: "Loading Dock" },
-  { id: "gym", label: "Gym" },
-];
-
-const locationTypes = [
-  { value: "home", label: "Home" },
-  { value: "apartment", label: "Apartment" },
-  { value: "villa", label: "Villa" },
-  { value: "mansion", label: "Mansion" },
-  { value: "studio", label: "Studio" },
-  { value: "warehouse", label: "Warehouse" },
-  { value: "office", label: "Office" },
-  { value: "restaurant", label: "Restaurant" },
-  { value: "other", label: "Other" },
-];
-
-const neighborhoodOptions = [
-  { value: "lekki", label: "Lekki" },
-  { value: "ikoyi", label: "Ikoyi" },
-  { value: "victorialIsland", label: "Victoria Island" },
-  { value: "ekoAtlantic", label: "Eko Atlantic" },
-  { value: "bananaIsland", label: "Banana Island" },
-  { value: "yaba", label: "Yaba" },
-  { value: "surulere", label: "Surulere" },
-  { value: "apapa", label: "Apapa" },
-  { value: "other", label: "Other" },
-];
+import MediaUploader from "@/components/media/MediaUploader";
 
 // Define form schema with zod
 const propertySchema = z.object({
@@ -79,9 +39,6 @@ const propertySchema = z.object({
   description: z.string().min(30, { message: "Description must be at least 30 characters" }),
   price: z.coerce.number().min(1000, { message: "Price must be at least 1,000 Naira" }),
   amenities: z.array(z.string()).min(1, { message: "Please select at least one amenity" }),
-  images: z.any().refine(val => val instanceof FileList && val.length > 0, { 
-    message: "Please upload at least one image" 
-  }),
   rules: z.string().optional(),
   availability: z.string().optional(),
 });
@@ -91,7 +48,7 @@ type PropertyFormValues = z.infer<typeof propertySchema>;
 const ListPropertyPage = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  const [uploadedMediaUrls, setUploadedMediaUrls] = useState<string[]>([]);
   
   // Initialize form with react-hook-form and zod
   const form = useForm<PropertyFormValues>({
@@ -119,14 +76,20 @@ const ListPropertyPage = () => {
     return null;
   }
 
+  const handleMediaUpload = (urls: string[]) => {
+    setUploadedMediaUrls(urls);
+    toast.success(`${urls.length} files uploaded successfully!`);
+  };
+
   const onSubmit = (values: PropertyFormValues) => {
+    if (uploadedMediaUrls.length === 0) {
+      toast.error("Please upload at least one image or video of your property");
+      return;
+    }
+
     setIsLoading(true);
     
-    // Convert the FileList to an array of file objects
-    const imageFiles = Array.from(values.images as FileList);
-    
-    // In a real app, you would upload these files to a server
-    // For now, we'll just simulate an API call
+    // In a real app, you would save this to Supabase
     setTimeout(() => {
       // Generate an ID for the new property
       const newPropertyId = Date.now().toString();
@@ -145,8 +108,9 @@ const ListPropertyPage = () => {
         amenities: values.amenities,
         rating: 0,
         reviewCount: 0,
-        imageUrl: selectedImages[0] || "https://images.unsplash.com/photo-1600585154526-990dced4db0d",
-        images: selectedImages,
+        imageUrl: uploadedMediaUrls[0],
+        images: uploadedMediaUrls,
+        mediaUrls: uploadedMediaUrls,
         rules: values.rules,
         availability: values.availability,
         ownerId: user.email,
@@ -161,26 +125,6 @@ const ListPropertyPage = () => {
       toast.success("Property listed successfully!");
       navigate(`/locations/${newPropertyId}`);
     }, 2000);
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      const newImageUrls: string[] = [];
-      
-      Array.from(files).forEach(file => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          if (e.target?.result) {
-            newImageUrls.push(e.target.result as string);
-            if (newImageUrls.length === files.length) {
-              setSelectedImages(prev => [...prev, ...newImageUrls]);
-            }
-          }
-        };
-        reader.readAsDataURL(file);
-      });
-    }
   };
 
   return (
@@ -396,62 +340,14 @@ const ListPropertyPage = () => {
                   />
                 </div>
                 
-                {/* Images */}
+                {/* Media Upload Section */}
                 <div className="space-y-6">
-                  <h2 className="text-xl font-semibold">Property Images</h2>
-                  
-                  <FormField
-                    control={form.control}
-                    name="images"
-                    render={({ field: { value, onChange, ...field } }) => (
-                      <FormItem>
-                        <FormLabel>Upload Images</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="file"
-                            accept="image/*"
-                            multiple
-                            onChange={(e) => {
-                              onChange(e.target.files);
-                              handleImageChange(e);
-                            }}
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormDescription>
-                          Upload high-quality images that showcase your property
-                        </FormDescription>
-                        <FormMessage />
-                        
-                        {selectedImages.length > 0 && (
-                          <div className="mt-4">
-                            <p className="text-sm font-medium mb-2">Selected Images:</p>
-                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                              {selectedImages.map((image, index) => (
-                                <div key={index} className="relative aspect-square rounded-md overflow-hidden">
-                                  <img 
-                                    src={image} 
-                                    alt={`Property image ${index + 1}`} 
-                                    className="object-cover w-full h-full"
-                                  />
-                                  <Button
-                                    type="button"
-                                    variant="destructive"
-                                    size="icon"
-                                    className="absolute top-1 right-1 h-6 w-6"
-                                    onClick={() => {
-                                      setSelectedImages(prev => prev.filter((_, i) => i !== index));
-                                    }}
-                                  >
-                                    ×
-                                  </Button>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </FormItem>
-                    )}
+                  <h2 className="text-xl font-semibold">Property Media</h2>
+                  <MediaUploader 
+                    onUploadComplete={handleMediaUpload}
+                    maxFiles={10}
+                    acceptedTypes={['image/*', 'video/*']}
+                    bucket="property-media"
                   />
                 </div>
                 

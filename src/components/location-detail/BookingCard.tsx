@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -127,7 +126,7 @@ const BookingCard = ({
   
   const handleBookNow = async () => {
     if (!user) {
-      toast("Please sign in to book this location");
+      toast.error("Please sign in to book this location");
       navigate('/auth');
       return;
     }
@@ -140,7 +139,7 @@ const BookingCard = ({
     setIsBooking(true);
     
     try {
-      // Call the create-payment function to create a Stripe checkout session
+      // Call the create-payment function to create a Paystack payment session
       const { data, error } = await supabase.functions.invoke('create-payment', {
         body: {
           propertyId,
@@ -148,17 +147,24 @@ const BookingCard = ({
           endDate: format(endDate, 'yyyy-MM-dd'),
           totalPrice,
           teamSize,
-          notes
+          notes,
+          paymentProvider: 'paystack'
         }
       });
       
       if (error) throw error;
       
-      // Redirect to Stripe Checkout
-      window.location.href = data.url;
+      // Redirect to Paystack checkout or handle payment response
+      if (data.authorization_url) {
+        window.open(data.authorization_url, '_blank');
+      } else if (data.payment_url) {
+        window.open(data.payment_url, '_blank');
+      } else {
+        throw new Error('Payment URL not received');
+      }
     } catch (error) {
       console.error("Booking error:", error);
-      toast.error("Failed to process booking");
+      toast.error("Failed to process booking. Please try again.");
       setIsBooking(false);
     }
   };
@@ -295,10 +301,10 @@ const BookingCard = ({
           {isBooking ? (
             <>
               <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-              Processing...
+              Processing Payment...
             </>
           ) : (
-            "Book Now"
+            "Pay with Paystack"
           )}
         </Button>
       </CardFooter>

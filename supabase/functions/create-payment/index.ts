@@ -1,6 +1,5 @@
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import Stripe from "https://esm.sh/stripe@14.21.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
@@ -15,7 +14,7 @@ serve(async (req) => {
   }
 
   try {
-    const { propertyId, startDate, endDate, totalPrice, teamSize, notes } = await req.json();
+    const { propertyId, startDate, endDate, totalPrice, teamSize, notes, paymentProvider = 'paystack' } = await req.json();
 
     // Initialize Supabase client
     const supabaseClient = createClient(
@@ -45,25 +44,6 @@ serve(async (req) => {
       throw new Error("Property not found");
     }
 
-    // Initialize Stripe
-    const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
-      apiVersion: "2023-10-16",
-    });
-
-    // Create or retrieve Stripe customer
-    const customers = await stripe.customers.list({ email: user.email, limit: 1 });
-    let customerId;
-    
-    if (customers.data.length > 0) {
-      customerId = customers.data[0].id;
-    } else {
-      const customer = await stripe.customers.create({
-        email: user.email,
-        name: user.user_metadata?.name || user.email,
-      });
-      customerId = customer.id;
-    }
-
     // Create booking record in database (pending payment)
     const { data: booking, error: bookingError } = await supabaseClient
       .from("bookings")
@@ -85,44 +65,66 @@ serve(async (req) => {
       throw new Error(`Failed to create booking: ${bookingError.message}`);
     }
 
-    // Create payment session
-    const session = await stripe.checkout.sessions.create({
-      customer: customerId,
-      payment_method_types: ["card"],
-      line_items: [
-        {
-          price_data: {
-            currency: "ngn",
-            product_data: {
-              name: `Booking: ${property.title}`,
-              description: `Booking from ${startDate} to ${endDate}`,
-            },
-            unit_amount: Math.round(totalPrice * 100), // Convert to cents/kobo
-          },
-          quantity: 1,
+    // Handle Paystack payment
+    if (paymentProvider === 'paystack') {
+      const paystackSecretKey = Deno.env.get("PAYSTACK_SECRET_KEY");
+      
+      if (!paystackSecretKey) {
+        throw new Error("Paystack secret key not configured");
+      }
+
+      // Initialize Paystack payment
+      const paystackResponse = await fetch("https://api.paystack.co/transaction/initialize", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${paystackSecretKey}`,
+          "Content-Type": "application/json",
         },
-      ],
-      mode: "payment",
-      success_url: `${req.headers.get("origin")}/booking-success?booking_id=${booking.id}`,
-      cancel_url: `${req.headers.get("origin")}/booking-canceled?booking_id=${booking.id}`,
-      metadata: {
-        booking_id: booking.id,
-        property_id: propertyId,
-      },
-    });
+        body: JSON.stringify({
+          email: user.email,
+          amount: Math.round(totalPrice * 100), // Convert to kobo (Paystack uses kobo)
+          currency: "NGN",
+          reference: `booking_${booking.id}_${Date.now()}`,
+          callback_url: `${req.headers.get("origin")}/booking-success?booking_id=${booking.id}`,
+          metadata: {
+            booking_id: booking.id,
+            property_id: propertyId,
+            user_id: user.id,
+            property_title: property.title,
+            start_date: startDate,
+            end_date: endDate,
+          },
+        }),
+      });
 
-    // Update booking with payment ID
-    await supabaseClient
-      .from("bookings")
-      .update({
-        payment_id: session.id,
-      })
-      .eq("id", booking.id);
+      const paystackData = await paystackResponse.json();
 
-    return new Response(JSON.stringify({ url: session.url, booking_id: booking.id }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-      status: 200,
-    });
+      if (!paystackData.status) {
+        throw new Error(`Paystack error: ${paystackData.message}`);
+      }
+
+      // Update booking with payment reference
+      await supabaseClient
+        .from("bookings")
+        .update({
+          payment_id: paystackData.data.reference,
+        })
+        .eq("id", booking.id);
+
+      return new Response(JSON.stringify({ 
+        authorization_url: paystackData.data.authorization_url,
+        payment_url: paystackData.data.authorization_url,
+        reference: paystackData.data.reference,
+        booking_id: booking.id 
+      }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 200,
+      });
+    }
+
+    // Fallback for other payment providers or future implementations
+    throw new Error("Payment provider not supported");
+
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error("Payment error:", errorMessage);

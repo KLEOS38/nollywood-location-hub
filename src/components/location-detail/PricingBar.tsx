@@ -2,7 +2,9 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { useToast } from "@/components/ui/use-toast";
+import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 interface PricingBarProps {
   price: number;
@@ -11,14 +13,24 @@ interface PricingBarProps {
 }
 
 const PricingBar = ({ price, days, setDays }: PricingBarProps) => {
-  const { toast } = useToast();
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const totalPrice = price * days;
   
   const handleBookNow = () => {
-    toast({
-      title: "Booking request sent!",
-      description: "The property owner will contact you shortly to confirm availability.",
-    });
+    if (!user) {
+      toast.error("Please sign in to book this location");
+      navigate('/auth');
+      return;
+    }
+    
+    // Scroll to booking card for payment
+    const bookingCard = document.querySelector('[data-booking-card]');
+    if (bookingCard) {
+      bookingCard.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    toast.success("Scroll down to complete your booking with Paystack!");
   };
 
   return (
@@ -47,7 +59,7 @@ const PricingBar = ({ price, days, setDays }: PricingBarProps) => {
       </div>
       
       <Button onClick={handleBookNow} className="w-full sm:w-auto">
-        Book Now
+        Book with Paystack
       </Button>
     </div>
   );
