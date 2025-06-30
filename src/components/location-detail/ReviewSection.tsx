@@ -38,7 +38,7 @@ const ReviewSection = ({ rating, reviewCount, propertyId }: ReviewSectionProps) 
       try {
         // Get published reviews for this property
         const { data: reviewsData, error: reviewsError } = await supabase
-          .from('reviews')
+          .from('reviews' as any)
           .select(`
             *,
             profiles:user_id(name, avatar_url)
@@ -88,7 +88,7 @@ const ReviewSection = ({ rating, reviewCount, propertyId }: ReviewSectionProps) 
       try {
         // Check if user has a completed booking
         const { data: bookingsData, error: bookingsError } = await supabase
-          .from('bookings')
+          .from('bookings' as any)
           .select('id')
           .eq('property_id', propertyId)
           .eq('user_id', user?.id)
@@ -99,7 +99,7 @@ const ReviewSection = ({ rating, reviewCount, propertyId }: ReviewSectionProps) 
         
         // Check if the user has already left a review
         const { data: existingReview, error: reviewError } = await supabase
-          .from('reviews')
+          .from('reviews' as any)
           .select('id')
           .eq('property_id', propertyId)
           .eq('user_id', user?.id)
@@ -112,7 +112,7 @@ const ReviewSection = ({ rating, reviewCount, propertyId }: ReviewSectionProps) 
         const hasReviewed = existingReview && existingReview.length > 0;
         
         setCanReview(hasCompletedBooking && !hasReviewed);
-        setBookingId(hasCompletedBooking ? bookingsData[0].id : null);
+        setBookingId(hasCompletedBooking ? (bookingsData as any)[0].id : null);
         setVerificationStatus({
           hasCompletedBooking,
           hasReviewed
@@ -147,7 +147,7 @@ const ReviewSection = ({ rating, reviewCount, propertyId }: ReviewSectionProps) 
     try {
       // Submit the review
       const { error: reviewError } = await supabase
-        .from('reviews')
+        .from('reviews' as any)
         .insert({
           property_id: propertyId,
           user_id: user.id,
@@ -169,7 +169,7 @@ const ReviewSection = ({ rating, reviewCount, propertyId }: ReviewSectionProps) 
       
       // Reload reviews to show the new one
       const { data: updatedReviews } = await supabase
-        .from('reviews')
+        .from('reviews' as any)
         .select(`
           *,
           profiles:user_id(name, avatar_url)
@@ -295,7 +295,7 @@ const ReviewSection = ({ rating, reviewCount, propertyId }: ReviewSectionProps) 
           </div>
         ) : reviews.length > 0 ? (
           <div className="space-y-6">
-            {reviews.map((review) => (
+            {reviews.map((review: any) => (
               <div key={review.id} className="border-b pb-4 last:border-b-0">
                 <div className="flex items-center gap-2 mb-2">
                   <div className="h-10 w-10 rounded-full bg-muted overflow-hidden">

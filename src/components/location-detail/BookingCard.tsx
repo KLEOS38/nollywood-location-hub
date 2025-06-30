@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -57,7 +58,7 @@ const BookingCard = ({
       try {
         // Fetch booked dates
         const { data: bookings, error: bookingsError } = await supabase
-          .from('bookings')
+          .from('bookings' as any)
           .select('start_date, end_date')
           .eq('property_id', propertyId)
           .in('status', ['confirmed', 'completed'])
@@ -67,7 +68,7 @@ const BookingCard = ({
         
         // Fetch manually blocked dates
         const { data: unavailability, error: unavailabilityError } = await supabase
-          .from('property_unavailability')
+          .from('property_unavailability' as any)
           .select('start_date, end_date')
           .eq('property_id', propertyId);
           
@@ -75,11 +76,11 @@ const BookingCard = ({
         
         // Combine both sets of dates
         const combinedUnavailable = [
-          ...(bookings || []).map(booking => ({
+          ...(bookings || []).map((booking: any) => ({
             start: new Date(booking.start_date),
             end: new Date(booking.end_date)
           })),
-          ...(unavailability || []).map(block => ({
+          ...(unavailability || []).map((block: any) => ({
             start: new Date(block.start_date),
             end: new Date(block.end_date)
           }))
@@ -170,7 +171,7 @@ const BookingCard = ({
   };
   
   return (
-    <Card className="sticky top-8">
+    <Card className="sticky top-8" data-booking-card>
       <CardHeader>
         <CardTitle>Book This Location</CardTitle>
       </CardHeader>

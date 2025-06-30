@@ -5,12 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Toast } from "@/components/ui/toast";
 import { toast } from "sonner";
-import { LoaderCircle, Calendar as CalendarIcon } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
-import { format, isWithinInterval, isBefore, isAfter, addDays, parseISO } from 'date-fns';
+import { format, isWithinInterval, isBefore, addDays } from 'date-fns';
 
 interface PropertyAvailabilityManagerProps {
   propertyId: string;
@@ -42,7 +41,7 @@ const PropertyAvailabilityManager = ({ propertyId }: PropertyAvailabilityManager
     try {
       // Fetch booked dates
       const { data: bookings, error: bookingsError } = await supabase
-        .from('bookings')
+        .from('bookings' as any)
         .select('id, start_date, end_date')
         .eq('property_id', propertyId)
         .in('status', ['confirmed', 'completed'])
@@ -52,7 +51,7 @@ const PropertyAvailabilityManager = ({ propertyId }: PropertyAvailabilityManager
       
       // Fetch manually blocked dates
       const { data: unavailability, error: unavailabilityError } = await supabase
-        .from('property_unavailability')
+        .from('property_unavailability' as any)
         .select('id, start_date, end_date')
         .eq('property_id', propertyId);
         
@@ -60,13 +59,13 @@ const PropertyAvailabilityManager = ({ propertyId }: PropertyAvailabilityManager
       
       // Combine both sets of dates
       const combinedUnavailable: UnavailableDate[] = [
-        ...(bookings || []).map(booking => ({
+        ...(bookings || []).map((booking: any) => ({
           id: booking.id,
           start: new Date(booking.start_date),
           end: new Date(booking.end_date),
           type: 'booking' as const
         })),
-        ...(unavailability || []).map(block => ({
+        ...(unavailability || []).map((block: any) => ({
           id: block.id,
           start: new Date(block.start_date),
           end: new Date(block.end_date),
@@ -128,7 +127,7 @@ const PropertyAvailabilityManager = ({ propertyId }: PropertyAvailabilityManager
     
     try {
       const { data, error } = await supabase
-        .from('property_unavailability')
+        .from('property_unavailability' as any)
         .delete()
         .eq('id', id);
       
