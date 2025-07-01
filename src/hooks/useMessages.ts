@@ -50,25 +50,37 @@ export const useMessages = () => {
 
     setLoading(true);
     try {
-      const { data, error } = await supabase
+      // First get all messages for the user
+      const { data: messagesData, error: messagesError } = await supabase
         .from('messages')
-        .select(`
-          *,
-          sender:sender_id (name, avatar_url),
-          recipient:recipient_id (name, avatar_url)
-        `)
+        .select('*')
         .or(`sender_id.eq.${user.id},recipient_id.eq.${user.id}`)
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (messagesError) throw messagesError;
 
-      // Group messages by conversation
+      // Get unique participant IDs
+      const participantIds = new Set<string>();
+      messagesData?.forEach((message: any) => {
+        const participantId = message.sender_id === user.id ? message.recipient_id : message.sender_id;
+        participantIds.add(participantId);
+      });
+
+      // Fetch participant profiles
+      const { data: profilesData, error: profilesError } = await supabase
+        .from('profiles')
+        .select('id, name, avatar_url')
+        .in('id', Array.from(participantIds));
+
+      if (profilesError) throw profilesError;
+
+      // Create conversations map
       const conversationMap = new Map<string, Conversation>();
       
-      data?.forEach((message: any) => {
+      messagesData?.forEach((message: any) => {
         const isOutgoing = message.sender_id === user.id;
-        const participant = isOutgoing ? message.recipient : message.sender;
         const participantId = isOutgoing ? message.recipient_id : message.sender_id;
+        const participant = profilesData?.find(p => p.id === participantId);
 
         if (!conversationMap.has(participantId)) {
           conversationMap.set(participantId, {
@@ -100,18 +112,36 @@ export const useMessages = () => {
     if (!user) return;
 
     try {
-      const { data, error } = await supabase
+      // Get messages between user and participant
+      const { data: messagesData, error: messagesError } = await supabase
         .from('messages')
-        .select(`
-          *,
-          sender:sender_id (name, avatar_url),
-          recipient:recipient_id (name, avatar_url)
-        `)
+        .select('*')
         .or(`and(sender_id.eq.${user.id},recipient_id.eq.${participantId}),and(sender_id.eq.${participantId},recipient_id.eq.${user.id})`)
         .order('created_at', { ascending: true });
 
-      if (error) throw error;
-      setMessages(data || []);
+      if (messagesError) throw messagesError;
+
+      // Get profiles for sender and recipient
+      const { data: profilesData, error: profilesError } = await supabase
+        .from('profiles')
+        .select('id, name, avatar_url')
+        .in('id', [user.id, participantId]);
+
+      if (profilesError) throw profilesError;
+
+      // Enrich messages with profile data
+      const enrichedMessages = messagesData?.map((message: any) => {
+        const sender = profilesData?.find(p => p.id === message.sender_id);
+        const recipient = profilesData?.find(p => p.id === message.recipient_id);
+        
+        return {
+          ...message,
+          sender: sender ? { name: sender.name, avatar_url: sender.avatar_url } : undefined,
+          recipient: recipient ? { name: recipient.name, avatar_url: recipient.avatar_url } : undefined
+        };
+      }) || [];
+
+      setMessages(enrichedMessages);
 
       // Mark messages as read
       await supabase

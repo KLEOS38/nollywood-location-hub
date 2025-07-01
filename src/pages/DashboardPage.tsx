@@ -54,7 +54,7 @@ const DashboardPage = () => {
     if (!user) return;
 
     try {
-      // Fetch user's bookings
+      // Fetch user's bookings with property data
       const { data: bookingsData } = await supabase
         .from('bookings')
         .select(`
@@ -68,12 +68,38 @@ const DashboardPage = () => {
         .order('created_at', { ascending: false })
         .limit(5);
 
+      // Transform bookings data to match interface
+      const transformedBookings = bookingsData?.map((booking: any) => ({
+        id: booking.id,
+        start_date: booking.start_date,
+        end_date: booking.end_date,
+        status: booking.status,
+        total_price: booking.total_price,
+        property: {
+          title: booking.properties?.title || 'Unknown Property',
+          imageUrl: booking.properties?.property_images?.[0]?.url || '/placeholder.svg'
+        }
+      })) || [];
+
       // Fetch user's properties if they're a host
       const { data: propertiesData } = await supabase
         .from('properties')
-        .select('*')
+        .select(`
+          *,
+          property_images!property_images_property_id_fkey (url)
+        `)
         .eq('owner_id', user.id)
         .order('created_at', { ascending: false });
+
+      // Transform properties data to match interface
+      const transformedProperties = propertiesData?.map((property: any) => ({
+        id: property.id,
+        title: property.title,
+        price: property.price,
+        imageUrl: property.property_images?.[0]?.url || '/placeholder.svg',
+        status: property.is_published ? 'published' : 'draft',
+        bookings: 0 // This would need a separate query to count bookings
+      })) || [];
 
       // Fetch favorite properties
       const { data: favoritesData } = await supabase
@@ -87,8 +113,8 @@ const DashboardPage = () => {
         `)
         .eq('user_id', user.id);
 
-      setBookings(bookingsData || []);
-      setProperties(propertiesData || []);
+      setBookings(transformedBookings);
+      setProperties(transformedProperties);
       setFavoriteProperties(favoritesData?.map(f => f.properties) || []);
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
