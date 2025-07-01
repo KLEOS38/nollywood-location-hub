@@ -29,6 +29,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent } from "@/components/ui/card";
 import MediaUploader from "@/components/media/MediaUploader";
+import { locationTypes, neighborhoodOptions, amenitiesList } from "@/data/propertyConstants";
 
 // Define form schema with zod
 const propertySchema = z.object({
