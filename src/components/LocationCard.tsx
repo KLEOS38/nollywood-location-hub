@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent } from "@/components/ui/card";
 import { Star, MapPin } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
+import FavoriteButton from '@/components/FavoriteButton';
 
 export interface LocationProps {
   id: string;
@@ -31,8 +32,12 @@ const LocationCard = ({
   isVerified
 }: LocationProps) => {
   return (
-    <Link to={`/locations/${id}`}>
-      <Card className="overflow-hidden border-0 shadow-sm hover:shadow-md location-card-hover">
+    <Card className="overflow-hidden border-0 shadow-sm hover:shadow-md location-card-hover relative">
+      <div className="absolute top-2 right-2 z-10">
+        <FavoriteButton propertyId={id} size="sm" />
+      </div>
+      
+      <Link to={`/locations/${id}`}>
         <div className="relative aspect-[4/3]">
           <img 
             src={imageUrl} 
@@ -40,7 +45,7 @@ const LocationCard = ({
             className="w-full h-full object-cover"
           />
           {isVerified && (
-            <Badge className="absolute top-2 right-2 bg-nollywood-secondary text-white">
+            <Badge className="absolute top-2 left-2 bg-nollywood-secondary text-white">
               Verified
             </Badge>
           )}
@@ -80,8 +85,8 @@ const LocationCard = ({
             </div>
           </div>
         </CardContent>
-      </Card>
-    </Link>
+      </Link>
+    </Card>
   );
 };
 
