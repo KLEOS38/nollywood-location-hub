@@ -9,30 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      admin_users: {
-        Row: {
-          created_at: string
-          id: string
-          permissions: Json | null
-          role: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          permissions?: Json | null
-          role?: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          permissions?: Json | null
-          role?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
       amenities: {
         Row: {
           category: string | null
@@ -56,8 +32,6 @@ export type Database = {
       }
       bookings: {
         Row: {
-          commission_amount: number | null
-          commission_rate: number | null
           created_at: string
           end_date: string
           id: string
@@ -73,8 +47,6 @@ export type Database = {
           user_id: string
         }
         Insert: {
-          commission_amount?: number | null
-          commission_rate?: number | null
           created_at?: string
           end_date: string
           id?: string
@@ -90,8 +62,6 @@ export type Database = {
           user_id: string
         }
         Update: {
-          commission_amount?: number | null
-          commission_rate?: number | null
           created_at?: string
           end_date?: string
           id?: string
@@ -123,85 +93,6 @@ export type Database = {
           },
         ]
       }
-      disputes: {
-        Row: {
-          admin_notes: string | null
-          booking_id: string
-          complainant_id: string
-          created_at: string
-          description: string
-          id: string
-          resolution: string | null
-          resolved_at: string | null
-          respondent_id: string
-          status: string
-          subject: string
-        }
-        Insert: {
-          admin_notes?: string | null
-          booking_id: string
-          complainant_id: string
-          created_at?: string
-          description: string
-          id?: string
-          resolution?: string | null
-          resolved_at?: string | null
-          respondent_id: string
-          status?: string
-          subject: string
-        }
-        Update: {
-          admin_notes?: string | null
-          booking_id?: string
-          complainant_id?: string
-          created_at?: string
-          description?: string
-          id?: string
-          resolution?: string | null
-          resolved_at?: string | null
-          respondent_id?: string
-          status?: string
-          subject?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "disputes_booking_id_fkey"
-            columns: ["booking_id"]
-            isOneToOne: false
-            referencedRelation: "bookings"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      favorites: {
-        Row: {
-          created_at: string
-          id: string
-          property_id: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          property_id: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          property_id?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "favorites_property_id_fkey"
-            columns: ["property_id"]
-            isOneToOne: false
-            referencedRelation: "properties"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       "Film Loca": {
         Row: {
           created_at: string
@@ -214,80 +105,6 @@ export type Database = {
         Update: {
           created_at?: string
           id?: number
-        }
-        Relationships: []
-      }
-      messages: {
-        Row: {
-          content: string
-          created_at: string
-          id: string
-          is_read: boolean
-          property_id: string | null
-          recipient_id: string
-          sender_id: string
-          updated_at: string
-        }
-        Insert: {
-          content: string
-          created_at?: string
-          id?: string
-          is_read?: boolean
-          property_id?: string | null
-          recipient_id: string
-          sender_id: string
-          updated_at?: string
-        }
-        Update: {
-          content?: string
-          created_at?: string
-          id?: string
-          is_read?: boolean
-          property_id?: string | null
-          recipient_id?: string
-          sender_id?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "messages_property_id_fkey"
-            columns: ["property_id"]
-            isOneToOne: false
-            referencedRelation: "properties"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      notifications: {
-        Row: {
-          created_at: string
-          data: Json | null
-          id: string
-          is_read: boolean
-          message: string
-          title: string
-          type: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          data?: Json | null
-          id?: string
-          is_read?: boolean
-          message: string
-          title: string
-          type?: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          data?: Json | null
-          id?: string
-          is_read?: boolean
-          message?: string
-          title?: string
-          type?: string
-          user_id?: string
         }
         Relationships: []
       }
@@ -525,49 +342,14 @@ export type Database = {
           },
         ]
       }
-      referrals: {
-        Row: {
-          completed_at: string | null
-          created_at: string
-          id: string
-          referee_id: string | null
-          referral_code: string
-          referrer_id: string
-          reward_amount: number | null
-          status: string
-        }
-        Insert: {
-          completed_at?: string | null
-          created_at?: string
-          id?: string
-          referee_id?: string | null
-          referral_code: string
-          referrer_id: string
-          reward_amount?: number | null
-          status?: string
-        }
-        Update: {
-          completed_at?: string | null
-          created_at?: string
-          id?: string
-          referee_id?: string | null
-          referral_code?: string
-          referrer_id?: string
-          reward_amount?: number | null
-          status?: string
-        }
-        Relationships: []
-      }
       reviews: {
         Row: {
           booking_id: string | null
           comment: string | null
           created_at: string
-          host_rating: number | null
           id: string
           is_published: boolean | null
           property_id: string
-          property_rating: number | null
           rating: number
           updated_at: string
           user_id: string
@@ -576,11 +358,9 @@ export type Database = {
           booking_id?: string | null
           comment?: string | null
           created_at?: string
-          host_rating?: number | null
           id?: string
           is_published?: boolean | null
           property_id: string
-          property_rating?: number | null
           rating: number
           updated_at?: string
           user_id: string
@@ -589,11 +369,9 @@ export type Database = {
           booking_id?: string | null
           comment?: string | null
           created_at?: string
-          host_rating?: number | null
           id?: string
           is_published?: boolean | null
           property_id?: string
-          property_rating?: number | null
           rating?: number
           updated_at?: string
           user_id?: string
@@ -627,10 +405,6 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      is_admin: {
-        Args: { user_uuid?: string }
-        Returns: boolean
-      }
       is_property_available: {
         Args: { property_id: string; check_in: string; check_out: string }
         Returns: boolean
