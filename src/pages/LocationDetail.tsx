@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Header from "@/components/Header";
@@ -18,6 +17,7 @@ import ReviewSection from "@/components/location-detail/ReviewSection";
 import BookingCard from "@/components/location-detail/BookingCard";
 import SimilarLocations from "@/components/location-detail/SimilarLocations";
 import ActionButtons from "@/components/location-detail/ActionButtons";
+import AvailabilityCalendar from "@/components/availability/AvailabilityCalendar";
 import { useAuth } from '@/contexts/AuthContext';
 
 const LocationDetail = () => {
@@ -251,8 +251,30 @@ const LocationDetail = () => {
         
         <div className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2 space-y-8">
               <LocationInfo location={location} />
+              
+              {/* Availability Calendar Section */}
+              <div className="space-y-4">
+                <h2 className="text-2xl font-bold">Availability & Pricing</h2>
+                <p className="text-muted-foreground">
+                  Select your dates to check availability and see total pricing.
+                </p>
+                <AvailabilityCalendar
+                  propertyId={id || ""}
+                  price={location.price}
+                  onDateSelect={(start, end, days) => {
+                    setDays(days);
+                    // Scroll to booking card when dates are selected
+                    if (start && end) {
+                      const bookingCard = document.querySelector('[data-booking-card]');
+                      if (bookingCard) {
+                        bookingCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                      }
+                    }
+                  }}
+                />
+              </div>
               
               <ReviewSection 
                 rating={location.rating}
