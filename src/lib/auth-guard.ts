@@ -13,7 +13,7 @@ export const requireAuth = async (): Promise<boolean> => {
   return true;
 };
 
-export const requireOwnership = async (resourceId: string, table: string, ownerField: string = 'owner_id'): Promise<boolean> => {
+export const requirePropertyOwnership = async (propertyId: string): Promise<boolean> => {
   const { data: { user } } = await supabase.auth.getUser();
   
   if (!user) {
@@ -22,9 +22,9 @@ export const requireOwnership = async (resourceId: string, table: string, ownerF
   }
   
   const { data, error } = await supabase
-    .from(table)
-    .select(ownerField)
-    .eq('id', resourceId)
+    .from('properties')
+    .select('owner_id')
+    .eq('id', propertyId)
     .single();
   
   if (error) {
@@ -32,7 +32,34 @@ export const requireOwnership = async (resourceId: string, table: string, ownerF
     return false;
   }
   
-  if (data[ownerField] !== user.id) {
+  if (data.owner_id !== user.id) {
+    toast.error('Access denied');
+    return false;
+  }
+  
+  return true;
+};
+
+export const requireBookingOwnership = async (bookingId: string): Promise<boolean> => {
+  const { data: { user } } = await supabase.auth.getUser();
+  
+  if (!user) {
+    toast.error('Authentication required');
+    return false;
+  }
+  
+  const { data, error } = await supabase
+    .from('bookings')
+    .select('user_id')
+    .eq('id', bookingId)
+    .single();
+  
+  if (error) {
+    toast.error('Failed to verify ownership');
+    return false;
+  }
+  
+  if (data.user_id !== user.id) {
     toast.error('Access denied');
     return false;
   }

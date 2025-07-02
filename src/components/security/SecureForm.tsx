@@ -53,11 +53,10 @@ const SecureForm: React.FC<SecureFormProps> = ({
   return (
     <form onSubmit={handleSubmit} className={className}>
       <input type="hidden" name="csrfToken" value={csrfToken} />
-      {children}
-      <div className="form-actions">
+      <div className="space-y-4">
         {React.Children.map(children, (child) => {
           if (React.isValidElement(child) && child.type === Button) {
-            return React.cloneElement(child, { 
+            return React.cloneElement(child as React.ReactElement<any>, { 
               disabled: isSubmitting,
               children: isSubmitting ? 'Loading...' : child.props.children
             });
