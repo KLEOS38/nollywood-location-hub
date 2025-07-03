@@ -131,7 +131,7 @@ const AvailabilityCalendar = ({
       <div className="grid grid-cols-2 gap-4">
         <Calendar
           mode="range"
-          selected={selectedRange}
+          selected={selectedRange.from && selectedRange.to ? { from: selectedRange.from, to: selectedRange.to } : undefined}
           onSelect={handleSelect}
           disabled={isDateUnavailable}
           month={currentMonth}
@@ -139,7 +139,7 @@ const AvailabilityCalendar = ({
         />
         <Calendar
           mode="range"
-          selected={selectedRange}
+          selected={selectedRange.from && selectedRange.to ? { from: selectedRange.from, to: selectedRange.to } : undefined}
           onSelect={handleSelect}
           disabled={isDateUnavailable}
           month={addMonths(currentMonth, 1)}
