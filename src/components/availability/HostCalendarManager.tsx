@@ -11,7 +11,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { format, isWithinInterval, isBefore, addDays } from 'date-fns';
 import { toast } from 'sonner';
 import { LoaderCircle, X } from 'lucide-react';
-import { DateRange } from 'react-day-picker';
 
 interface HostCalendarManagerProps {
   propertyId: string;
@@ -31,7 +30,10 @@ const HostCalendarManager: React.FC<HostCalendarManagerProps> = ({
   className
 }) => {
   const [unavailableDates, setUnavailableDates] = useState<UnavailableDate[]>([]);
-  const [selectedRange, setSelectedRange] = useState<DateRange | undefined>();
+  const [selectedRange, setSelectedRange] = useState<{from: Date | undefined, to: Date | undefined}>({
+    from: undefined,
+    to: undefined
+  });
   const [reason, setReason] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -107,7 +109,7 @@ const HostCalendarManager: React.FC<HostCalendarManagerProps> = ({
 
   // Block selected dates
   const handleBlockDates = async () => {
-    if (!selectedRange?.from || !selectedRange?.to) {
+    if (!selectedRange.from || !selectedRange.to) {
       toast.error("Please select a date range");
       return;
     }
@@ -127,7 +129,7 @@ const HostCalendarManager: React.FC<HostCalendarManagerProps> = ({
       if (error) throw error;
       
       toast.success("Dates blocked successfully!");
-      setSelectedRange(undefined);
+      setSelectedRange({ from: undefined, to: undefined });
       setReason("");
       setIsDialogOpen(false);
       fetchUnavailableDates();
@@ -212,7 +214,7 @@ const HostCalendarManager: React.FC<HostCalendarManagerProps> = ({
               </div>
             </div>
 
-            {selectedRange?.from && selectedRange?.to && (
+            {selectedRange.from && selectedRange.to && (
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
                   <Button className="w-full">
