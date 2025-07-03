@@ -41,7 +41,7 @@ const PropertyAvailabilityManager = ({ propertyId }: PropertyAvailabilityManager
     try {
       // Fetch booked dates
       const { data: bookings, error: bookingsError } = await supabase
-        .from('bookings' as any)
+        .from('bookings')
         .select('id, start_date, end_date')
         .eq('property_id', propertyId)
         .in('status', ['confirmed', 'completed'])
@@ -51,7 +51,7 @@ const PropertyAvailabilityManager = ({ propertyId }: PropertyAvailabilityManager
       
       // Fetch manually blocked dates
       const { data: unavailability, error: unavailabilityError } = await supabase
-        .from('property_unavailability' as any)
+        .from('property_unavailability')
         .select('id, start_date, end_date')
         .eq('property_id', propertyId);
         
@@ -127,7 +127,7 @@ const PropertyAvailabilityManager = ({ propertyId }: PropertyAvailabilityManager
     
     try {
       const { data, error } = await supabase
-        .from('property_unavailability' as any)
+        .from('property_unavailability')
         .delete()
         .eq('id', id);
       
@@ -154,6 +154,14 @@ const PropertyAvailabilityManager = ({ propertyId }: PropertyAvailabilityManager
       isWithinInterval(date, { start: period.start, end: period.end })
     );
   };
+
+  const isDateBooked = (date: Date) => {
+    return unavailableDates
+      .filter(period => period.type === 'booking')
+      .some(period => 
+        isWithinInterval(date, { start: period.start, end: period.end })
+      );
+  };
   
   return (
     <Card>
@@ -179,6 +187,22 @@ const PropertyAvailabilityManager = ({ propertyId }: PropertyAvailabilityManager
                   disabled={isDateUnavailable}
                   className="border rounded-md p-2"
                 />
+              </div>
+              
+              {/* Legend for host calendar */}
+              <div className="flex flex-col gap-2 mt-4 text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-red-200 border border-red-300 rounded"></div>
+                  <span>Booked (cannot be changed)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-gray-200 border border-gray-300 rounded"></div>
+                  <span>Blocked by you</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-green-100 border border-green-300 rounded"></div>
+                  <span>Available</span>
+                </div>
               </div>
             </div>
             

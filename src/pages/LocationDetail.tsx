@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Header from "@/components/Header";
@@ -18,6 +17,7 @@ import ReviewSection from "@/components/location-detail/ReviewSection";
 import BookingCard from "@/components/location-detail/BookingCard";
 import SimilarLocations from "@/components/location-detail/SimilarLocations";
 import ActionButtons from "@/components/location-detail/ActionButtons";
+import AvailabilityCalendar from "@/components/AvailabilityCalendar";
 import { useAuth } from '@/contexts/AuthContext';
 
 const LocationDetail = () => {
@@ -27,6 +27,8 @@ const LocationDetail = () => {
   const [location, setLocation] = useState<any>(null);
   const [relatedLocations, setRelatedLocations] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(null);
+  const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
   const { user } = useAuth();
   
   // Load property details from Supabase
@@ -198,6 +200,17 @@ const LocationDetail = () => {
     toast.success("Link copied to clipboard!");
   };
 
+  const handleDateSelect = (startDate: Date | null, endDate: Date | null) => {
+    setSelectedStartDate(startDate);
+    setSelectedEndDate(endDate);
+    
+    if (startDate && endDate) {
+      const timeDiff = endDate.getTime() - startDate.getTime();
+      const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+      setDays(daysDiff);
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
@@ -253,6 +266,16 @@ const LocationDetail = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
               <LocationInfo location={location} />
+              
+              {/* Calendar Section */}
+              <div className="mt-8 p-6 border rounded-lg">
+                <AvailabilityCalendar 
+                  propertyId={id || ""}
+                  onDateSelect={handleDateSelect}
+                  selectedStartDate={selectedStartDate}
+                  selectedEndDate={selectedEndDate}
+                />
+              </div>
               
               <ReviewSection 
                 rating={location.rating}
