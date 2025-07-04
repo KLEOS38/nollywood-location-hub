@@ -1,38 +1,27 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Heart, Share2 } from 'lucide-react';
-import { useToast } from "@/components/ui/use-toast";
+import { Share2 } from 'lucide-react';
+import FavoriteButton from '@/components/favorites/FavoriteButton';
 
 interface ActionButtonsProps {
   isFavorite: boolean;
   toggleFavorite: () => void;
   handleShare: () => void;
+  propertyId?: string;
 }
 
-const ActionButtons = ({ isFavorite, toggleFavorite, handleShare }: ActionButtonsProps) => {
+const ActionButtons = ({ isFavorite, toggleFavorite, handleShare, propertyId }: ActionButtonsProps) => {
   return (
-    <div className="flex space-x-2">
+    <div className="flex gap-2">
+      <FavoriteButton propertyId={""} className="bg-white/90 hover:bg-white" />
       <Button 
-        onClick={toggleFavorite}
-        variant="light" 
-        size="icon" 
-        className="shadow-sm"
-        aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
-      >
-        <Heart 
-          size={20} 
-          className={isFavorite ? "fill-red-500 text-red-500" : "text-gray-700"} 
-        />
-      </Button>
-      <Button 
+        variant="outline" 
+        size="sm" 
         onClick={handleShare}
-        variant="light" 
-        size="icon" 
-        className="shadow-sm"
-        aria-label="Share location"
+        className="bg-white/90 hover:bg-white"
       >
-        <Share2 size={20} className="text-gray-700" />
+        <Share2 className="h-4 w-4 mr-2" />
+        Share
       </Button>
     </div>
   );

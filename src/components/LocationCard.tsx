@@ -1,87 +1,68 @@
-
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Card, CardContent } from "@/components/ui/card";
-import { Star, MapPin } from 'lucide-react';
+import { Star, MapPin, Users } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
+import FavoriteButton from '@/components/favorites/FavoriteButton';
 
-export interface LocationProps {
-  id: string;
-  title: string;
-  type: string;
-  neighborhood: string;
-  price: number;
-  rating: number;
-  reviewCount: number;
-  imageUrl: string;
-  amenities: string[];
-  isVerified: boolean;
+interface LocationCardProps {
+  location: {
+    id: string;
+    title: string;
+    imageUrl: string;
+    price: number;
+    rating: number;
+    reviewCount: number;
+    neighborhood: string;
+    isVerified?: boolean;
+    maxGuests?: number;
+  };
 }
 
-const LocationCard = ({ 
-  id, 
-  title, 
-  type, 
-  neighborhood, 
-  price, 
-  rating, 
-  reviewCount, 
-  imageUrl,
-  amenities,
-  isVerified
-}: LocationProps) => {
+const LocationCard = ({ location }: LocationCardProps) => {
   return (
-    <Link to={`/locations/${id}`}>
-      <Card className="overflow-hidden border-0 shadow-sm hover:shadow-md location-card-hover">
-        <div className="relative aspect-[4/3]">
-          <img 
-            src={imageUrl} 
-            alt={title} 
-            className="w-full h-full object-cover"
-          />
-          {isVerified && (
-            <Badge className="absolute top-2 right-2 bg-nollywood-secondary text-white">
-              Verified
-            </Badge>
+    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 group">
+      <div className="relative">
+        <img 
+          src={location.imageUrl} 
+          alt={location.title}
+          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+        {location.isVerified && (
+          <div className="absolute top-2 left-2 bg-blue-500 text-white px-2 py-1 rounded-md text-xs font-medium">
+            Verified
+          </div>
+        )}
+        <div className="absolute top-2 right-2">
+          <FavoriteButton propertyId={location.id} />
+        </div>
+      </div>
+      
+      <div className="p-4">
+        <h3 className="text-lg font-semibold mb-2 truncate">{location.title}</h3>
+        <div className="flex items-center text-sm text-muted-foreground mb-2">
+          <MapPin className="h-4 w-4 mr-1" />
+          <span>{location.neighborhood}</span>
+        </div>
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center">
+            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
+            <span>{location.rating.toFixed(1)}</span>
+            <span className="text-muted-foreground ml-1">({location.reviewCount})</span>
+          </div>
+          {location.maxGuests && (
+            <div className="flex items-center text-sm text-muted-foreground">
+              <Users className="h-4 w-4 mr-1" />
+              <span>Up to {location.maxGuests} guests</span>
+            </div>
           )}
         </div>
-        <CardContent className="p-4">
-          <div className="flex justify-between items-start mb-2">
-            <h3 className="font-medium text-base line-clamp-1">{title}</h3>
-            <div className="flex items-center text-sm">
-              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-              <span>{rating.toFixed(1)}</span>
-              <span className="text-muted-foreground">({reviewCount})</span>
-            </div>
-          </div>
-          
-          <div className="flex items-center text-sm text-muted-foreground mb-2">
-            <MapPin className="h-3 w-3 mr-1" />
-            <span>{neighborhood}, Lagos</span>
-          </div>
-          
-          <div className="flex flex-wrap gap-1 mb-3">
-            {amenities.slice(0, 3).map((amenity, index) => (
-              <Badge key={index} variant="outline" className="bg-muted text-xs font-normal">
-                {amenity}
-              </Badge>
-            ))}
-            {amenities.length > 3 && (
-              <Badge variant="outline" className="bg-muted text-xs font-normal">
-                +{amenities.length - 3} more
-              </Badge>
-            )}
-          </div>
-          
-          <div className="flex justify-between items-center">
-            <div className="text-sm text-muted-foreground">{type}</div>
-            <div className="font-semibold">
-              ₦{price.toLocaleString()}<span className="text-sm font-normal text-muted-foreground">/day</span>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    </Link>
+        <div className="flex items-center justify-between">
+          <span className="text-xl font-bold">₦{location.price.toLocaleString()}</span>
+          {location.isVerified && (
+            <Badge variant="secondary">Verified</Badge>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 

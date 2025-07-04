@@ -19,6 +19,8 @@ import SimilarLocations from "@/components/location-detail/SimilarLocations";
 import ActionButtons from "@/components/location-detail/ActionButtons";
 import AvailabilityCalendar from "@/components/AvailabilityCalendar";
 import { useAuth } from '@/contexts/AuthContext';
+import ReviewForm from "@/components/reviews/ReviewForm";
+import ReviewList from "@/components/reviews/ReviewList";
 
 const LocationDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -30,6 +32,7 @@ const LocationDetail = () => {
   const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(null);
   const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
   const { user } = useAuth();
+  const [refreshReviews, setRefreshReviews] = useState(0);
   
   // Load property details from Supabase
   useEffect(() => {
@@ -282,6 +285,19 @@ const LocationDetail = () => {
                 reviewCount={location.reviewCount}
                 propertyId={id || ""}
               />
+
+              {/* Enhanced Review Section */}
+              <div className="mt-8 space-y-6">
+                <h2 className="text-2xl font-bold">Reviews</h2>
+                <ReviewList 
+                  propertyId={id || ""} 
+                  refreshTrigger={refreshReviews}
+                />
+                <ReviewForm 
+                  propertyId={id || ""} 
+                  onReviewSubmitted={() => setRefreshReviews(prev => prev + 1)}
+                />
+              </div>
             </div>
             
             {/* Booking Card with data attribute for scrolling */}
