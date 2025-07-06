@@ -1,20 +1,25 @@
+
 import React from 'react';
 import { Star, MapPin, Users } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 import FavoriteButton from '@/components/favorites/FavoriteButton';
 
+export interface LocationProps {
+  id: string;
+  title: string;
+  imageUrl: string;
+  price: number;
+  rating: number;
+  reviewCount: number;
+  neighborhood: string;
+  isVerified?: boolean;
+  maxGuests?: number;
+  type?: string;
+  amenities?: string[];
+}
+
 interface LocationCardProps {
-  location: {
-    id: string;
-    title: string;
-    imageUrl: string;
-    price: number;
-    rating: number;
-    reviewCount: number;
-    neighborhood: string;
-    isVerified?: boolean;
-    maxGuests?: number;
-  };
+  location: LocationProps;
 }
 
 const LocationCard = ({ location }: LocationCardProps) => {
