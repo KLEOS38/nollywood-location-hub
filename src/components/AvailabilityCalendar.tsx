@@ -135,7 +135,7 @@ const AvailabilityCalendar = ({
           onSelect={handleSelect}
           disabled={isDateUnavailable}
           month={currentMonth}
-          className="border rounded-md"
+          className="border rounded-md p-3 pointer-events-auto"
         />
         <Calendar
           mode="range"
@@ -143,7 +143,7 @@ const AvailabilityCalendar = ({
           onSelect={handleSelect}
           disabled={isDateUnavailable}
           month={addMonths(currentMonth, 1)}
-          className="border rounded-md"
+          className="border rounded-md p-3 pointer-events-auto"
         />
       </div>
 
