@@ -1,8 +1,1 @@
-
 project_id = "jwuakfowjxebtpcxcqyr"
-
-[functions.create-payment]
-
-[functions.verify-booking]
-
-[functions.update-availability]
