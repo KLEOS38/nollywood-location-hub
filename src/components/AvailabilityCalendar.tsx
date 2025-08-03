@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { format, addMonths, subMonths, isWithinInterval, isBefore, startOfDay } from 'date-fns';
 import { supabase } from '@/lib/supabase';
+import type { DateRange } from 'react-day-picker';
 
 interface AvailabilityCalendarProps {
   propertyId: string;
@@ -27,7 +28,7 @@ const AvailabilityCalendar = ({
 }: AvailabilityCalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [unavailableDates, setUnavailableDates] = useState<UnavailableDate[]>([]);
-  const [selectedRange, setSelectedRange] = useState<{ from?: Date; to?: Date }>({
+  const [selectedRange, setSelectedRange] = useState<DateRange | undefined>({
     from: selectedStartDate || undefined,
     to: selectedEndDate || undefined
   });
@@ -87,9 +88,9 @@ const AvailabilityCalendar = ({
     );
   };
 
-  const handleSelect = (range: { from?: Date; to?: Date } | undefined) => {
+  const handleSelect = (range: DateRange | undefined) => {
     if (!range) {
-      setSelectedRange({});
+      setSelectedRange(undefined);
       onDateSelect?.(null, null);
       return;
     }
@@ -99,7 +100,7 @@ const AvailabilityCalendar = ({
   };
 
   const clearDates = () => {
-    setSelectedRange({});
+    setSelectedRange(undefined);
     onDateSelect?.(null, null);
   };
 
@@ -131,7 +132,7 @@ const AvailabilityCalendar = ({
       <div className="grid grid-cols-2 gap-4">
         <Calendar
           mode="range"
-          selected={selectedRange.from && selectedRange.to ? { from: selectedRange.from, to: selectedRange.to } : undefined}
+          selected={selectedRange}
           onSelect={handleSelect}
           disabled={isDateUnavailable}
           month={currentMonth}
@@ -139,7 +140,7 @@ const AvailabilityCalendar = ({
         />
         <Calendar
           mode="range"
-          selected={selectedRange.from && selectedRange.to ? { from: selectedRange.from, to: selectedRange.to } : undefined}
+          selected={selectedRange}
           onSelect={handleSelect}
           disabled={isDateUnavailable}
           month={addMonths(currentMonth, 1)}
