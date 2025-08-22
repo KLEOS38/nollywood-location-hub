@@ -75,7 +75,10 @@ const AuthPage = () => {
   const onLogin = async (values: LoginFormValues) => {
     setIsLoading(true);
     try {
-      await signIn(values.email, values.password);
+      const { error } = await signIn(values.email, values.password);
+      if (error) {
+        throw error;
+      }
       toast.success('Logged in successfully');
       navigate('/profile');
     } catch (error: any) {
@@ -89,7 +92,7 @@ const AuthPage = () => {
   const onSignup = async (values: SignupFormValues) => {
     setIsLoading(true);
     try {
-      await signUp(
+      const { error } = await signUp(
         values.email, 
         values.password, 
         {
@@ -98,6 +101,9 @@ const AuthPage = () => {
           user_type: values.userType
         }
       );
+      if (error) {
+        throw error;
+      }
       toast.success('Account created! Please check your email.');
     } catch (error: any) {
       console.error('Signup error:', error);

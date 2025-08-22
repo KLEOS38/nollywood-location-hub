@@ -104,7 +104,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return await supabase.auth.signUp({
       email,
       password,
-      options: metadata ? { data: metadata } : undefined
+      options: {
+        emailRedirectTo: `${window.location.origin}/`,
+        data: metadata || {}
+      }
     });
   };
 

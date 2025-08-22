@@ -59,7 +59,7 @@ const PricingBar = ({ price, days, setDays }: PricingBarProps) => {
       </div>
       
       <Button onClick={handleBookNow} className="w-full sm:w-auto">
-        Book with Paystack
+        Book Now
       </Button>
     </div>
   );
