@@ -636,6 +636,10 @@ export type Database = {
         Args: { user_uuid?: string }
         Returns: boolean
       }
+      is_admin_user: {
+        Args: { user_uuid?: string }
+        Returns: boolean
+      }
       is_property_available: {
         Args: { check_in: string; check_out: string; property_id: string }
         Returns: boolean
