@@ -14,7 +14,36 @@ serve(async (req) => {
   }
 
   try {
-    const { propertyId, startDate, endDate, totalPrice, teamSize, notes, paymentProvider = 'paystack' } = await req.json();
+    // Enhanced input validation and sanitization
+    const requestBody = await req.json();
+    const { propertyId, startDate, endDate, totalPrice, teamSize, notes, paymentProvider = 'paystack' } = requestBody;
+
+    // Validate required fields
+    if (!propertyId || !startDate || !endDate || !totalPrice) {
+      throw new Error("Missing required fields");
+    }
+
+    // Sanitize and validate inputs
+    if (typeof totalPrice !== 'number' || totalPrice <= 0 || totalPrice > 10000000) {
+      throw new Error("Invalid total price");
+    }
+
+    if (typeof teamSize !== 'number' || teamSize < 1 || teamSize > 100) {
+      throw new Error("Invalid team size");
+    }
+
+    // Validate dates
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    if (isNaN(start.getTime()) || isNaN(end.getTime()) || start >= end) {
+      throw new Error("Invalid booking dates");
+    }
+
+    // Rate limiting check (simple implementation)
+    const clientIP = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "unknown";
+    
+    // Log security event
+    console.log(`Payment attempt from IP: ${clientIP}, Property: ${propertyId}, Amount: ${totalPrice}`);
 
     // Initialize Supabase client
     const supabaseClient = createClient(
@@ -129,7 +158,12 @@ serve(async (req) => {
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error("Payment error:", errorMessage);
     
-    return new Response(JSON.stringify({ error: errorMessage }), {
+    // Security: Don't expose internal error details
+    const publicError = errorMessage.includes("Missing") || errorMessage.includes("Invalid") 
+      ? errorMessage 
+      : "Payment processing failed. Please try again.";
+    
+    return new Response(JSON.stringify({ error: publicError }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 500,
     });

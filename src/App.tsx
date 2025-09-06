@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import ScrollToTop from "./components/ScrollToTop";
 import { AuthProvider } from "./contexts/AuthContext";
+import ErrorBoundary from "@/components/ui/error-boundary";
 import Index from "./pages/Index";
 import LocationsPage from "./pages/LocationsPage";
 import LocationDetail from "./pages/LocationDetail";
@@ -56,11 +57,12 @@ const queryClient = new QueryClient({
 const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <AuthProvider>
-          <Toaster />
-          <Sonner />
-          <ScrollToTop />
+      <ErrorBoundary>
+        <BrowserRouter>
+          <AuthProvider>
+            <Toaster />
+            <Sonner />
+            <ScrollToTop />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/locations" element={<LocationsPage />} />
@@ -99,8 +101,9 @@ const App = () => (
             <Route path="/manage-properties" element={<PropertyManagementPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </AuthProvider>
-      </BrowserRouter>
+          </AuthProvider>
+        </BrowserRouter>
+      </ErrorBoundary>
     </QueryClientProvider>
   </HelmetProvider>
 );

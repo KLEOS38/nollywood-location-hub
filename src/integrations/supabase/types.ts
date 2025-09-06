@@ -176,6 +176,13 @@ export type Database = {
             referencedRelation: "bookings"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "disputes_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings_for_owners"
+            referencedColumns: ["id"]
+          },
         ]
       }
       favorites: {
@@ -612,6 +619,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "reviews_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings_for_owners"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "reviews_property_id_fkey"
             columns: ["property_id"]
             isOneToOne: false
@@ -627,11 +641,125 @@ export type Database = {
           },
         ]
       }
+      security_audit_log: {
+        Row: {
+          action: string
+          created_at: string | null
+          id: string
+          ip_address: unknown | null
+          record_id: string | null
+          sensitive_data_accessed: boolean | null
+          table_name: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          record_id?: string | null
+          sensitive_data_accessed?: boolean | null
+          table_name?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          record_id?: string | null
+          sensitive_data_accessed?: boolean | null
+          table_name?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      bookings_for_owners: {
+        Row: {
+          commission_amount: string | null
+          commission_rate: string | null
+          created_at: string | null
+          end_date: string | null
+          id: string | null
+          notes: string | null
+          payment_id: string | null
+          payment_status: string | null
+          property_id: string | null
+          start_date: string | null
+          status: string | null
+          team_size: number | null
+          total_price: number | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          commission_amount?: never
+          commission_rate?: never
+          created_at?: string | null
+          end_date?: string | null
+          id?: string | null
+          notes?: string | null
+          payment_id?: never
+          payment_status?: string | null
+          property_id?: string | null
+          start_date?: string | null
+          status?: string | null
+          team_size?: number | null
+          total_price?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          commission_amount?: never
+          commission_rate?: never
+          created_at?: string | null
+          end_date?: string | null
+          id?: string | null
+          notes?: string | null
+          payment_id?: never
+          payment_status?: string | null
+          property_id?: string | null
+          start_date?: string | null
+          status?: string | null
+          team_size?: number | null
+          total_price?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
+      get_minimal_profile_info: {
+        Args: { profile_user_id: string }
+        Returns: {
+          company_name: string
+          id: string
+          name: string
+          phone: string
+          user_type: string
+        }[]
+      }
       is_admin: {
         Args: { user_uuid?: string }
         Returns: boolean
@@ -642,6 +770,10 @@ export type Database = {
       }
       is_property_available: {
         Args: { check_in: string; check_out: string; property_id: string }
+        Returns: boolean
+      }
+      is_sensitive_message: {
+        Args: { content: string }
         Returns: boolean
       }
     }

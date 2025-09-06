@@ -32,12 +32,34 @@ serve(async (req) => {
       throw new Error("User not authenticated");
     }
 
-    // Parse request body
-    const { propertyId, action, startDate, endDate, reason } = await req.json();
+    // Parse and validate request body
+    const requestBody = await req.json();
+    const { propertyId, action, startDate, endDate, reason } = requestBody;
     
     if (!propertyId || !action || !startDate || !endDate) {
       throw new Error("Missing required fields: propertyId, action, startDate, endDate");
     }
+
+    // Validate action type
+    if (!['block', 'unblock'].includes(action)) {
+      throw new Error("Invalid action type. Must be 'block' or 'unblock'");
+    }
+
+    // Validate UUID format for propertyId
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(propertyId)) {
+      throw new Error("Invalid property ID format");
+    }
+
+    // Validate dates
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    if (isNaN(start.getTime()) || isNaN(end.getTime()) || start >= end) {
+      throw new Error("Invalid date range");
+    }
+
+    // Sanitize reason if provided
+    const sanitizedReason = reason ? reason.substring(0, 200).trim() : null;
 
     // Verify property ownership
     const { data: property, error: propertyError } = await supabaseClient
@@ -60,7 +82,7 @@ serve(async (req) => {
           property_id: propertyId,
           start_date: startDate,
           end_date: endDate,
-          reason: reason || "Owner blocked"
+          reason: sanitizedReason || "Owner blocked"
         });
       
       if (blockError) throw blockError;

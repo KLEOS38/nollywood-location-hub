@@ -75,13 +75,17 @@ export const requireRole = async (requiredRole: string): Promise<boolean> => {
     return false;
   }
   
+  // Use the secure admin check function
   const { data, error } = await supabase
-    .from('admin_users')
-    .select('role')
-    .eq('user_id', user.id)
-    .single();
+    .rpc('is_admin_user', { user_uuid: user.id });
   
-  if (error || !data || data.role !== requiredRole) {
+  if (error) {
+    console.error('Admin check failed:', error);
+    toast.error('Permission check failed');
+    return false;
+  }
+  
+  if (!data) {
     toast.error('Insufficient permissions');
     return false;
   }

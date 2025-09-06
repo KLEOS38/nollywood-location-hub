@@ -41,14 +41,26 @@ export const generateSecureToken = (length: number = 32): string => {
   return result;
 };
 
-// Content Security Policy helpers
+// Enhanced Content Security Policy helpers
 export const sanitizeForDisplay = (content: string): string => {
   return content
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#x27;')
-    .replace(/\//g, '&#x2F;');
+    .replace(/\//g, '&#x2F;')
+    .replace(/`/g, '&#96;')
+    .replace(/\(/g, '&#40;')
+    .replace(/\)/g, '&#41;');
+};
+
+// Sanitize sensitive information from strings
+export const sanitizeSensitiveInfo = (content: string): string => {
+  return content
+    .replace(/\b\d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b/g, '****-****-****-****') // Credit cards
+    .replace(/\b\d{3}-\d{2}-\d{4}\b/g, '***-**-****') // SSN
+    .replace(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g, '****@****.***') // Emails in content
+    .replace(/\b\+?1?[-.\s]?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/g, '***-***-****'); // Phone numbers
 };
 
 // Rate limiting storage

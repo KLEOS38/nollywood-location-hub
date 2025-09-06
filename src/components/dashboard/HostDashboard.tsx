@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Home, Calendar, DollarSign, MessageSquare, Star } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
+import { useSecureBookings } from '@/hooks/useSecureBookings';
+import { SecureDataDisplay } from '@/components/security/SecureDataDisplay';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 
@@ -33,14 +35,13 @@ const HostDashboard = () => {
         `)
         .eq('owner_id', user?.id);
 
-      // Fetch bookings for host's properties
+      // Fetch bookings for host's properties using secure view
       const propertyIds = propertyData?.map(p => p.id) || [];
       const { data: bookingData } = await supabase
-        .from('bookings')
+        .from('bookings_for_owners')
         .select(`
           *,
-          properties:property_id(title),
-          profiles:user_id(name, email)
+          properties:property_id(title)
         `)
         .in('property_id', propertyIds)
         .order('created_at', { ascending: false });
@@ -163,25 +164,27 @@ const HostDashboard = () => {
           <CardContent>
             <div className="space-y-4">
               {pendingBookings.map((booking) => (
-                <div key={booking.id} className="flex items-center justify-between p-4 border rounded-lg">
-                  <div>
-                    <h3 className="font-semibold">{booking.properties?.title}</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Requested by: {booking.profiles?.name || booking.profiles?.email}
-                    </p>
-                    <p className="text-sm">
-                      {format(new Date(booking.start_date), 'MMM d')} - {format(new Date(booking.end_date), 'MMM d, yyyy')}
-                    </p>
-                    <p className="text-sm">Team size: {booking.team_size} people</p>
-                  </div>
-                  <div className="text-right space-y-2">
-                    <p className="font-medium">₦{booking.total_price.toLocaleString()}</p>
-                    <div className="space-x-2">
-                      <Button size="sm">Accept</Button>
-                      <Button size="sm" variant="outline">Decline</Button>
+                <SecureDataDisplay dataType="financial" recordId={booking.id}>
+                  <div key={booking.id} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div>
+                      <h3 className="font-semibold">{booking.properties?.title}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        New booking request
+                      </p>
+                      <p className="text-sm">
+                        {format(new Date(booking.start_date), 'MMM d')} - {format(new Date(booking.end_date), 'MMM d, yyyy')}
+                      </p>
+                      <p className="text-sm">Team size: {booking.team_size} people</p>
+                    </div>
+                    <div className="text-right space-y-2">
+                      <p className="font-medium">₦{booking.total_price.toLocaleString()}</p>
+                      <div className="space-x-2">
+                        <Button size="sm">Accept</Button>
+                        <Button size="sm" variant="outline">Decline</Button>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </SecureDataDisplay>
               ))}
             </div>
           </CardContent>

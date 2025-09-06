@@ -20,7 +20,11 @@ serve(async (req) => {
     );
 
     // Get auth user
-    const authHeader = req.headers.get("Authorization")!;
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      throw new Error("Invalid authorization header");
+    }
+    
     const token = authHeader.replace("Bearer ", "");
     const { data: userData, error: userError } = await supabaseClient.auth.getUser(token);
     
@@ -29,10 +33,19 @@ serve(async (req) => {
     
     const user = userData.user;
     
-    // Get property ID from request
-    const { propertyId } = await req.json();
+    // Get property ID from request with validation
+    const requestBody = await req.json();
+    const { propertyId } = requestBody;
     
-    if (!propertyId) throw new Error("Property ID is required");
+    if (!propertyId || typeof propertyId !== 'string') {
+      throw new Error("Property ID is required and must be a valid string");
+    }
+
+    // Validate UUID format
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(propertyId)) {
+      throw new Error("Invalid property ID format");
+    }
     
     // Check if user has completed bookings for this property
     const { data: bookings, error: bookingsError } = await supabaseClient
