@@ -176,13 +176,6 @@ export type Database = {
             referencedRelation: "bookings"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "disputes_booking_id_fkey"
-            columns: ["booking_id"]
-            isOneToOne: false
-            referencedRelation: "bookings_for_owners"
-            referencedColumns: ["id"]
-          },
         ]
       }
       favorites: {
@@ -619,13 +612,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "reviews_booking_id_fkey"
-            columns: ["booking_id"]
-            isOneToOne: false
-            referencedRelation: "bookings_for_owners"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "reviews_property_id_fkey"
             columns: ["property_id"]
             isOneToOne: false
@@ -679,75 +665,7 @@ export type Database = {
       }
     }
     Views: {
-      bookings_for_owners: {
-        Row: {
-          commission_amount: string | null
-          commission_rate: string | null
-          created_at: string | null
-          end_date: string | null
-          id: string | null
-          notes: string | null
-          payment_id: string | null
-          payment_status: string | null
-          property_id: string | null
-          start_date: string | null
-          status: string | null
-          team_size: number | null
-          total_price: number | null
-          updated_at: string | null
-          user_id: string | null
-        }
-        Insert: {
-          commission_amount?: never
-          commission_rate?: never
-          created_at?: string | null
-          end_date?: string | null
-          id?: string | null
-          notes?: string | null
-          payment_id?: never
-          payment_status?: string | null
-          property_id?: string | null
-          start_date?: string | null
-          status?: string | null
-          team_size?: number | null
-          total_price?: number | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          commission_amount?: never
-          commission_rate?: never
-          created_at?: string | null
-          end_date?: string | null
-          id?: string | null
-          notes?: string | null
-          payment_id?: never
-          payment_status?: string | null
-          property_id?: string | null
-          start_date?: string | null
-          status?: string | null
-          team_size?: number | null
-          total_price?: number | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "bookings_property_id_fkey"
-            columns: ["property_id"]
-            isOneToOne: false
-            referencedRelation: "properties"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "bookings_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
+      [_ in never]: never
     }
     Functions: {
       get_minimal_profile_info: {
@@ -758,6 +676,23 @@ export type Database = {
           name: string
           phone: string
           user_type: string
+        }[]
+      }
+      get_secure_bookings_for_owners: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          created_at: string
+          end_date: string
+          id: string
+          notes: string
+          payment_status: string
+          property_id: string
+          start_date: string
+          status: string
+          team_size: number
+          total_price: number
+          updated_at: string
+          user_id: string
         }[]
       }
       is_admin: {

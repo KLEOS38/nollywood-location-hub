@@ -31,38 +31,15 @@ export const useSecureBookings = () => {
     try {
       setLoading(true);
       
-      // Use the secure view for property owners, regular table for booking owners
-      const { data: userBookings, error: userError } = await supabase
-        .from('bookings')
-        .select('*')
-        .eq('user_id', user.id);
+      // Use the secure function for all bookings (handles both user and owner access)
+      const { data: allBookings, error: bookingsError } = await supabase
+        .rpc('get_secure_bookings_for_owners');
 
-      const { data: ownerBookings, error: ownerError } = await supabase
-        .from('bookings_for_owners')
-        .select('*')
-        .in('property_id', 
-          await supabase
-            .from('properties')
-            .select('id')
-            .eq('owner_id', user.id)
-            .then(res => res.data?.map(p => p.id) || [])
-        );
-
-      if (userError && ownerError) {
-        throw userError || ownerError;
+      if (bookingsError) {
+        throw bookingsError;
       }
 
-      // Combine and deduplicate bookings
-      const allBookings = [
-        ...(userBookings || []),
-        ...(ownerBookings || [])
-      ];
-      
-      const uniqueBookings = allBookings.filter((booking, index, self) =>
-        index === self.findIndex(b => b.id === booking.id)
-      );
-
-      setBookings(uniqueBookings);
+      setBookings(allBookings || []);
       setError(null);
     } catch (err: any) {
       console.error('Error fetching secure bookings:', err);

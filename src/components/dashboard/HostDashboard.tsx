@@ -35,16 +35,10 @@ const HostDashboard = () => {
         `)
         .eq('owner_id', user?.id);
 
-      // Fetch bookings for host's properties using secure view
+      // Fetch bookings for host's properties using secure function
       const propertyIds = propertyData?.map(p => p.id) || [];
       const { data: bookingData } = await supabase
-        .from('bookings_for_owners')
-        .select(`
-          *,
-          properties:property_id(title)
-        `)
-        .in('property_id', propertyIds)
-        .order('created_at', { ascending: false });
+        .rpc('get_secure_bookings_for_owners');
 
       // Calculate earnings
       const totalEarnings = bookingData?.reduce((total, booking) => {
