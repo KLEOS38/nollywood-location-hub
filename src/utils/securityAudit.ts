@@ -37,6 +37,7 @@ export const logSecurityEvent = async (entry: AuditLogEntry) => {
 
 export const auditActions = {
   PROFILE_ACCESSED: 'profile_accessed',
+  MESSAGE_ACCESSED: 'message_accessed',
   SENSITIVE_MESSAGE_VIEWED: 'sensitive_message_viewed',
   FINANCIAL_DATA_ACCESSED: 'financial_data_accessed',
   ADMIN_ACTION_PERFORMED: 'admin_action_performed',
@@ -48,12 +49,15 @@ export const auditActions = {
 // Helper function to detect if we're accessing sensitive data
 export const isSensitiveDataAccess = (tableName: string, action: string): boolean => {
   const sensitiveActions = [
+    'profile_accessed',
+    'message_accessed',
     'financial_data_accessed',
     'sensitive_message_viewed',
     'admin_action_performed'
   ];
   
   const sensitiveTables = [
+    'profiles',
     'bookings',
     'messages',
     'admin_users',
