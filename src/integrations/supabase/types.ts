@@ -695,6 +695,10 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_user_id: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
       is_admin: {
         Args: { user_uuid?: string }
         Returns: boolean
