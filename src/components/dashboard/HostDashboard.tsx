@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Home, Calendar, DollarSign, MessageSquare, Star } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { useSecureBookings } from '@/hooks/useSecureBookings';
 import { SecureDataDisplay } from '@/components/security/SecureDataDisplay';
 import { format } from 'date-fns';

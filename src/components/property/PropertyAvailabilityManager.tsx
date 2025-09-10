@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { LoaderCircle } from "lucide-react";
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { format, isWithinInterval, isBefore, addDays } from 'date-fns';
 
@@ -185,7 +185,7 @@ const PropertyAvailabilityManager = ({ propertyId }: PropertyAvailabilityManager
                     if (range?.to) setEndDate(range.to);
                   }}
                   disabled={isDateUnavailable}
-                  className="border rounded-md p-2"
+                  className="border rounded-md p-3 pointer-events-auto"
                 />
               </div>
               

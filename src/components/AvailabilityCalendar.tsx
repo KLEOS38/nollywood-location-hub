@@ -4,7 +4,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { format, addMonths, subMonths, isWithinInterval, isBefore, startOfDay } from 'date-fns';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 import type { DateRange } from 'react-day-picker';
 
 interface AvailabilityCalendarProps {
@@ -137,6 +137,7 @@ const AvailabilityCalendar = ({
           disabled={isDateUnavailable}
           month={currentMonth}
           className="border rounded-md p-3 pointer-events-auto"
+          showOutsideDays={false}
         />
         <Calendar
           mode="range"
@@ -145,6 +146,7 @@ const AvailabilityCalendar = ({
           disabled={isDateUnavailable}
           month={addMonths(currentMonth, 1)}
           className="border rounded-md p-3 pointer-events-auto"
+          showOutsideDays={false}
         />
       </div>
 

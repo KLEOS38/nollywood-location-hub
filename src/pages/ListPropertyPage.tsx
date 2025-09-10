@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { useAuth } from '@/contexts/AuthContext';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -65,15 +66,16 @@ const ListPropertyPage = () => {
     },
   });
   
-  // Check if user is logged in
-  const userString = localStorage.getItem('user');
-  const user = userString ? JSON.parse(userString) : null;
+  // Check if user is logged in using AuthContext
+  const { user } = useAuth();
   
-  if (!user?.isLoggedIn) {
-    // Redirect to login if not logged in
-    React.useEffect(() => {
+  React.useEffect(() => {
+    if (!user) {
       navigate('/auth?listing=true');
-    }, [navigate]);
+    }
+  }, [user, navigate]);
+  
+  if (!user) {
     return null;
   }
 
