@@ -23,7 +23,7 @@ const Careers = () => {
         
         <main className="flex-1">
           <section className="relative py-20">
-            <div className="absolute inset-0 bg-gradient-to-r from-nollywood-dark/80 to-nollywood-primary/60 z-10"></div>
+            <div className="absolute inset-0 bg-background/80 z-10"></div>
             <div 
               className="absolute inset-0 bg-cover bg-center"
               style={{ 

@@ -75,9 +75,9 @@ export const requireRole = async (requiredRole: string): Promise<boolean> => {
     return false;
   }
   
-  // Use the secure admin check function
+  // Use the enhanced secure admin check function
   const { data, error } = await supabase
-    .rpc('is_admin_user', { user_uuid: user.id });
+    .rpc('is_admin_user_secure', { user_uuid: user.id });
   
   if (error) {
     console.error('Admin check failed:', error);

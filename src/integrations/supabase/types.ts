@@ -695,6 +695,15 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_secure_financial_data: {
+        Args: { booking_uuid: string }
+        Returns: {
+          commission_amount: number
+          commission_rate: number
+          payment_id: string
+          payment_status: string
+        }[]
+      }
       get_user_admin_status: {
         Args: { check_user_id?: string }
         Returns: boolean
@@ -708,6 +717,10 @@ export type Database = {
         Returns: boolean
       }
       is_admin_user: {
+        Args: { user_uuid?: string }
+        Returns: boolean
+      }
+      is_admin_user_secure: {
         Args: { user_uuid?: string }
         Returns: boolean
       }

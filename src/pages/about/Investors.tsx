@@ -21,7 +21,7 @@ const Investors = () => {
         
         <main className="flex-1">
           <section className="relative py-20">
-            <div className="absolute inset-0 bg-gradient-to-r from-nollywood-dark/90 to-nollywood-primary/70 z-10"></div>
+            <div className="absolute inset-0 bg-background/90 z-10"></div>
             <div 
               className="absolute inset-0 bg-cover bg-center"
               style={{ 

@@ -234,11 +234,9 @@ const ReviewSection = ({ rating, reviewCount, propertyId }: ReviewSectionProps) 
                     </div>
                     
                     {review.comment && (
-                      <p className="text-muted-foreground" 
-                         dangerouslySetInnerHTML={{ 
-                           __html: sanitizeForDisplay(review.comment) 
-                         }} 
-                      />
+                      <p className="text-muted-foreground">
+                        {sanitizeForDisplay(review.comment)}
+                      </p>
                     )}
                   </div>
                 </div>

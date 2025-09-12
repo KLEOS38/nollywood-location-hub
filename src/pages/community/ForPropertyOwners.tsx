@@ -153,7 +153,7 @@ const ForPropertyOwners = () => {
                     alt="Modern home" 
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                  <div className="absolute inset-0 bg-background/70"></div>
                   <div className="absolute bottom-0 left-0 p-4">
                     <h3 className="text-xl font-semibold text-white">Modern Homes</h3>
                     <p className="text-white/80 text-sm">Popular for contemporary dramas</p>
@@ -166,7 +166,7 @@ const ForPropertyOwners = () => {
                     alt="Luxury villa" 
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                  <div className="absolute inset-0 bg-background/70"></div>
                   <div className="absolute bottom-0 left-0 p-4">
                     <h3 className="text-xl font-semibold text-white">Luxury Villas</h3>
                     <p className="text-white/80 text-sm">Highly sought for upscale productions</p>
@@ -179,7 +179,7 @@ const ForPropertyOwners = () => {
                     alt="Traditional homes" 
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                  <div className="absolute inset-0 bg-background/70"></div>
                   <div className="absolute bottom-0 left-0 p-4">
                     <h3 className="text-xl font-semibold text-white">Traditional Homes</h3>
                     <p className="text-white/80 text-sm">Perfect for cultural and historical films</p>
@@ -192,7 +192,7 @@ const ForPropertyOwners = () => {
                     alt="Office spaces" 
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                  <div className="absolute inset-0 bg-background/70"></div>
                   <div className="absolute bottom-0 left-0 p-4">
                     <h3 className="text-xl font-semibold text-white">Office Spaces</h3>
                     <p className="text-white/80 text-sm">Essential for corporate scenes</p>
